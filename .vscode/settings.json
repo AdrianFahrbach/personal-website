@@ -1,4 +1,5 @@
 {
+  "scss.lint.validProperties": ["composes"],
   "workbench.colorCustomizations": {
     "activityBar.background": "#fafafa",
     "activityBar.foreground": "#222",

@@ -1,7 +1,7 @@
 /** @type {import('stylelint').Config} */
 
 module.exports = {
-  extends: 'stylelint-config-recommended',
+  extends: ['stylelint-config-recommended', 'stylelint-config-css-modules'],
   rules: {
     'at-rule-empty-line-before': [
       'always',
@@ -52,6 +52,5 @@ module.exports = {
     ],
     'selector-max-id': 2,
     'selector-pseudo-element-colon-notation': 'double',
-    'value-keyword-case': ['lower', { ignoreKeywords: ['dummyValue'] }],
   },
 };
