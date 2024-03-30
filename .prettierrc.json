@@ -1,0 +1,29 @@
+{
+    "$schema": "http://json.schemastore.org/prettierrc",
+    "printWidth": 120,
+    "tabWidth": 2,
+    "useTabs": false,
+    "semi": true,
+    "singleQuote": true,
+    "jsxSingleQuote": true,
+    "trailingComma": "es5",
+    "bracketSpacing": true,
+    "bracketSameLine": true,
+    "arrowParens": "avoid",
+    "htmlWhitespaceSensitivity": "css",
+    "overrides": [
+      {
+        "files": ["*.html", "*.php"],
+        "options": {
+          "printWidth": 1000
+        }
+      },
+      {
+        "files": "*.json",
+        "options": {
+          "parser": "json"
+        }
+      }
+    ]
+  }
+  
