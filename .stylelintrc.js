@@ -1,7 +1,7 @@
 /** @type {import('stylelint').Config} */
 
 module.exports = {
-  extends: ['stylelint-config-recommended', 'stylelint-config-css-modules'],
+  extends: ['stylelint-config-recommended', 'stylelint-config-css-modules', 'stylelint-config-recess-order'],
   rules: {
     'at-rule-empty-line-before': [
       'always',
@@ -53,4 +53,6 @@ module.exports = {
     'selector-max-id': 2,
     'selector-pseudo-element-colon-notation': 'double',
   },
+  plugins: ['stylelint-order'],
+  defaultSeverity: 'warning',
 };
