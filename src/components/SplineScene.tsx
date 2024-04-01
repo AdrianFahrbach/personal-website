@@ -1,7 +1,7 @@
 'use client';
 
 import { AchievementsContext } from '@/providers/AchievementsProvider';
-import { updateBoundaries, updateVisibleAchievementObjects } from '@/services/spline.service';
+import { checkForAchievements, updateBoundaries, updateVisibleAchievementObjects } from '@/services/spline.service';
 import Spline from '@splinetool/react-spline';
 import { Application as SplineApp } from '@splinetool/runtime';
 import debounce from 'lodash/debounce';
@@ -10,7 +10,7 @@ import styles from './SplineScene.module.scss';
 
 export const SplineScene: React.FC = () => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const { achievements, setAchievements } = useContext(AchievementsContext);
+  const { achievements, unlockAchievement } = useContext(AchievementsContext);
   const splineApp = useRef<SplineApp>();
 
   /**
@@ -53,6 +53,19 @@ export const SplineScene: React.FC = () => {
       window.removeEventListener('resize', debouncedResizeHandler);
     };
   }, []);
+
+  /**
+   * Check for achievements every two seconds
+   */
+  useEffect(() => {
+    const currentSplineApp = splineApp.current;
+    if (currentSplineApp) {
+      const interval = setInterval(() => {
+        checkForAchievements(currentSplineApp, achievements, unlockAchievement);
+      }, 2000);
+      return () => clearInterval(interval);
+    }
+  }, [splineApp.current]);
 
   return (
     <Spline

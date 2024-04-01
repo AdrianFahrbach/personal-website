@@ -18,16 +18,20 @@ export function updateBoundaries(spline: SplineApp) {
 }
 
 const achievementToObjectNameMap: Record<Achievement, string> = {
-  github: 'github-logo',
-  linkedin: 'linkedin-logo',
-  dribbble: 'dribbble-logo',
-  cv: 'cv-icon',
-  contact: 'contact-icon',
-  nickname: 'user-icon',
-  'to-the-moon': 'rocket-icon',
-  edges: 'edges-icon',
+  github: 'obj-github-logo',
+  linkedin: 'obj-linkedin-logo',
+  dribbble: 'obj-dribbble-logo',
+  cv: 'obj-cv-icon',
+  contact: 'obj-contact-icon',
+  nickname: 'obj-user-icon',
+  'to-the-moon': 'obj-rocket-icon',
+  edges: 'obj-edges-icon',
 };
 
+/**
+ * This function updates the visibility of the unlocked objects in the scene.
+ * We need to hide them on the first load, because we can't hide them in Spline.
+ */
 export function updateVisibleAchievementObjects(spline: SplineApp, achievements: Achievement[]) {
   allAchievements.forEach(achievement => {
     const obj = spline.findObjectByName(achievementToObjectNameMap[achievement]);
@@ -35,4 +39,32 @@ export function updateVisibleAchievementObjects(spline: SplineApp, achievements:
       obj.visible = achievements.includes(achievement);
     }
   });
+}
+
+/**
+ * This function checks if one of the spline achievements has been unlocked.
+ */
+export function checkForAchievements(
+  spline: SplineApp,
+  achievements: Achievement[],
+  unlockAchievement: (achievement: Achievement) => void
+) {
+  // All objects to check for achievements start with 'obj-'
+  const allObjects = spline.getAllObjects().filter(obj => obj.name.startsWith('obj-'));
+
+  // if (!achievements.includes('to-the-moon')) {
+  //   const minX = -(window.innerWidth / 2) - 500;
+  //   const maxX = window.innerWidth / 2 + 500;
+  //   const minY = -(window.innerHeight / 2) - 500;
+  //   const maxY = window.innerHeight / 2 + 500;
+  //   allObjects.forEach(obj => {
+  //     if (obj.name === 'obj-r') {
+  //       console.log(obj);
+  //     }
+  //     if (obj.position.x < minX || obj.position.x > maxX || obj.position.y < minY || obj.position.y > maxY) {
+  //       console.log(obj.name, obj.position.x, obj.position.y, minX, maxX, minY, maxY);
+  //       // unlockAchievement('to-the-moon');
+  //     }
+  //   });
+  // }
 }
