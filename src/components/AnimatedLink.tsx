@@ -22,7 +22,8 @@ export const AnimatedLink: React.FC<AnimatedLinkProps> = ({ to, label, achieveme
     }
   }
 
-  const externalProps = isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {};
+  const externalProps = {};
+  // const externalProps = isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {};
 
   return (
     // <Link href={to} onClick={handeClick} className={styles.animatedLink} {...externalProps} aria-label={label}>
