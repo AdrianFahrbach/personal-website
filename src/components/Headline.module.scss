@@ -2,8 +2,9 @@
   position: absolute;
   top: 50%;
   left: 50%;
+  z-index: 1;
   padding: 32px;
-  font-size: 102px;
+  font-size: 100px;
   font-weight: 400;
   color: var(--text-secondary);
   transform: translate(-50%, -50%);

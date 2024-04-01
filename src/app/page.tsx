@@ -1,8 +1,12 @@
-import Headline from '@/components/Headline';
+import { Header } from '@/components/Header';
+import { Headline } from '@/components/Headline';
+import { SplineScene } from '@/components/SplineScene';
 
 export default function Home() {
   return (
     <main>
+      <Header />
+      <SplineScene />
       <Headline
         text={[
           ['Hey!', 'I’m', { text: 'Adrian', isHighlighted: true }, ','],

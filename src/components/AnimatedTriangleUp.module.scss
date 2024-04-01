@@ -1,0 +1,20 @@
+.container {
+  position: relative;
+  width: 28px;
+  height: 27px;
+}
+
+.image {
+  display: block;
+  width: 28px;
+  height: 27px;
+  background-image: url('/images/triangle-up-spritesheet.png');
+  background-size: auto 27px;
+  animation: runAnimation 1s steps(17) infinite;
+}
+
+@keyframes runAnimation {
+  100% {
+    background-position: -100% 0;
+  }
+}

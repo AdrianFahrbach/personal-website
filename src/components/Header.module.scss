@@ -1,10 +1,11 @@
 .linkContainer {
   position: absolute;
+  z-index: 999;
   display: flex;
   gap: 18px;
   align-items: center;
   justify-content: space-between;
-  padding: 22px 32px;
+  margin: 22px 32px;
 }
 
 .topLeft {

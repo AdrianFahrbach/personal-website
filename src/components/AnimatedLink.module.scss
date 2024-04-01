@@ -1,0 +1,28 @@
+.animatedLink {
+  position: relative;
+  overflow: hidden;
+  font-size: 16px;
+
+  &:hover {
+    .labelTop {
+      transform: translateY(-100%);
+    }
+
+    .labelBottom {
+      transform: translateY(0);
+    }
+  }
+}
+
+.labelTop {
+  display: inline-block;
+  transition: transform 0.25s ease-in-out;
+}
+
+.labelBottom {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: transform 0.25s ease-in-out;
+  transform: translateY(100%);
+}

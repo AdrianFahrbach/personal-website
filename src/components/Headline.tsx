@@ -13,7 +13,7 @@ interface HeadlineProps {
 
 const charactersWithoutSpace = ['.', ',', '!', '?'];
 
-const Headline: React.FC<HeadlineProps> = ({ as = 'h1', text }) => {
+export const Headline: React.FC<HeadlineProps> = ({ as = 'h1', text }) => {
   const parsedText = text.map((line, i) =>
     line.map((word, j) => {
       const text = typeof word === 'string' ? word : word.text;
@@ -36,5 +36,3 @@ const Headline: React.FC<HeadlineProps> = ({ as = 'h1', text }) => {
     <h2 className={classNames([styles.container, merchant.className])}>{parsedText}</h2>
   );
 };
-
-export default Headline;
