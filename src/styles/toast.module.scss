@@ -1,0 +1,19 @@
+.toastHeadline {
+  margin: 0;
+}
+
+.toastSubline {
+  margin: 0;
+  opacity: 0.4;
+}
+
+.icon {
+  position: relative;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+
+  > svg {
+    display: block;
+  }
+}

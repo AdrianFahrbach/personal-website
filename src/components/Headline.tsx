@@ -1,6 +1,6 @@
 import { merchant } from '@/styles/fonts';
 import classNames from 'classnames';
-import React from 'react';
+import React, { FC } from 'react';
 import styles from './Headline.module.scss';
 
 interface HeadlineProps {
@@ -13,7 +13,7 @@ interface HeadlineProps {
 
 const charactersWithoutSpace = ['.', ',', '!', '?'];
 
-export const Headline: React.FC<HeadlineProps> = ({ as = 'h1', text }) => {
+export const Headline: FC<HeadlineProps> = ({ as = 'h1', text }) => {
   const parsedText = text.map((line, i) =>
     line.map((word, j) => {
       const text = typeof word === 'string' ? word : word.text;

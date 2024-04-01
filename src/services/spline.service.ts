@@ -1,4 +1,5 @@
 import { Application as SplineApp } from '@splinetool/runtime';
+import { Achievement, allAchievements } from './achievements.service';
 
 /**
  * This function moves the boundary planes to the correct position by adjusting a Spline variable.
@@ -15,18 +16,6 @@ export function updateBoundaries(spline: SplineApp) {
     edgeBottom: -(window.innerHeight / 2),
   });
 }
-
-const allAchievements = [
-  'github',
-  'linkedin',
-  'dribbble',
-  'cv',
-  'contact',
-  'nickname',
-  'to-the-moon',
-  'edges',
-] as const;
-export type Achievement = (typeof allAchievements)[number];
 
 const achievementToObjectNameMap: Record<Achievement, string> = {
   github: 'github-logo',
