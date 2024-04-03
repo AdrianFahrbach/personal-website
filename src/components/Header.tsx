@@ -20,7 +20,8 @@ export const Header: React.FC = () => {
         <AnimatedLink to='mailto:adrianfahrbach@me.com' label='Contact me' achievementToUnlock='contact' />
       </div>
       <div className={classNames([styles.linkContainer, styles.bottomRight])}>
-        <AnimatedLink to='/imprint' label='Imprint' />
+        <AnimatedLink isSmall to='/privacy' label='Privacy' />
+        <AnimatedLink isSmall to='/legal-notice' label='Legal notice' />
       </div>
       <div className={classNames([styles.linkContainer, styles.bottomLeft])}>
         <AnimatedLink to='/cv.pdf' label='My CV' isExternal achievementToUnlock='cv' />

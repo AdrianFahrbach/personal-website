@@ -4,6 +4,13 @@
   --text-primary: #222;
   --text-secondary: rgba(22, 22, 22, 0.4);
   --text-contrast: #fafafa;
+  --wrapper-padding-x: 32px;
+  --wrapper-padding-y: 22px;
+
+  --font-size-h1: 32px;
+  --font-size-h2: 24px;
+  --font-size-h3: 18px;
+  --font-size-h4: 18px;
 }
 
 /* @media (prefers-color-scheme: dark) {
@@ -31,8 +38,50 @@ body {
 }
 
 body {
+  line-height: 1.5;
   color: var(--text-primary);
   background: var(--background-color);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 1.5em 0 0.5em;
+
+  &:first-child {
+    margin-top: 0;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+h1, h2 {
+  margin: 2em 0 0.75em;
+}
+
+h1 {
+  font-size: var(--font-size-h1);
+}
+
+h2 {
+  font-size: var(--font-size-h2);
+}
+
+h3 {
+  font-size: var(--font-size-h3);
+}
+
+h4 {
+  font-size: var(--font-size-h3);
+}
+
+ul,
+ol {
+  padding-left: 24px;
+  margin: 0.5em 1.25em;
 }
 
 a {

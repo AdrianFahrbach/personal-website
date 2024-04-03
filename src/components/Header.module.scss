@@ -1,11 +1,11 @@
 .linkContainer {
-  position: absolute;
+  position: fixed;
   z-index: 999;
   display: flex;
   gap: 18px;
   align-items: center;
   justify-content: space-between;
-  margin: 22px 32px;
+  margin: var(--wrapper-padding-y) var(--wrapper-padding-x);
 }
 
 .topLeft {
@@ -26,4 +26,8 @@
 .bottomRight {
   right: 0;
   bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: flex-end;
 }
