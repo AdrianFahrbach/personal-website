@@ -5,7 +5,6 @@ import { SplineScene } from '@/components/SplineScene';
 export default function Home() {
   return (
     <main>
-      <Header />
       <section>
         <SplineScene />
         <Headline

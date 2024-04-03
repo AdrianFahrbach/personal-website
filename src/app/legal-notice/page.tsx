@@ -5,7 +5,6 @@ import pageStyles from '@/styles/pages.module.scss';
 export default function LegalNotice() {
   return (
     <main>
-      <Header />
       <section className={pageStyles.section}>
         <div className={pageStyles.wrapper}>
           <div className={pageStyles.contentContainer}>

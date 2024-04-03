@@ -2,6 +2,7 @@ import { AchievementsContainer } from '@/providers/AchievementsProvider';
 import { montserrat } from '@/styles/fonts';
 import type { Metadata } from 'next';
 import '../styles/globals.scss';
+import { Header } from '@/components/Header';
 
 export const metadata: Metadata = {
   title: 'Adrian Fahrbach',
@@ -12,7 +13,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang='en'>
       <body className={montserrat.className}>
-        <AchievementsContainer>{children}</AchievementsContainer>
+        <AchievementsContainer>
+          <Header />
+          {children}
+        </AchievementsContainer>
       </body>
     </html>
   );
