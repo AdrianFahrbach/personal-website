@@ -1,4 +1,4 @@
-import { Application as SplineApp } from '@splinetool/runtime';
+import { SPEObject, Application as SplineApp } from '@splinetool/runtime';
 import { Achievement, allAchievements } from './achievements.service';
 
 /**
@@ -49,22 +49,98 @@ export function checkForAchievements(
   achievements: Achievement[],
   unlockAchievement: (achievement: Achievement) => void
 ) {
-  // All objects to check for achievements start with 'obj-'
-  const allObjects = spline.getAllObjects().filter(obj => obj.name.startsWith('obj-'));
+  let allObjects: SPEObject[] = [];
+  if (!achievements.includes('nickname') || !achievements.includes('edges')) {
+    // All objects relevant for achievements start with 'obj-'
+    allObjects = spline.getAllObjects().filter(obj => obj.name.startsWith('obj-'));
+  }
 
-  // if (!achievements.includes('to-the-moon')) {
-  //   const minX = -(window.innerWidth / 2) - 500;
-  //   const maxX = window.innerWidth / 2 + 500;
-  //   const minY = -(window.innerHeight / 2) - 500;
-  //   const maxY = window.innerHeight / 2 + 500;
-  //   allObjects.forEach(obj => {
-  //     if (obj.name === 'obj-r') {
-  //       console.log(obj);
-  //     }
-  //     if (obj.position.x < minX || obj.position.x > maxX || obj.position.y < minY || obj.position.y > maxY) {
-  //       console.log(obj.name, obj.position.x, obj.position.y, minX, maxX, minY, maxY);
-  //       // unlockAchievement('to-the-moon');
-  //     }
-  //   });
-  // }
+  /**
+   * Check for the to-the-moon achievement
+   */
+  if (!achievements.includes('to-the-moon')) {
+    if (spline.getVariable('isOutOfBounds') === true) {
+      unlockAchievement('to-the-moon');
+    }
+  }
+
+  /**
+   * Check for the nickname achievement
+   */
+  if (!achievements.includes('nickname')) {
+    const relevantObjNames = ['obj-a-1', 'obj-a-2', 'obj-d', 'obj-i'];
+    const [objLetterA1, objLetterA2, objLetterD, objLetterI] = relevantObjNames.map(name =>
+      allObjects.find(obj => obj.name === name)
+    );
+    const words = [
+      [objLetterA1, objLetterD, objLetterI],
+      [objLetterA2, objLetterD, objLetterI],
+    ];
+    const range = { x: { min: 0, max: 100 }, y: { min: -50, max: 50 } };
+
+    for (const word of words) {
+      const isComplete = word.every((thisLetter, index) => {
+        // We don't need to check the last letter
+        if (index === word.length - 1) {
+          return true;
+        }
+
+        // Check if the next letter is close enough to this one
+        const nextLetter = word[index + 1];
+        if (!nextLetter || !thisLetter) {
+          return false;
+        }
+        if (!isWithinRelativeArea(thisLetter, nextLetter, range)) {
+          return false;
+        }
+
+        // Check that there are no other objects between the letters
+        const objsToAvoid = allObjects.filter(
+          obj => obj.visible && word.every(objLetter => objLetter?.name !== obj.name)
+        );
+        if (objsToAvoid.some(obj => isWithinRelativeArea(thisLetter, obj, range))) {
+          return false;
+        }
+
+        return true;
+      });
+      if (isComplete) {
+        unlockAchievement('nickname');
+        break;
+      }
+    }
+  }
+
+  /**
+   * Check for the edges achievement
+   */
+  if (!achievements.includes('edges')) {
+    const topLeft = { x: -(window.innerWidth / 2), y: window.innerHeight / 2 };
+    const topRight = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+    const bottomLeft = { x: -(window.innerWidth / 2), y: -(window.innerHeight / 2) };
+    const bottomRight = { x: window.innerWidth / 2, y: -(window.innerHeight / 2) };
+
+    const allEdgesFilled = [topLeft, topRight, bottomLeft, bottomRight].every(corner =>
+      allObjects.some(obj => {
+        return Math.abs(obj.position.x - corner.x) < 70 && Math.abs(obj.position.y - corner.y) < 70;
+      })
+    );
+
+    if (allEdgesFilled) {
+      unlockAchievement('edges');
+    }
+  }
+}
+
+/**
+ * Checks if the objects are within a certain range of each other.
+ */
+function isWithinRelativeArea(
+  fromObj: SPEObject,
+  toObj: SPEObject,
+  range: { x: { min: number; max: number }; y: { min: number; max: number } }
+) {
+  const x = toObj.position.x - fromObj.position.x;
+  const y = toObj.position.y - fromObj.position.y;
+  return x > range.x.min && x < range.x.max && y > range.y.min && y < range.y.max;
 }

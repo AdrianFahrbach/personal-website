@@ -3,11 +3,10 @@ import {
   DribbbleLogo,
   Envelope,
   GithubLogo,
-  Icon,
   LinkedinLogo,
-  Person,
   ReadCvLogo,
   Rocket,
+  User
 } from '@phosphor-icons/react';
 
 export const allAchievements = [
@@ -31,7 +30,7 @@ export const achievementToToastMap: Record<Achievement, { icon: React.ReactNode;
     },
     edges: {
       icon: <CornersOut size={28} />,
-      headline: 'Edges of the universe!',
+      headline: 'All edges of the universe!',
       subline: 'Have an object in all corners of the viewport.',
     },
     github: {
@@ -60,7 +59,7 @@ export const achievementToToastMap: Record<Achievement, { icon: React.ReactNode;
       subline: 'Send me a message.',
     },
     nickname: {
-      icon: <Person size={28} />,
+      icon: <User size={28} />,
       headline: "That's what my friends call me.",
       subline: 'Make my nickname out of balloons',
     },

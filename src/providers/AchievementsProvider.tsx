@@ -1,10 +1,9 @@
 'use client';
 
 import { Achievement, achievementToToastMap } from '@/services/achievements.service';
-import { ReactNode, useEffect, useState } from 'react';
-import { createContext } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
 import toastStyles from '@/styles/toast.module.scss';
+import { ReactNode, createContext, useEffect, useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 
 interface AchievementsData {
   achievements: Achievement[];
@@ -45,7 +44,7 @@ export const AchievementsContainer: React.FC<{ children: ReactNode }> = ({ child
    * Unlock an achievement and show a toast
    */
   function unlockAchievement(achievement: Achievement) {
-    setAchievements([...(achievements ?? []), achievement]);
+    // setAchievements([...(achievements ?? []), achievement]);
     const { icon, headline, subline } = achievementToToastMap[achievement];
     toast(
       <div>
@@ -69,7 +68,7 @@ export const AchievementsContainer: React.FC<{ children: ReactNode }> = ({ child
         }}
         toastOptions={{
           style: {
-            maxWidth: '420px',
+            maxWidth: '500px',
             gap: '12px',
             padding: '10px 24px',
             border: 'none',
