@@ -1,11 +1,10 @@
-import { Header } from '@/components/Header';
-import Link from 'next/link';
 import pageStyles from '@/styles/pages.module.scss';
+import Link from 'next/link';
 
 export default function LegalNotice() {
   return (
     <main>
-      <section className={pageStyles.section}>
+      <section className={pageStyles.section} style={{ backgroundColor: 'grey' }}>
         <div className={pageStyles.wrapper}>
           <div className={pageStyles.contentContainer}>
             <h1>Privacy information</h1>
@@ -34,9 +33,9 @@ export default function LegalNotice() {
               browser. Cookies are used to make the website more user-friendly, effective and secure.
             </p>
             <p>
-              Most of the cookies used are &ldquo;session cookies&rdquo;, which are automatically deleted when you end your visit.
-              Other cookies remain stored on your end device until you delete them. They enable us to recognize your
-              browser on your next visit.
+              Most of the cookies used are &ldquo;session cookies&rdquo;, which are automatically deleted when you end
+              your visit. Other cookies remain stored on your end device until you delete them. They enable us to
+              recognize your browser on your next visit.
             </p>
             <p>
               Cookies that are required to carry out the electronic communication process or to provide certain
@@ -79,7 +78,7 @@ export default function LegalNotice() {
 
             <h4>Vercel</h4>
             <p>
-              This website uses the <a href='https://vercel.com/'>Vercel</a> service. The provider is Vercel Inc, 340 S
+              This website uses the <Link href='https://vercel.com/'>Vercel</Link> service. The provider is Vercel Inc, 340 S
               Lemon Ave #4133, Walnut, CA 91789, USA. Vercel is a cloud platform through which we provide our website.
               provide our website. This means that visits to our website are processed or routed through Vercel&apos;s
               servers. is routed through. The data associated with your visit to our website is also transmitted to
@@ -96,7 +95,7 @@ export default function LegalNotice() {
             </ul>
             <p>
               You can find Vercel&apos;s privacy policy at{' '}
-              <a href='https://vercel.com/legal/privacy-policy'>https://vercel.com/legal/privacy-policy</a>.
+              <Link href='https://vercel.com/legal/privacy-policy'>https://vercel.com/legal/privacy-policy</Link>.
             </p>
             <p>
               The data processing is carried out on the basis of Art. 6 para. 1 lit. f GDPR, as the data transmission is

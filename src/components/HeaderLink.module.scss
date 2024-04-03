@@ -1,12 +1,15 @@
-.animatedLink {
+.container {
   position: relative;
+  z-index: 2;
+  display: block;
   overflow: hidden;
   font-size: 16px;
 
   &:hover {
     .labelTop,
     .labelBottom {
-      transition: transform 0.25s ease-in-out; // We intentioally only want the transition on hover
+      /* We intentioally only want the transition on hover */
+      transition: transform 0.25s ease-in-out;
     }
 
     .labelTop {

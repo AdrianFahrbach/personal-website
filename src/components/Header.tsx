@@ -1,5 +1,5 @@
 import React from 'react';
-import { AnimatedLink } from './AnimatedLink';
+import { HeaderLink } from './HeaderLink';
 import styles from './Header.module.scss';
 import classNames from 'classnames';
 
@@ -7,9 +7,9 @@ export const Header: React.FC = () => {
   return (
     <header>
       <div className={classNames([styles.linkContainer, styles.topLeft])}>
-        <AnimatedLink to='https://github.com/AdrianFahrbach' label='GitHub' isExternal achievementToUnlock='github' />
-        <AnimatedLink to='https://dribbble.com/Adrn' label='Dribbble' isExternal achievementToUnlock='dribbble' />
-        <AnimatedLink
+        <HeaderLink to='https://github.com/AdrianFahrbach' label='GitHub' isExternal achievementToUnlock='github' />
+        <HeaderLink to='https://dribbble.com/Adrn' label='Dribbble' isExternal achievementToUnlock='dribbble' />
+        <HeaderLink
           to='https://www.linkedin.com/in/adrian-fahrbach/'
           label='LinkedIn'
           isExternal
@@ -17,14 +17,14 @@ export const Header: React.FC = () => {
         />
       </div>
       <div className={classNames([styles.linkContainer, styles.topRight])}>
-        <AnimatedLink to='mailto:adrianfahrbach@me.com' label='Contact me' achievementToUnlock='contact' />
+        <HeaderLink to='mailto:adrianfahrbach@me.com' label='Contact me' achievementToUnlock='contact' />
       </div>
       <div className={classNames([styles.linkContainer, styles.bottomRight])}>
-        <AnimatedLink isSmall to='/privacy' label='Privacy' />
-        <AnimatedLink isSmall to='/legal-notice' label='Legal notice' />
+        <HeaderLink isSmall to='/privacy' label='Privacy' hasViewTransition />
+        <HeaderLink isSmall to='/legal-notice' label='Legal notice' hasViewTransition />
       </div>
       <div className={classNames([styles.linkContainer, styles.bottomLeft])}>
-        <AnimatedLink to='/cv.pdf' label='My CV' isExternal achievementToUnlock='cv' />
+        <HeaderLink to='/cv.pdf' label='My CV' isExternal achievementToUnlock='cv' />
       </div>
     </header>
   );

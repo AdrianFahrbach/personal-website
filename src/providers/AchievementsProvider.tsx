@@ -74,8 +74,8 @@ export const AchievementsContainer: React.FC<{ children: ReactNode }> = ({ child
             border: 'none',
             borderRadius: '0',
             boxShadow: 'none',
-            color: 'var(--text-contrast)',
-            backgroundColor: 'var(--background-color-contrast)',
+            color: 'var(--neutral-100)',
+            backgroundColor: 'var(--neutral-900)',
           },
         }}
       />

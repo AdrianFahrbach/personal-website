@@ -4,12 +4,14 @@
   left: 50%;
   z-index: 1;
   padding: 32px;
+  margin: 0;
   font-size: 100px;
   font-weight: 400;
-  color: var(--text-secondary);
+  line-height: 1;
+  color: var(--neutral-900-transparent);
   transform: translate(-50%, -50%);
 }
 
 .isHighlighted {
-  color: var(--text-primary);
+  color: var(--neutral-900);
 }

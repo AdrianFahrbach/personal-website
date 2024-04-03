@@ -1,42 +1,28 @@
 'use client';
 
-import { AchievementsContext } from '@/providers/AchievementsProvider';
+import { useAnimatedRouter } from '@/services/pageTransitions.service';
 import Link from 'next/link';
-import React, { useContext } from 'react';
-import styles from './AnimatedLink.module.scss';
-import { Achievement } from '@/services/achievements.service';
-import classNames from 'classnames';
+import React from 'react';
 
-interface AnimatedLinkProps {
-  to: string;
-  label: string;
-  isExternal?: boolean;
-  isSmall?: boolean;
-  achievementToUnlock?: Achievement;
+interface AnimatedLinkProps extends React.HTMLAttributes<HTMLAnchorElement> {
+  href: string;
+  onClick?: () => void;
+  children: React.ReactNode;
 }
 
-export const AnimatedLink: React.FC<AnimatedLinkProps> = ({ to, label, isExternal, isSmall, achievementToUnlock }) => {
-  const { achievements, unlockAchievement } = useContext(AchievementsContext);
-
-  function handeClick() {
-    if (achievementToUnlock && !achievements.includes(achievementToUnlock)) {
-      unlockAchievement(achievementToUnlock);
-    }
-  }
-
-  const externalProps = isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {};
-
+export const AnimatedLink: React.FC<AnimatedLinkProps> = ({ href, onClick, children, ...props }) => {
+  const { animatedRoute } = useAnimatedRouter();
   return (
     <Link
-      href={to}
-      onClick={handeClick}
-      className={classNames([styles.animatedLink, isSmall && styles.isSmall])}
-      {...externalProps}
-      aria-label={label}>
-      <span className={styles.labelTop}>{label}</span>
-      <span className={styles.labelBottom} aria-hidden>
-        {label}
-      </span>
+      href={href}
+      onClick={() => {
+        if (onClick) {
+          onClick();
+        }
+        animatedRoute(href);
+      }}
+      {...props}>
+      {children}
     </Link>
   );
 };
