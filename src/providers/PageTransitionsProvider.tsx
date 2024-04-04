@@ -16,11 +16,13 @@ type Coordinates = { x: string; y: string };
 interface PageTransitionData {
   pending: boolean;
   navigate: (href: string, position: Coordinates) => void;
+  nextRoute?: string;
 }
 
 export const PageTransitionContext = createContext<PageTransitionData>({
   pending: false,
   navigate: () => {},
+  nextRoute: undefined,
 });
 
 const Circle: React.FC<{ position: Coordinates }> = ({ position }) => {
@@ -35,7 +37,7 @@ const Circle: React.FC<{ position: Coordinates }> = ({ position }) => {
 export const PageTransitionProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [pending, start] = useTransition();
   const [position, setPosition] = useState<Coordinates>({ x: '100%', y: '100%' });
-  const [showCircle, setShowCircle] = useState(false);
+  const [nextRoute, setNextRoute] = useState<string | undefined>();
   const router = useRouter();
   const pathname = usePathname();
 
@@ -45,14 +47,16 @@ export const PageTransitionProvider: React.FC<{ children: React.ReactNode }> = (
       return;
     }
     setPosition(position);
+    setNextRoute(href);
     start(async () => {
       router.push(href);
+      setNextRoute(undefined);
       await sleep(PAGE_TRANSITION_DURATION);
     });
   }
 
   return (
-    <PageTransitionContext.Provider value={{ pending, navigate }}>
+    <PageTransitionContext.Provider value={{ pending, navigate, nextRoute }}>
       <Header />
       {pending && <Circle position={position} />}
       <main style={pending ? { animation: `hidePageChildren ${PAGE_TRANSITION_DURATION}ms forwards` } : undefined}>

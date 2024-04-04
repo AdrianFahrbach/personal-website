@@ -6,6 +6,12 @@
   align-items: center;
   justify-content: space-between;
   margin: var(--wrapper-padding-y) var(--wrapper-padding-x);
+  transition: transform 0.5s ease;
+  transition-delay: 0.5s;
+
+  &.isHidden {
+    transition-delay: 0s;
+  }
 }
 
 .topLeft {
@@ -18,15 +24,27 @@
   right: 0;
 }
 
-.bottomLeft {
-  bottom: 0;
-  left: 0;
+.topLeft,
+.topRight {
+  &.isHidden {
+    transform: translateY(-175%);
+  }
 }
+
 
 .bottomCenter {
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
+
+  &.isHidden {
+    transform: translate(-50%, 175%);
+  }
+}
+
+.bottomLeft {
+  bottom: 0;
+  left: 0;
 }
 
 .bottomRight {
@@ -36,4 +54,11 @@
   flex-direction: column;
   gap: 3px;
   align-items: flex-end;
+}
+
+.bottomLeft,
+.bottomRight {
+  &.isHidden {
+    transform: translateY(175%);
+  }
 }
