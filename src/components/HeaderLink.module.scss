@@ -19,11 +19,23 @@
     .labelBottom {
       transform: translateY(0);
     }
+
+    .icon {
+      transform: translate(-2px, -50%);
+    }
+  }
+
+  &.isSmall {
+    font-size: 13px;
   }
 }
 
-.isSmall {
-  font-size: 13px;
+.icon {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transition: transform 0.25s ease;
+  transform: translate(0, -50%);
 }
 
 .labelTop {
@@ -35,4 +47,8 @@
   top: 0;
   left: 0;
   transform: translateY(100%);
+}
+
+.hasIcon {
+  padding-left: 32px;
 }
