@@ -1,7 +1,12 @@
 /** @type {import('stylelint').Config} */
 
 module.exports = {
-  extends: ['stylelint-config-recommended', 'stylelint-config-css-modules', 'stylelint-config-recess-order'],
+  extends: [
+    'stylelint-config-recommended',
+    'stylelint-config-recommended-scss',
+    'stylelint-config-css-modules',
+    'stylelint-config-recess-order',
+  ],
   rules: {
     'at-rule-empty-line-before': [
       'always',
