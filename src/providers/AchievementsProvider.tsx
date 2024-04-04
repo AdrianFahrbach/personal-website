@@ -2,7 +2,7 @@
 
 import { Achievement, achievementToToastMap } from '@/services/achievements.service';
 import toastStyles from '@/styles/toast.module.scss';
-import { ReactNode, createContext, useEffect, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 
 interface AchievementsData {
@@ -17,7 +17,7 @@ export const AchievementsContext = createContext<AchievementsData>({
   unlockAchievement: () => {},
 });
 
-export const AchievementsContainer: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const AchievementsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [achievements, setAchievements] = useState<Achievement[]>([]);
 
   /**
@@ -51,7 +51,7 @@ export const AchievementsContainer: React.FC<{ children: ReactNode }> = ({ child
         <p className={toastStyles.toastHeadline}>{headline}</p>
         <p className={toastStyles.toastSubline}>{subline}</p>
       </div>,
-      { icon: <div className={toastStyles.icon}>{icon}</div>, duration: 5000,  }
+      { icon: <div className={toastStyles.icon}>{icon}</div>, duration: 5000 }
     );
   }
 

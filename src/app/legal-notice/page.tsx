@@ -1,13 +1,13 @@
-import pageStyles from '@/styles/pages.module.scss';
+import pageStyles from '@/styles/page.module.scss';
 import Link from 'next/link';
 
 export default function LegalNotice() {
   return (
-    <main>
-      <section className={pageStyles.section}>
-        <div className={pageStyles.wrapper}>
-          <div className={pageStyles.contentContainer}>
-            <h1>Legal notice</h1>
+    <section className={pageStyles.section}>
+      <div className={pageStyles.wrapper}>
+        <div className={pageStyles.contentContainer}>
+          <h1 className={pageStyles.headline}>Legal notice</h1>
+          <div className={pageStyles.textContainer}>
             <h2>Contact</h2>
             <p>
               Adrian Fahrbach
@@ -53,7 +53,7 @@ export default function LegalNotice() {
             </p>
           </div>
         </div>
-      </section>
-    </main>
+      </div>
+    </section>
   );
 }

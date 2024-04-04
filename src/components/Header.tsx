@@ -20,11 +20,14 @@ export const Header: React.FC = () => {
         <HeaderLink to='mailto:adrianfahrbach@me.com' label='Contact me' achievementToUnlock='contact' />
       </div>
       <div className={classNames([styles.linkContainer, styles.bottomRight])}>
-        <HeaderLink isSmall to='/privacy' label='Privacy' hasViewTransition />
-        <HeaderLink isSmall to='/legal-notice' label='Legal notice' hasViewTransition />
+        <HeaderLink isSmall to='/privacy' label='Privacy' hasPageTransition />
+        <HeaderLink isSmall to='/legal-notice' label='Legal notice' hasPageTransition />
       </div>
       <div className={classNames([styles.linkContainer, styles.bottomLeft])}>
         <HeaderLink to='/cv.pdf' label='My CV' isExternal achievementToUnlock='cv' />
+      </div>
+      <div className={classNames([styles.linkContainer, styles.bottomCenter])}>
+        <HeaderLink to='/achievements' label='Your achievements' hasPageTransition />
       </div>
     </header>
   );

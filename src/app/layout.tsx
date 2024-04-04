@@ -1,8 +1,9 @@
-import { AchievementsContainer } from '@/providers/AchievementsProvider';
+import { Header } from '@/components/Header';
+import { AchievementsProvider } from '@/providers/AchievementsProvider';
 import { montserrat } from '@/styles/fonts';
 import type { Metadata } from 'next';
 import '../styles/globals.scss';
-import { Header } from '@/components/Header';
+import { PageTransitionProvider } from '@/providers/PageTransitionsProvider';
 
 export const metadata: Metadata = {
   title: 'Adrian Fahrbach',
@@ -13,10 +14,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang='en'>
       <body className={montserrat.className}>
-        <AchievementsContainer>
-          <Header />
-          {children}
-        </AchievementsContainer>
+        <AchievementsProvider>
+          <PageTransitionProvider>
+            {children}
+          </PageTransitionProvider>
+        </AchievementsProvider>
       </body>
     </html>
   );

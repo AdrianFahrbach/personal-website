@@ -1,12 +1,12 @@
 'use client';
 
 import { AchievementsContext } from '@/providers/AchievementsProvider';
-import Link from 'next/link';
-import React, { useContext } from 'react';
-import styles from './HeaderLink.module.scss';
+import { PageTransitionContext } from '@/providers/PageTransitionsProvider';
 import { Achievement } from '@/services/achievements.service';
 import classNames from 'classnames';
-import { AnimatedLink } from './AnimatedLink';
+import Link from 'next/link';
+import React, { createRef, useContext } from 'react';
+import styles from './HeaderLink.module.scss';
 
 interface HeaderLinkProps {
   to: string;
@@ -14,7 +14,7 @@ interface HeaderLinkProps {
   isExternal?: boolean;
   isSmall?: boolean;
   achievementToUnlock?: Achievement;
-  hasViewTransition?: boolean;
+  hasPageTransition?: boolean;
 }
 
 export const HeaderLink: React.FC<HeaderLinkProps> = ({
@@ -23,20 +23,23 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({
   isExternal,
   isSmall,
   achievementToUnlock,
-  hasViewTransition,
+  hasPageTransition,
 }) => {
   const { achievements, unlockAchievement } = useContext(AchievementsContext);
+  const { navigate } = useContext(PageTransitionContext);
 
-  function handeClick() {
+  const handeClick: React.MouseEventHandler = e => {
+    if (hasPageTransition) {
+      e.preventDefault();
+      navigate(to, { x: `${e.clientX}px`, y: `${e.clientY}px` });
+    }
     if (achievementToUnlock && !achievements.includes(achievementToUnlock)) {
       unlockAchievement(achievementToUnlock);
     }
-  }
-
-  const LinkElement = hasViewTransition ? AnimatedLink : Link;
+  };
 
   return (
-    <LinkElement
+    <Link
       href={to}
       onClick={handeClick}
       target={isExternal ? '_blank' : undefined}
@@ -47,6 +50,6 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({
       <span className={styles.labelBottom} aria-hidden>
         {label}
       </span>
-    </LinkElement>
+    </Link>
   );
 };
