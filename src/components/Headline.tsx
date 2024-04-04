@@ -14,7 +14,8 @@ interface HeadlineProps {
 const charactersWithoutSpace = ['.', ',', '!', '?'];
 
 export const Headline: FC<HeadlineProps> = ({ as = 'h1', text }) => {
-  const parsedText = text.map((line, i) =>
+  let i = 0;
+  const parsedText = text.map(line =>
     line.map((word, j) => {
       const text = typeof word === 'string' ? word : word.text;
       const isHighlighted = typeof word === 'string' ? false : word.isHighlighted;
@@ -23,7 +24,14 @@ export const Headline: FC<HeadlineProps> = ({ as = 'h1', text }) => {
       return (
         <React.Fragment key={j}>
           {hasSpaceBefore && <span>&nbsp;</span>}
-          <span className={classNames([styles.w, isHighlighted && styles.isHighlighted])}>{text}</span>
+          <span className={styles.wordContainer}>
+            <span
+              // Dots, commas, etc. should be animated with the previous word
+              data-word={hasSpaceBefore ? i++ : i - 1}
+              className={classNames([styles.w, isHighlighted && styles.isHighlighted])}>
+              {text}
+            </span>
+          </span>
           {hasLineBreakAfter && <br />}
         </React.Fragment>
       );

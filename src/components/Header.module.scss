@@ -7,7 +7,7 @@
   justify-content: space-between;
   margin: var(--wrapper-padding-y) var(--wrapper-padding-x);
   transition: transform 0.5s ease;
-  transition-delay: 0.5s;
+  transition-delay: 1s;
 
   &.isHidden {
     transition-delay: 0s;
@@ -27,7 +27,7 @@
 .topLeft,
 .topRight {
   &.isHidden {
-    transform: translateY(-175%);
+    transform: translateY(-200%);
   }
 }
 
@@ -38,7 +38,7 @@
   transform: translateX(-50%);
 
   &.isHidden {
-    transform: translate(-50%, 175%);
+    transform: translate(-50%, 200%);
   }
 }
 
@@ -59,6 +59,6 @@
 .bottomLeft,
 .bottomRight {
   &.isHidden {
-    transform: translateY(175%);
+    transform: translateY(200%);
   }
 }
