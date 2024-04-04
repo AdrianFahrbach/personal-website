@@ -18,6 +18,7 @@ export function updateBoundaries(spline: SplineApp) {
 }
 
 const achievementToObjectNameMap: Record<Achievement, string> = {
+  drag: 'obj-drag-icon',
   github: 'obj-github-logo',
   linkedin: 'obj-linkedin-logo',
   dribbble: 'obj-dribbble-logo',

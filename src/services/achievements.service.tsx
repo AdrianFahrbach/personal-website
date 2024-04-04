@@ -11,7 +11,7 @@ import {
 } from '@phosphor-icons/react';
 
 export const allAchievements = [
-  'handle-with-care',
+  'drag',
   'github',
   'linkedin',
   'dribbble',
@@ -25,7 +25,7 @@ export type Achievement = (typeof allAchievements)[number];
 
 export const achievementToToastMap: Record<Achievement, { icon: React.ReactNode; headline: string; subline: string }> =
   {
-    'handle-with-care': {
+    drag: {
       icon: <HandGrabbing size={28} />,
       headline: 'Handle with care!',
       subline: 'Drag an object around the viewport.',
