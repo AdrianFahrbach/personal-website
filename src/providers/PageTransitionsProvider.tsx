@@ -5,7 +5,7 @@ import pageStyles from '@/styles/page.module.scss';
 import { usePathname, useRouter } from 'next/navigation';
 import { createContext, useState, useTransition } from 'react';
 
-export const PAGE_TRANSITION_DURATION = 700;
+export const PAGE_TRANSITION_DURATION = 600;
 
 function sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -29,7 +29,7 @@ const Circle: React.FC<{ position: Coordinates }> = ({ position }) => {
   return (
     <div
       className={pageStyles.ptCircle}
-      style={{ top: position.y, left: position.x, animationDuration: `${PAGE_TRANSITION_DURATION}ms` }}
+      style={{ top: position.y, left: position.x, animationDuration: `${PAGE_TRANSITION_DURATION + 100}ms` }}
     />
   );
 };
@@ -59,7 +59,7 @@ export const PageTransitionProvider: React.FC<{ children: React.ReactNode }> = (
     <PageTransitionContext.Provider value={{ pending, navigate, nextRoute }}>
       <Header />
       {pending && <Circle position={position} />}
-      <main style={pending ? { animation: `hidePageChildren ${PAGE_TRANSITION_DURATION}ms forwards` } : undefined}>
+      <main style={pending ? { animation: `hidePageChildren ${PAGE_TRANSITION_DURATION + 100}ms forwards` } : undefined}>
         {children}
       </main>
     </PageTransitionContext.Provider>
