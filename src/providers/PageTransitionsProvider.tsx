@@ -5,7 +5,7 @@ import pageStyles from '@/styles/page.module.scss';
 import { usePathname, useRouter } from 'next/navigation';
 import { createContext, useState, useTransition } from 'react';
 
-export const PAGE_TRANSITION_DURATION = 1000;
+export const PAGE_TRANSITION_DURATION = 750;
 
 function sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));

@@ -6,19 +6,17 @@ import { createContext, useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 
 interface AchievementsData {
-  achievements: Achievement[];
-  setAchievements: (achievements: Achievement[]) => void;
+  unlockedAchievements: Achievement[];
   unlockAchievement: (achievement: Achievement) => void;
 }
 
 export const AchievementsContext = createContext<AchievementsData>({
-  achievements: [],
-  setAchievements: () => {},
+  unlockedAchievements: [],
   unlockAchievement: () => {},
 });
 
 export const AchievementsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [achievements, setAchievements] = useState<Achievement[]>([]);
+  const [unlockedAchievements, setUnlockedAchievements] = useState<Achievement[]>([]);
 
   /**
    * Get current achievements from local storage
@@ -26,7 +24,7 @@ export const AchievementsProvider: React.FC<{ children: React.ReactNode }> = ({ 
   useEffect(() => {
     const storedAchievements = localStorage.getItem('achievements');
     if (storedAchievements) {
-      setAchievements(JSON.parse(storedAchievements));
+      setUnlockedAchievements(JSON.parse(storedAchievements));
     }
   }, []);
 
@@ -34,17 +32,17 @@ export const AchievementsProvider: React.FC<{ children: React.ReactNode }> = ({ 
    * Save achievements to local storage
    */
   useEffect(() => {
-    if (!achievements || achievements.length === 0) {
+    if (!unlockedAchievements || unlockedAchievements.length === 0) {
       return;
     }
-    localStorage.setItem('achievements', JSON.stringify(achievements));
-  }, [achievements]);
+    localStorage.setItem('achievements', JSON.stringify(unlockedAchievements));
+  }, [unlockedAchievements]);
 
   /**
    * Unlock an achievement and show a toast
    */
   function unlockAchievement(achievement: Achievement) {
-    // setAchievements([...(achievements ?? []), achievement]);
+    setUnlockedAchievements([...(unlockedAchievements ?? []), achievement]);
     const { icon, headline, subline } = achievementToToastMap[achievement];
     toast(
       <div>
@@ -56,7 +54,11 @@ export const AchievementsProvider: React.FC<{ children: React.ReactNode }> = ({ 
   }
 
   return (
-    <AchievementsContext.Provider value={{ achievements, setAchievements, unlockAchievement }}>
+    <AchievementsContext.Provider
+      value={{
+        unlockedAchievements,
+        unlockAchievement,
+      }}>
       {children}
       <Toaster
         position='bottom-center'
@@ -68,8 +70,8 @@ export const AchievementsProvider: React.FC<{ children: React.ReactNode }> = ({ 
         }}
         toastOptions={{
           style: {
-            maxWidth: '500px',
             gap: '12px',
+            maxWidth: '500px',
             padding: '10px 24px',
             border: 'none',
             borderRadius: '0',

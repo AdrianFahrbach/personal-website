@@ -10,7 +10,7 @@ import styles from './SplineScene.module.scss';
 
 export const SplineScene: React.FC = () => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const { achievements, unlockAchievement } = useContext(AchievementsContext);
+  const { unlockedAchievements: achievements, unlockAchievement } = useContext(AchievementsContext);
   const splineApp = useRef<SplineApp>();
 
   /**

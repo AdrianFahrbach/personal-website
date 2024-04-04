@@ -3,13 +3,15 @@ import {
   DribbbleLogo,
   Envelope,
   GithubLogo,
+  HandGrabbing,
   LinkedinLogo,
   ReadCvLogo,
   Rocket,
-  User
+  User,
 } from '@phosphor-icons/react';
 
 export const allAchievements = [
+  'handle-with-care',
   'github',
   'linkedin',
   'dribbble',
@@ -23,15 +25,10 @@ export type Achievement = (typeof allAchievements)[number];
 
 export const achievementToToastMap: Record<Achievement, { icon: React.ReactNode; headline: string; subline: string }> =
   {
-    'to-the-moon': {
-      icon: <Rocket size={28} />,
-      headline: 'To the moon!',
-      subline: 'Throw an object out of the viewport.',
-    },
-    edges: {
-      icon: <CornersOut size={28} />,
-      headline: 'All edges of the universe!',
-      subline: 'Have an object in all corners of the viewport.',
+    'handle-with-care': {
+      icon: <HandGrabbing size={28} />,
+      headline: 'Handle with care!',
+      subline: 'Drag an object around the viewport.',
     },
     github: {
       icon: <GithubLogo size={28} />,
@@ -57,6 +54,16 @@ export const achievementToToastMap: Record<Achievement, { icon: React.ReactNode;
       icon: <Envelope size={28} />,
       headline: "Please don't spam me.",
       subline: 'Send me a message.',
+    },
+    'to-the-moon': {
+      icon: <Rocket size={28} />,
+      headline: 'To the moon!',
+      subline: 'Throw an object out of the viewport.',
+    },
+    edges: {
+      icon: <CornersOut size={28} />,
+      headline: 'All edges of the universe!',
+      subline: 'Have an object in all corners of the viewport.',
     },
     nickname: {
       icon: <User size={28} />,

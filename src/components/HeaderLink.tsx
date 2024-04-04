@@ -25,7 +25,7 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({
   achievementToUnlock,
   hasPageTransition,
 }) => {
-  const { achievements, unlockAchievement } = useContext(AchievementsContext);
+  const { unlockedAchievements: achievements, unlockAchievement } = useContext(AchievementsContext);
   const { navigate } = useContext(PageTransitionContext);
 
   const handeClick: React.MouseEventHandler = e => {

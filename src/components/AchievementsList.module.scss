@@ -1,0 +1,56 @@
+.container {
+  margin-top: 48px;
+}
+
+.achievement {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding: 10px 20px;
+  margin-top: 12px;
+  border: 1px solid var(--neutral-900);
+
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+.isUnlocked {
+  color: var(--neutral-100);
+  background-color: var(--neutral-900);
+  border-color: var(--neutral-900);
+
+  .icon {
+    color: var(--neutral-100);
+  }
+}
+
+.isLocked {
+  color: var(--neutral-900);
+  border-color: var(--neutral-900-transparent);
+  border-style: dashed;
+
+  .icon {
+    color: var(--neutral-900-transparent);
+  }
+}
+
+.icon {
+  position: relative;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+
+  > svg {
+    display: block;
+  }
+}
+
+.headline {
+  margin: 0;
+}
+
+.subline {
+  margin: 0;
+  opacity: 0.4;
+}
