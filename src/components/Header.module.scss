@@ -7,7 +7,7 @@
   justify-content: space-between;
   margin: var(--wrapper-padding-y) var(--wrapper-padding-x);
   transition: transform 0.5s ease;
-  transition-delay: 1s;
+  transition-delay: 1.25s;
 
   &.isHidden {
     transition-delay: 0s;

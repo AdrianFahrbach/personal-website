@@ -13,7 +13,7 @@ export const Header: React.FC = () => {
   return (
     <header>
       <div className={classNames([styles.linkContainer, styles.topLeft, showHomeNav && styles.isHidden])}>
-        <HeaderLink to='/' label='Back to home' isBackButton />
+        <HeaderLink to='/' label='Back to home' isBackButton hasPageTransition />
       </div>
       <div className={classNames([styles.linkContainer, styles.topLeft, !showHomeNav && styles.isHidden])}>
         <HeaderLink to='https://github.com/AdrianFahrbach' label='GitHub' isExternal achievementToUnlock='github' />

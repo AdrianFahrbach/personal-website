@@ -3,11 +3,11 @@
 import { AchievementsContext } from '@/providers/AchievementsProvider';
 import { PageTransitionContext } from '@/providers/PageTransitionsProvider';
 import { Achievement } from '@/services/achievements.service';
+import { ArrowLeft } from '@phosphor-icons/react';
 import classNames from 'classnames';
 import Link from 'next/link';
 import React, { useContext } from 'react';
 import styles from './HeaderLink.module.scss';
-import { ArrowLeft } from '@phosphor-icons/react';
 
 interface HeaderLinkProps {
   to: string;
