@@ -1,7 +1,14 @@
 'use client';
 
 import { AchievementsContext } from '@/providers/AchievementsProvider';
-import { checkForAchievements, updateBoundaries, updateVisibleAchievementObjects } from '@/services/spline.service';
+import {
+  ObjectPositions,
+  checkForAchievements,
+  didObjectsGetMoved,
+  getObjectPositions,
+  updateBoundaries,
+  updateVisibleAchievementObjects,
+} from '@/services/spline.service';
 import Spline from '@splinetool/react-spline';
 import { Application as SplineApp } from '@splinetool/runtime';
 import debounce from 'lodash/debounce';
@@ -65,6 +72,41 @@ export const SplineScene: React.FC = () => {
       }, 2000);
       return () => clearInterval(interval);
     }
+  }, [splineApp.current, unlockedAchievements]);
+
+  /**
+   * Check for the drag achievement
+   */
+  useEffect(() => {
+    const currentSplineApp = splineApp.current;
+    if (!currentSplineApp || unlockedAchievements.includes('drag')) {
+      // The spline is not loaded yet or the user already unlocked the drag achievement
+      return;
+    }
+
+    let objectPositions: ObjectPositions = {};
+
+    function saveObjectPositions() {
+      console.log('mousedown');
+      if (currentSplineApp) {
+        objectPositions = getObjectPositions(currentSplineApp);
+      }
+    }
+
+    function checkForDragAchievement() {
+      console.log('mouseup');
+      if (currentSplineApp && didObjectsGetMoved(currentSplineApp, objectPositions)) {
+        unlockAchievement('drag');
+      }
+    }
+
+    document.addEventListener('mousedown', saveObjectPositions);
+    document.addEventListener('mouseup', checkForDragAchievement);
+
+    return () => {
+      document.removeEventListener('mousedown', saveObjectPositions);
+      document.removeEventListener('mouseup', checkForDragAchievement);
+    };
   }, [splineApp.current, unlockedAchievements]);
 
   return (

@@ -146,3 +146,36 @@ function isWithinRelativeArea(
   const y = toObj.position.y - fromObj.position.y;
   return x > range.x.min && x < range.x.max && y > range.y.min && y < range.y.max;
 }
+
+export type ObjectPositions = Record<string, { x: number; y: number }>;
+
+/**
+ * Returns the x and y positions of all visible objects in the scene.
+ */
+export function getObjectPositions(spline: SplineApp) {
+  const objectPositions: ObjectPositions = {};
+  spline
+    .getAllObjects()
+    .filter(obj => obj.name.startsWith('obj-'))
+    .filter(obj => obj.visible)
+    .forEach(obj => (objectPositions[obj.name] = { x: obj.position.x, y: obj.position.y }));
+  return objectPositions;
+}
+
+/**
+ * Compares if the positions of the objects are the same as the expected positions.
+ */
+export function didObjectsGetMoved(spline: SplineApp, objectPositions: ObjectPositions) {
+  const currentObjectPositions = getObjectPositions(spline);
+  return Object.entries(objectPositions).some(([objName, expectedPosition]) => {
+    if (!currentObjectPositions[objName]) {
+      // This object wasn't visible on the when the initial object positions were saved
+      return false;
+    }
+
+    return (
+      currentObjectPositions[objName].x !== expectedPosition.x ||
+      currentObjectPositions[objName].y !== expectedPosition.y
+    );
+  });
+}
