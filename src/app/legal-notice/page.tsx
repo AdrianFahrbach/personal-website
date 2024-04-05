@@ -25,9 +25,20 @@ export default function LegalNotice() {
                 <Link href='https://community.spline.design/file/1a12ce58-e8f7-4ae1-8a43-4b1527dab076'>
                   Ballon Experience by aximoris
                 </Link>
+                .
               </li>
               <li>
-                The icons used are from the <Link href='https://phosphoricons.com/'>Phosphor Icons icon pack</Link>
+                The icons used come from the <Link href='https://phosphoricons.com/'>Phosphor Icons icon pack</Link>.
+              </li>
+              <li>
+                The display font is{' '}
+                <Link href='https://www.behance.net/gallery/153109125/Merchant-Typeface-Free-Variable-27-Styles'>
+                  Merchant by Rajesh Rajput
+                </Link>
+                .
+              </li>
+              <li>
+                The body font is <Link href='https://fonts.google.com/specimen/Montserrat'>Montserrat</Link>.
               </li>
             </ul>
             <h2>Liability for own content</h2>
