@@ -18,13 +18,14 @@ export function updateBoundaries(spline: SplineApp) {
 }
 
 const achievementToObjectNameMap: Record<Achievement, string> = {
-  drag: 'obj-drag-icon',
+  drag: 'obj-cursor-icon',
   github: 'obj-github-logo',
   linkedin: 'obj-linkedin-logo',
   dribbble: 'obj-dribbble-logo',
   cv: 'obj-cv-icon',
   contact: 'obj-contact-icon',
   nickname: 'obj-user-icon',
+  cheatcode: 'obj-controller-icon',
   'to-the-moon': 'obj-rocket-icon',
   edges: 'obj-edges-icon',
 };

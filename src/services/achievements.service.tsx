@@ -1,13 +1,14 @@
 import {
   CornersOut,
+  CursorClick,
   DribbbleLogo,
   Envelope,
+  GameController,
   GithubLogo,
-  HandGrabbing,
   LinkedinLogo,
   ReadCvLogo,
   Rocket,
-  User,
+  User
 } from '@phosphor-icons/react';
 
 export const allAchievements = [
@@ -18,6 +19,7 @@ export const allAchievements = [
   'cv',
   'contact',
   'nickname',
+  'cheatcode',
   'to-the-moon',
   'edges',
 ] as const;
@@ -26,7 +28,7 @@ export type Achievement = (typeof allAchievements)[number];
 export const achievementToToastMap: Record<Achievement, { icon: React.ReactNode; headline: string; subline: string }> =
   {
     drag: {
-      icon: <HandGrabbing size={28} />,
+      icon: <CursorClick size={28} />,
       headline: 'Handle with care!',
       subline: 'Drag an object around the viewport.',
     },
@@ -67,6 +69,11 @@ export const achievementToToastMap: Record<Achievement, { icon: React.ReactNode;
     },
     nickname: {
       icon: <User size={28} />,
+      headline: "That's what my friends call me.",
+      subline: 'Make my nickname out of balloons',
+    },
+    cheatcode: {
+      icon: <GameController size={28} />,
       headline: "That's what my friends call me.",
       subline: 'Make my nickname out of balloons',
     },
