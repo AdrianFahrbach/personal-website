@@ -47,11 +47,11 @@ export function updateVisibleAchievementObjects(spline: SplineApp, achievements:
  */
 export function checkForAchievements(
   spline: SplineApp,
-  achievements: Achievement[],
+  unlockedAchievements: Achievement[],
   unlockAchievement: (achievement: Achievement) => void
 ) {
   let allObjects: SPEObject[] = [];
-  if (!achievements.includes('nickname') || !achievements.includes('edges')) {
+  if (!unlockedAchievements.includes('nickname') || !unlockedAchievements.includes('edges')) {
     // All objects relevant for achievements start with 'obj-'
     allObjects = spline.getAllObjects().filter(obj => obj.name.startsWith('obj-'));
   }
@@ -59,7 +59,7 @@ export function checkForAchievements(
   /**
    * Check for the to-the-moon achievement
    */
-  if (!achievements.includes('to-the-moon')) {
+  if (!unlockedAchievements.includes('to-the-moon')) {
     if (spline.getVariable('isOutOfBounds') === true) {
       unlockAchievement('to-the-moon');
     }
@@ -68,7 +68,7 @@ export function checkForAchievements(
   /**
    * Check for the nickname achievement
    */
-  if (!achievements.includes('nickname')) {
+  if (!unlockedAchievements.includes('nickname')) {
     const relevantObjNames = ['obj-a-1', 'obj-a-2', 'obj-d', 'obj-i'];
     const [objLetterA1, objLetterA2, objLetterD, objLetterI] = relevantObjNames.map(name =>
       allObjects.find(obj => obj.name === name)
@@ -115,7 +115,7 @@ export function checkForAchievements(
   /**
    * Check for the edges achievement
    */
-  if (!achievements.includes('edges')) {
+  if (!unlockedAchievements.includes('edges')) {
     const topLeft = { x: -(window.innerWidth / 2), y: window.innerHeight / 2 };
     const topRight = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
     const bottomLeft = { x: -(window.innerWidth / 2), y: -(window.innerHeight / 2) };

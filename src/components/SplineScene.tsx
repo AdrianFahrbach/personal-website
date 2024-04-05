@@ -10,7 +10,7 @@ import styles from './SplineScene.module.scss';
 
 export const SplineScene: React.FC = () => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const { unlockedAchievements: achievements, unlockAchievement } = useContext(AchievementsContext);
+  const { unlockedAchievements, unlockAchievement } = useContext(AchievementsContext);
   const splineApp = useRef<SplineApp>();
 
   /**
@@ -20,7 +20,7 @@ export const SplineScene: React.FC = () => {
   function onLoad(spline: SplineApp) {
     splineApp.current = spline;
     updateBoundaries(spline);
-    updateVisibleAchievementObjects(spline, achievements);
+    updateVisibleAchievementObjects(spline, unlockedAchievements);
     setTimeout(() => {
       spline.setVariable('hasStarted', true);
     }, 500);
@@ -34,9 +34,9 @@ export const SplineScene: React.FC = () => {
    */
   useEffect(() => {
     if (splineApp.current) {
-      updateVisibleAchievementObjects(splineApp.current, achievements);
+      updateVisibleAchievementObjects(splineApp.current, unlockedAchievements);
     }
-  }, [achievements, !!splineApp.current]);
+  }, [unlockedAchievements, !!splineApp.current]);
 
   /**
    * Update the boundaries when the window resizes
@@ -61,11 +61,11 @@ export const SplineScene: React.FC = () => {
     const currentSplineApp = splineApp.current;
     if (currentSplineApp) {
       const interval = setInterval(() => {
-        checkForAchievements(currentSplineApp, achievements, unlockAchievement);
+        checkForAchievements(currentSplineApp, unlockedAchievements, unlockAchievement);
       }, 2000);
       return () => clearInterval(interval);
     }
-  }, [splineApp.current]);
+  }, [splineApp.current, unlockedAchievements]);
 
   return (
     <Spline
