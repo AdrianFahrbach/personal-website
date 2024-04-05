@@ -14,6 +14,7 @@ import { Application as SplineApp } from '@splinetool/runtime';
 import debounce from 'lodash/debounce';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import styles from './SplineScene.module.scss';
+import { SmokeEffectsSpawner } from './SmokeEffectsSpawner';
 
 export const SplineScene: React.FC = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -37,11 +38,13 @@ export const SplineScene: React.FC = () => {
   }
 
   /**
-   * Update the visible achievements when they change
+   * Update the visible achievements when they change.
+   * We do this with a small delay because the smoke effects needs to be triggered first.
    */
   useEffect(() => {
-    if (splineApp.current) {
-      updateVisibleAchievementObjects(splineApp.current, unlockedAchievements);
+    const currentSplineApp = splineApp.current;
+    if (currentSplineApp) {
+      setTimeout(() => updateVisibleAchievementObjects(currentSplineApp, unlockedAchievements), 200);
     }
   }, [unlockedAchievements, !!splineApp.current]);
 
@@ -87,14 +90,12 @@ export const SplineScene: React.FC = () => {
     let objectPositions: ObjectPositions = {};
 
     function saveObjectPositions() {
-      console.log('mousedown');
       if (currentSplineApp) {
         objectPositions = getObjectPositions(currentSplineApp);
       }
     }
 
     function checkForDragAchievement() {
-      console.log('mouseup');
       if (currentSplineApp && didObjectsGetMoved(currentSplineApp, objectPositions)) {
         unlockAchievement('drag');
       }
@@ -110,11 +111,14 @@ export const SplineScene: React.FC = () => {
   }, [splineApp.current, unlockedAchievements]);
 
   return (
-    <Spline
-      className={styles.container}
-      scene='https://prod.spline.design/2JBBOVCTB9DY9TdA/scene.splinecode'
-      onLoad={onLoad}
-      style={{ opacity: isLoaded ? 1 : 0 }}
-    />
+    <>
+      <Spline
+        className={styles.container}
+        scene='/assets/scene.splinecode'
+        onLoad={onLoad}
+        style={{ opacity: isLoaded ? 1 : 0 }}
+      />
+      <SmokeEffectsSpawner splineApp={splineApp} isLoaded={isLoaded} />
+    </>
   );
 };

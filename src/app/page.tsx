@@ -1,9 +1,11 @@
-'use client';
-
 import { Headline } from '@/components/Headline';
 import { SplineScene } from '@/components/SplineScene';
+import { preload } from 'react-dom';
 
 export default function Home() {
+  // Preload the Spline scene since we are going to execute it with a delay
+  preload('/assets/scene.splinecode', { as: 'script' });
+
   return (
     <section>
       <SplineScene />

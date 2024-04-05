@@ -8,15 +8,18 @@ import toast, { Toaster } from 'react-hot-toast';
 interface AchievementsData {
   unlockedAchievements: Achievement[];
   unlockAchievement: (achievement: Achievement) => void;
+  smokeEmitters: Achievement[];
 }
 
 export const AchievementsContext = createContext<AchievementsData>({
   unlockedAchievements: [],
   unlockAchievement: () => {},
+  smokeEmitters: [],
 });
 
 export const AchievementsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [unlockedAchievements, setUnlockedAchievements] = useState<Achievement[]>([]);
+  const [smokeEmitters, setSmokeEmitters] = useState<Achievement[]>([]);
 
   /**
    * Get current achievements from local storage
@@ -43,6 +46,7 @@ export const AchievementsProvider: React.FC<{ children: React.ReactNode }> = ({ 
    */
   function unlockAchievement(achievement: Achievement) {
     setUnlockedAchievements([...(unlockedAchievements ?? []), achievement]);
+    setSmokeEmitters([...(smokeEmitters ?? []), achievement]);
     const { icon, headline, subline } = achievementToToastMap[achievement];
     toast(
       <div>
@@ -58,6 +62,7 @@ export const AchievementsProvider: React.FC<{ children: React.ReactNode }> = ({ 
       value={{
         unlockedAchievements,
         unlockAchievement,
+        smokeEmitters,
       }}>
       {children}
       <Toaster

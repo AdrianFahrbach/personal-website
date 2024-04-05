@@ -17,7 +17,7 @@ export function updateBoundaries(spline: SplineApp) {
   });
 }
 
-const achievementToObjectNameMap: Record<Achievement, string> = {
+export const achievementToObjectNameMap: Record<Achievement, string> = {
   drag: 'obj-cursor-icon',
   github: 'obj-github-logo',
   linkedin: 'obj-linkedin-logo',
@@ -78,7 +78,7 @@ export function checkForAchievements(
       [objLetterA1, objLetterD, objLetterI],
       [objLetterA2, objLetterD, objLetterI],
     ];
-    const range = { x: { min: 0, max: 100 }, y: { min: -50, max: 50 } };
+    const range = { x: { min: 0, max: 80 }, y: { min: -50, max: 50 } };
 
     for (const word of words) {
       const isComplete = word.every((thisLetter, index) => {
