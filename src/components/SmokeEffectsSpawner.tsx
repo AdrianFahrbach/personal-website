@@ -9,10 +9,10 @@ import { FC, useContext, useMemo } from 'react';
 
 interface SmokeEffectsSpawnerProps {
   splineApp: React.MutableRefObject<SplineApp | undefined>;
-  isLoaded: boolean;
+  splineIsReady: boolean;
 }
 
-export const SmokeEffectsSpawner: FC<SmokeEffectsSpawnerProps> = ({ splineApp, isLoaded }) => {
+export const SmokeEffectsSpawner: FC<SmokeEffectsSpawnerProps> = ({ splineApp, splineIsReady }) => {
   const { smokeEmitters } = useContext(AchievementsContext);
 
   /**
@@ -20,7 +20,7 @@ export const SmokeEffectsSpawner: FC<SmokeEffectsSpawnerProps> = ({ splineApp, i
    * Therefore we only need to get the initial positions of the objects and not update them.
    */
   const splineObjectPositions = useMemo(() => {
-    if (splineApp.current && isLoaded) {
+    if (splineApp.current && splineIsReady) {
       let newSplineObjectPositions: Partial<Record<Achievement, { x: number; y: number }>> = {};
       const allObjects = splineApp.current?.getAllObjects() ?? [];
       allAchievements.forEach(achievement => {
@@ -34,7 +34,7 @@ export const SmokeEffectsSpawner: FC<SmokeEffectsSpawnerProps> = ({ splineApp, i
       return newSplineObjectPositions;
     }
     return undefined;
-  }, [splineApp.current, isLoaded, smokeEmitters]);
+  }, [splineApp.current, splineIsReady, smokeEmitters]);
 
   if (!splineObjectPositions) {
     return null;

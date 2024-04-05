@@ -13,11 +13,13 @@ import Spline from '@splinetool/react-spline';
 import { Application as SplineApp } from '@splinetool/runtime';
 import debounce from 'lodash/debounce';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import styles from './SplineScene.module.scss';
 import { SmokeEffectsSpawner } from './SmokeEffectsSpawner';
+import styles from './SplineScene.module.scss';
 
 export const SplineScene: React.FC = () => {
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [splineIsReady, setSplineIsReady] = useState(false);
+  const [textIsReady, setTextIsReady] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const { unlockedAchievements, unlockAchievement } = useContext(AchievementsContext);
   const splineApp = useRef<SplineApp>();
 
@@ -29,13 +31,17 @@ export const SplineScene: React.FC = () => {
     splineApp.current = spline;
     updateBoundaries(spline);
     updateVisibleAchievementObjects(spline, unlockedAchievements);
-    setTimeout(() => {
-      spline.setVariable('hasStarted', true);
-    }, 500);
-    setTimeout(() => {
-      setIsLoaded(true);
-    }, 1200);
+    splineApp.current.addEventListener('start', () => {
+      setSplineIsReady(true);
+    });
   }
+
+  /**
+   * We have to wait until the text fade in animation is finished
+   */
+  useEffect(() => {
+    setTimeout(() => setTextIsReady(true), 1200);
+  }, []);
 
   /**
    * Update the visible achievements when they change.
@@ -47,6 +53,16 @@ export const SplineScene: React.FC = () => {
       setTimeout(() => updateVisibleAchievementObjects(currentSplineApp, unlockedAchievements), 200);
     }
   }, [unlockedAchievements, !!splineApp.current]);
+
+  /**
+   * When Spline and text are ready, show the scene
+   */
+  useEffect(() => {
+    if (splineIsReady && textIsReady) {
+      splineApp.current?.setVariable('hasStarted', true);
+      setIsVisible(true);
+    }
+  }, [splineIsReady, textIsReady]);
 
   /**
    * Update the boundaries when the window resizes
@@ -116,9 +132,9 @@ export const SplineScene: React.FC = () => {
         className={styles.container}
         scene='/assets/scene.splinecode'
         onLoad={onLoad}
-        style={{ opacity: isLoaded ? 1 : 0 }}
+        style={{ opacity: isVisible ? 1 : 0 }}
       />
-      <SmokeEffectsSpawner splineApp={splineApp} isLoaded={isLoaded} />
+      <SmokeEffectsSpawner splineApp={splineApp} splineIsReady={splineIsReady} />
     </>
   );
 };
