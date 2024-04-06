@@ -17,7 +17,26 @@ export function updateBoundaries(spline: SplineApp) {
   });
 }
 
-export const achievementToObjectNameMap: Record<Achievement, string> = {
+export type ObjectId =
+  | 'obj-a-1'
+  | 'obj-d'
+  | 'obj-r'
+  | 'obj-i'
+  | 'obj-a-2'
+  | 'obj-n'
+  | 'obj-cursor-icon'
+  | 'obj-github-logo'
+  | 'obj-linkedin-logo'
+  | 'obj-dribbble-logo'
+  | 'obj-cv-icon'
+  | 'obj-contact-icon'
+  | 'obj-user-icon'
+  | 'obj-controller-icon'
+  | 'obj-rocket-icon'
+  | 'obj-edges-icon'
+  | 'obj-heart-icon';
+
+export const achievementToObjectNameMap: Record<Achievement, ObjectId> = {
   drag: 'obj-cursor-icon',
   github: 'obj-github-logo',
   linkedin: 'obj-linkedin-logo',
@@ -28,6 +47,7 @@ export const achievementToObjectNameMap: Record<Achievement, string> = {
   cheatcode: 'obj-controller-icon',
   'to-the-moon': 'obj-rocket-icon',
   edges: 'obj-edges-icon',
+  'its-a-match': 'obj-heart-icon',
 };
 
 export const achievementToVariableNameMap: Record<Achievement, string> = {
@@ -41,6 +61,7 @@ export const achievementToVariableNameMap: Record<Achievement, string> = {
   cheatcode: 'hasControllerIcon',
   'to-the-moon': 'hasRocketIcon',
   edges: 'hasEdgesIcon',
+  'its-a-match': 'hasHeartIcon',
 };
 
 /**
@@ -67,9 +88,13 @@ export function checkForAchievements(
   unlockAchievement: (achievement: Achievement) => void
 ) {
   let allObjects: SPEObject[] = [];
-  if (!unlockedAchievements.includes('nickname') || !unlockedAchievements.includes('edges')) {
+  if (
+    !unlockedAchievements.includes('nickname') ||
+    !unlockedAchievements.includes('edges') ||
+    !unlockedAchievements.includes('its-a-match')
+  ) {
     // All objects relevant for achievements start with 'obj-'
-    allObjects = spline.getAllObjects().filter(obj => obj.name.startsWith('obj-'));
+    allObjects = spline.getAllObjects().filter(obj => obj.visible && obj.name.startsWith('obj-'));
   }
 
   /**
@@ -85,7 +110,7 @@ export function checkForAchievements(
    * Check for the nickname achievement
    */
   if (!unlockedAchievements.includes('nickname')) {
-    const relevantObjNames = ['obj-a-1', 'obj-a-2', 'obj-d', 'obj-i'];
+    const relevantObjNames: ObjectId[] = ['obj-a-1', 'obj-a-2', 'obj-d', 'obj-i'];
     const [objLetterA1, objLetterA2, objLetterD, objLetterI] = relevantObjNames.map(name =>
       allObjects.find(obj => obj.name === name)
     );
@@ -107,7 +132,7 @@ export function checkForAchievements(
         if (!nextLetter || !thisLetter) {
           return false;
         }
-        if (!isWithinRelativeArea(thisLetter, nextLetter, range)) {
+        if (!isInRange(thisLetter, nextLetter, range)) {
           return false;
         }
 
@@ -115,7 +140,7 @@ export function checkForAchievements(
         const objsToAvoid = allObjects.filter(
           obj => obj.visible && word.every(objLetter => objLetter?.name !== obj.name)
         );
-        if (objsToAvoid.some(obj => isWithinRelativeArea(thisLetter, obj, range))) {
+        if (objsToAvoid.some(obj => isInRange(thisLetter, obj, range))) {
           return false;
         }
 
@@ -147,12 +172,49 @@ export function checkForAchievements(
       unlockAchievement('edges');
     }
   }
+
+  /**
+   * Check for the its-a-match achievement
+   */
+  if (!unlockedAchievements.includes('its-a-match')) {
+    const hasObjForName = unlockedAchievements.includes('nickname') || unlockedAchievements.includes('contact');
+    const hasObjForDesigner = unlockedAchievements.includes('dribbble');
+    const hasObjForDeveloper = unlockedAchievements.includes('github');
+    const hasObjForCompany = unlockedAchievements.includes('linkedin') || unlockedAchievements.includes('cv');
+
+    if (!hasObjForName || !hasObjForDesigner || !hasObjForDeveloper || !hasObjForCompany) {
+      // The user hasn't unlocked enough achievements to complete this one yet
+      return;
+    }
+
+    const possibleMatches: Array<[string, Array<ObjectId>]> = [
+      ['name', ['obj-user-icon', 'obj-contact-icon']],
+      ['designer', ['obj-dribbble-logo']],
+      ['developer', ['obj-github-logo']],
+      ['company', ['obj-linkedin-logo', 'obj-cv-icon']],
+    ];
+
+    const itsAMatch = possibleMatches.every(([area, objIds]) => {
+      const areaRect = document.querySelector<HTMLSpanElement>(`[data-tag="${area}"]`)?.getBoundingClientRect();
+      if (!areaRect) {
+        return false;
+      }
+      return objIds.some(objId => {
+        const obj = allObjects.find(obj => obj.name === objId);
+        return obj && isWithinDomReactArea(obj, areaRect);
+      });
+    });
+
+    if (itsAMatch) {
+      unlockAchievement('its-a-match');
+    }
+  }
 }
 
 /**
  * Checks if the objects are within a certain range of each other.
  */
-function isWithinRelativeArea(
+function isInRange(
   fromObj: SPEObject,
   toObj: SPEObject,
   range: { x: { min: number; max: number }; y: { min: number; max: number } }
@@ -160,6 +222,18 @@ function isWithinRelativeArea(
   const x = toObj.position.x - fromObj.position.x;
   const y = toObj.position.y - fromObj.position.y;
   return x > range.x.min && x < range.x.max && y > range.y.min && y < range.y.max;
+}
+
+/**
+ * Checks if the object is within the DOM area.
+ */
+function isWithinDomReactArea(obj: SPEObject, rect: DOMRect) {
+  return (
+    window.innerWidth / 2 + obj.position.x > rect.left &&
+    window.innerWidth / 2 + obj.position.x < rect.right &&
+    window.innerHeight / 2 - obj.position.y > rect.top &&
+    window.innerHeight / 2 - obj.position.y < rect.bottom
+  );
 }
 
 export type ObjectPositions = Record<string, { x: number; y: number }>;

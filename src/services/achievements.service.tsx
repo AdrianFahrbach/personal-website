@@ -6,6 +6,7 @@ import {
   Envelope,
   GameController,
   GithubLogo,
+  Heart,
   LinkedinLogo,
   ReadCvLogo,
   Rocket,
@@ -23,6 +24,7 @@ export const allAchievements = [
   'cheatcode',
   'to-the-moon',
   'edges',
+  'its-a-match',
 ] as const;
 export type Achievement = (typeof allAchievements)[number];
 
@@ -63,7 +65,7 @@ export const achievementToToastMap: Record<
   'to-the-moon': {
     icon: <Rocket size={28} />,
     headline: 'To the moon!',
-    subline: 'Throw an object out of the viewport.',
+    subline: 'Throw an object out far of the viewport.',
   },
   edges: {
     icon: <CornersOut size={28} />,
@@ -79,5 +81,10 @@ export const achievementToToastMap: Record<
     icon: <GameController size={28} />,
     headline: <Cheatcode />,
     subline: 'Use the Konami cheatcode at the homepage.',
+  },
+  'its-a-match': {
+    icon: <Heart size={28} />,
+    headline: "It's a match!",
+    subline: 'Match each highlighted word with a fitting balloon.',
   },
 };

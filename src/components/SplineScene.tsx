@@ -89,14 +89,14 @@ export const SplineScene: React.FC = () => {
   }, []);
 
   /**
-   * Check for achievements every 1.5 seconds
+   * Check for achievements every 2 seconds
    */
   useEffect(() => {
     const currentSplineApp = splineApp.current;
     if (currentSplineApp) {
       const interval = setInterval(() => {
         checkForAchievements(currentSplineApp, unlockedAchievements, unlockAchievement);
-      }, 1500);
+      }, 2000);
       return () => clearInterval(interval);
     }
   }, [splineApp.current, unlockedAchievements]);
