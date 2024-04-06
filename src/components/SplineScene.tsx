@@ -68,7 +68,7 @@ export const SplineScene: React.FC = () => {
   useEffect(() => {
     if (splineIsReady && textIsReady) {
       splineApp.current?.setVariable('hasStarted', true);
-      setTimeout(() => setIsVisible(true), 250);
+      setTimeout(() => setIsVisible(true), 300);
     }
   }, [splineIsReady, textIsReady]);
 
@@ -122,22 +122,22 @@ export const SplineScene: React.FC = () => {
     function checkForDragAchievement() {
       if (currentSplineApp && didObjectsGetMoved(currentSplineApp, objectPositions)) {
         unlockAchievement('drag');
-        document.removeEventListener('mousedown', saveObjectPositions);
-        document.removeEventListener('mouseup', checkForDragAchievement);
-        document.removeEventListener('mousemove', throttledCheckForDragAchievement);
+        document.removeEventListener('pointerdown', saveObjectPositions);
+        document.removeEventListener('pointerup', checkForDragAchievement);
+        document.removeEventListener('pointermove', throttledCheckForDragAchievement);
       }
     }
 
     const throttledCheckForDragAchievement = throttle(checkForDragAchievement, 500);
 
-    document.addEventListener('mousedown', saveObjectPositions);
-    document.addEventListener('mouseup', checkForDragAchievement);
-    document.addEventListener('mousemove', throttledCheckForDragAchievement);
+    document.addEventListener('pointerdown', saveObjectPositions);
+    document.addEventListener('pointerup', checkForDragAchievement);
+    document.addEventListener('pointermove', throttledCheckForDragAchievement);
 
     return () => {
-      document.removeEventListener('mousedown', saveObjectPositions);
-      document.removeEventListener('mouseup', checkForDragAchievement);
-      document.removeEventListener('mousemove', throttledCheckForDragAchievement);
+      document.removeEventListener('pointerdown', saveObjectPositions);
+      document.removeEventListener('pointerup', checkForDragAchievement);
+      document.removeEventListener('pointermove', throttledCheckForDragAchievement);
     };
   }, [splineApp.current, unlockedAchievements]);
 
