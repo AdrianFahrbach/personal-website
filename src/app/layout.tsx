@@ -2,7 +2,7 @@ import { AchievementsProvider } from '@/providers/AchievementsProvider';
 import { PageTransitionProvider } from '@/providers/PageTransitionsProvider';
 import { montserrat } from '@/styles/fonts';
 import type { Metadata } from 'next';
-import '../styles/globals.scss';
+import '@/styles/globals.scss';
 
 export const metadata: Metadata = {
   title: 'Adrian Fahrbach',
