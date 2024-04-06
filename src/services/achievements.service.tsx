@@ -8,7 +8,7 @@ import {
   LinkedinLogo,
   ReadCvLogo,
   Rocket,
-  User
+  User,
 } from '@phosphor-icons/react';
 
 export const allAchievements = [
@@ -64,7 +64,7 @@ export const achievementToToastMap: Record<Achievement, { icon: React.ReactNode;
     },
     edges: {
       icon: <CornersOut size={28} />,
-      headline: 'All edges of the universe!',
+      headline: 'Edgelord',
       subline: 'Have an object in all corners of the viewport.',
     },
     nickname: {
@@ -74,7 +74,7 @@ export const achievementToToastMap: Record<Achievement, { icon: React.ReactNode;
     },
     cheatcode: {
       icon: <GameController size={28} />,
-      headline: "That's what my friends call me.",
-      subline: 'Make my nickname out of balloons',
+      headline: '',
+      subline: 'Use the Atari cheat code at the homepage.',
     },
   };
