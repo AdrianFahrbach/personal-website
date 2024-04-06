@@ -19,7 +19,6 @@ export const Header: React.FC = () => {
   useEffect(() => {
     const handlePointerDown = (e: PointerEvent) => {
       if (headerRef.current && !headerRef.current.contains(e.target as Node)) {
-        console.log('right');
         headerRef.current.style.pointerEvents = 'none';
       }
     };
