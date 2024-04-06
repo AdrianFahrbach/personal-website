@@ -33,7 +33,7 @@ export const Header: React.FC = () => {
         <HeaderLink isSmall to='/legal-notice' label='Legal notice' hasPageTransition />
       </div>
       <div className={classNames([styles.linkContainer, styles.bottomLeft, !showHomeNav && styles.isHidden])}>
-        <HeaderLink to='/assets/cv.pdf' label='My CV' isExternal achievementToUnlock='cv' />
+        <HeaderLink to='/assets/cv.pdf' label='My CV' isExternal achievementToUnlock='cv' isFile />
       </div>
       <div className={classNames([styles.linkContainer, styles.bottomCenter, !showHomeNav && styles.isHidden])}>
         <HeaderLink to='/achievements' label='Your achievements' hasPageTransition />

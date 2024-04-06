@@ -14,6 +14,7 @@ interface HeaderLinkProps {
   label: string;
   isExternal?: boolean;
   isSmall?: boolean;
+  isFile?: boolean;
   achievementToUnlock?: Achievement;
   hasPageTransition?: boolean;
   isBackButton?: boolean;
@@ -24,6 +25,7 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({
   label,
   isExternal,
   isSmall,
+  isFile,
   achievementToUnlock,
   hasPageTransition,
   isBackButton,
@@ -40,6 +42,25 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({
       unlockAchievement(achievementToUnlock);
     }
   };
+
+  // Files can't use the Next.js Link component
+  if (isFile) {
+    return (
+      <a
+        href={to}
+        onClick={handeClick}
+        target={isExternal ? '_blank' : undefined}
+        rel={isExternal ? 'noopener noreferrer' : undefined}
+        className={classNames([styles.container, isSmall && styles.isSmall])}
+        aria-label={label}>
+        {isBackButton && <ArrowLeft className={styles.icon} size={24} />}
+        <span className={classNames([styles.labelTop, !!isBackButton && styles.hasIcon])}>{label}</span>
+        <span className={classNames([styles.labelBottom, !!isBackButton && styles.hasIcon])} aria-hidden>
+          {label}
+        </span>
+      </a>
+    );
+  }
 
   return (
     <Link
