@@ -67,7 +67,6 @@ export const SplineScene: React.FC = () => {
    * When Spline and text are ready, show the scene
    */
   useEffect(() => {
-    console.log(splineIsReady, textIsReady);
     if (splineIsReady && textIsReady) {
       splineApp.current?.setVariable('hasStarted', true);
       setTimeout(() => setIsVisible(true), 250);
