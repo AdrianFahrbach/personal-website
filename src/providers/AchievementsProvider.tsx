@@ -54,6 +54,10 @@ export const AchievementsProvider: React.FC<{ children: React.ReactNode }> = ({ 
    * Unlock an achievement which means it will be stored in the local storage.
    */
   function unlockAchievement(achievement: Achievement) {
+    if (unlockedAchievements.includes(achievement)) {
+      // The unlock was probably triggered multiple times
+      return;
+    }
     setUnlockedAchievements([...(unlockedAchievements ?? []), achievement]);
     setTimeout(() => {
       if (document.hidden) {

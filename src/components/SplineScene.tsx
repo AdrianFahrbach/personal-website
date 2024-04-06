@@ -122,6 +122,9 @@ export const SplineScene: React.FC = () => {
     function checkForDragAchievement() {
       if (currentSplineApp && didObjectsGetMoved(currentSplineApp, objectPositions)) {
         unlockAchievement('drag');
+        document.removeEventListener('mousedown', saveObjectPositions);
+        document.removeEventListener('mouseup', checkForDragAchievement);
+        document.removeEventListener('mousemove', throttledCheckForDragAchievement);
       }
     }
 
