@@ -20,7 +20,7 @@ export const SplineScene: React.FC = () => {
   const [splineIsReady, setSplineIsReady] = useState(false);
   const [textIsReady, setTextIsReady] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const { unlockedAchievements, unlockAchievement } = useContext(AchievementsContext);
+  const { unlockedAchievements, unlockAchievement, visibleAchievements } = useContext(AchievementsContext);
   const splineApp = useRef<SplineApp>();
 
   /**
@@ -30,7 +30,6 @@ export const SplineScene: React.FC = () => {
   function onLoad(spline: SplineApp) {
     splineApp.current = spline;
     updateBoundaries(spline);
-    updateVisibleAchievementObjects(spline, unlockedAchievements);
     splineApp.current.addEventListener('start', () => {
       setSplineIsReady(true);
     });
@@ -52,7 +51,7 @@ export const SplineScene: React.FC = () => {
     if (currentSplineApp) {
       setTimeout(() => updateVisibleAchievementObjects(currentSplineApp, unlockedAchievements), 200);
     }
-  }, [unlockedAchievements, !!splineApp.current]);
+  }, [splineApp.current, visibleAchievements]);
 
   /**
    * When Spline and text are ready, show the scene

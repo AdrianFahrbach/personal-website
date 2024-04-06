@@ -2,11 +2,14 @@
 
 import { Achievement, achievementToToastMap } from '@/services/achievements.service';
 import toastStyles from '@/styles/toast.module.scss';
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useEffect, useRef, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 
 interface AchievementsData {
+  // The achievements that have been unlocked
   unlockedAchievements: Achievement[];
+  // Sometimes we want to unlock an achievement without showing the object yet. This is what we use this for.
+  visibleAchievements: Achievement[];
   unlockAchievement: (achievement: Achievement) => void;
   smokeEmitters: Achievement[];
 }
@@ -14,11 +17,14 @@ interface AchievementsData {
 export const AchievementsContext = createContext<AchievementsData>({
   unlockedAchievements: [],
   unlockAchievement: () => {},
+  visibleAchievements: [],
   smokeEmitters: [],
 });
 
 export const AchievementsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [unlockedAchievements, setUnlockedAchievements] = useState<Achievement[]>([]);
+  const [achievementQueue, setAchievementQueue] = useState<Achievement[]>([]);
+  const [visibleAchievements, setVisibleAchievements] = useState<Achievement[]>([]);
   const [smokeEmitters, setSmokeEmitters] = useState<Achievement[]>([]);
 
   /**
@@ -27,7 +33,9 @@ export const AchievementsProvider: React.FC<{ children: React.ReactNode }> = ({ 
   useEffect(() => {
     const storedAchievements = localStorage.getItem('achievements');
     if (storedAchievements) {
-      setUnlockedAchievements(JSON.parse(storedAchievements));
+      const achievements = JSON.parse(storedAchievements);
+      setUnlockedAchievements(achievements);
+      setVisibleAchievements(achievements);
     }
   }, []);
 
@@ -42,10 +50,22 @@ export const AchievementsProvider: React.FC<{ children: React.ReactNode }> = ({ 
   }, [unlockedAchievements]);
 
   /**
-   * Unlock an achievement and show a toast
+   * Unlock an achievement which means it will be stored in the local storage.
    */
   function unlockAchievement(achievement: Achievement) {
     setUnlockedAchievements([...(unlockedAchievements ?? []), achievement]);
+    if (document.hidden) {
+      setAchievementQueue([...achievementQueue, achievement]);
+    } else {
+      showAchievement(achievement);
+    }
+  }
+
+  /**
+   * Show the achievement in the viewport and trigger the smoke effect.
+   */
+  function showAchievement(achievement: Achievement) {
+    setVisibleAchievements([...(visibleAchievements ?? []), achievement]);
     setSmokeEmitters([...(smokeEmitters ?? []), achievement]);
     const { icon, headline, subline } = achievementToToastMap[achievement];
     toast(
@@ -57,12 +77,32 @@ export const AchievementsProvider: React.FC<{ children: React.ReactNode }> = ({ 
     );
   }
 
+  /**
+   * Check if the tab is focused. If yes show the achievements immediately.
+   * If not show all achievements that have been unlocked when the tab is focused again.
+   */
+  useEffect(() => {
+    function handleVisibilityChange() {
+      if (document.hidden) {
+        return;
+      }
+      achievementQueue.forEach(achievement => {
+        showAchievement(achievement);
+      });
+      setAchievementQueue([]);
+    }
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, [achievementQueue]);
+
   return (
     <AchievementsContext.Provider
       value={{
         unlockedAchievements,
         unlockAchievement,
         smokeEmitters,
+        visibleAchievements,
       }}>
       {children}
       <Toaster
