@@ -58,7 +58,7 @@ export const achievementToToastMap: Record<
   contact: {
     icon: <Envelope size={28} />,
     headline: "Please don't spam me.",
-    subline: 'Send me a message.',
+    subline: 'Send me an email.',
   },
   'to-the-moon': {
     icon: <Rocket size={28} />,
@@ -67,7 +67,7 @@ export const achievementToToastMap: Record<
   },
   edges: {
     icon: <CornersOut size={28} />,
-    headline: 'Edgelord',
+    headline: 'Corner Connoisseur',
     subline: 'Have an object in all corners of the viewport.',
   },
   nickname: {
