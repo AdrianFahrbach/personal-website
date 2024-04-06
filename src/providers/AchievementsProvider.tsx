@@ -55,11 +55,13 @@ export const AchievementsProvider: React.FC<{ children: React.ReactNode }> = ({ 
    */
   function unlockAchievement(achievement: Achievement) {
     setUnlockedAchievements([...(unlockedAchievements ?? []), achievement]);
-    if (document.hidden) {
-      setAchievementQueue([...achievementQueue, achievement]);
-    } else {
-      showAchievement(achievement);
-    }
+    setTimeout(() => {
+      if (document.hidden) {
+        setAchievementQueue([...achievementQueue, achievement]);
+      } else {
+        showAchievement(achievement);
+      }
+    }, 100);
   }
 
   /**
