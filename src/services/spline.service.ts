@@ -216,7 +216,6 @@ export function checkForAchievements(
    * Check for the mile-high-club achievement
    */
   if (!unlockedAchievements.includes('mile-high-club')) {
-    allObjects.forEach(obj => console.log(obj.name, window.innerHeight / 2 - obj.position.y, obj.position.y));
     if (allObjects.every(obj => window.innerHeight / 2 - obj.position.y < 225)) {
       unlockAchievement('mile-high-club');
     }
