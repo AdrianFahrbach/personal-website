@@ -29,10 +29,17 @@ export const SplineScene: React.FC = () => {
    * @param spline
    */
   function onLoad(spline: SplineApp) {
+    if (spline.getAllObjects().length === 0) {
+      // The scene is not loaded yet
+      return;
+    }
     splineApp.current = spline;
     updateBoundaries(spline);
     // We give it some extra time to make sure everything is ready
-    setTimeout(() => setSplineIsReady(true), 350);
+    updateVisibleAchievementObjects(spline, unlockedAchievements);
+    setTimeout(() => {
+      setSplineIsReady(true);
+    }, 200);
   }
 
   function setTextToReady() {
@@ -60,7 +67,7 @@ export const SplineScene: React.FC = () => {
     if (currentSplineApp) {
       setTimeout(() => updateVisibleAchievementObjects(currentSplineApp, unlockedAchievements), 200);
     }
-  }, [splineApp.current, splineIsReady, visibleAchievements]);
+  }, [splineApp.current, visibleAchievements]);
 
   /**
    * When Spline and text are ready, show the scene
@@ -68,7 +75,7 @@ export const SplineScene: React.FC = () => {
   useEffect(() => {
     if (splineIsReady && textIsReady) {
       splineApp.current?.setVariable('hasStarted', true);
-      setTimeout(() => setIsVisible(true), 400);
+      setTimeout(() => setIsVisible(true), 100);
     }
   }, [splineIsReady, textIsReady]);
 
