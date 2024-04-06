@@ -93,7 +93,7 @@ export function checkForAchievements(
       [objLetterA1, objLetterD, objLetterI],
       [objLetterA2, objLetterD, objLetterI],
     ];
-    const range = { x: { min: 0, max: 80 }, y: { min: -50, max: 50 } };
+    const range = { x: { min: 0, max: 90 }, y: { min: -50, max: 50 } };
 
     for (const word of words) {
       const isComplete = word.every((thisLetter, index) => {
