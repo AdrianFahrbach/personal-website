@@ -15,6 +15,7 @@ import debounce from 'lodash/debounce';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { SmokeEffectsSpawner } from './SmokeEffectsSpawner';
 import styles from './SplineScene.module.scss';
+import { throttle } from 'lodash';
 
 export const SplineScene: React.FC = () => {
   const [splineIsReady, setSplineIsReady] = useState(false);
@@ -116,12 +117,16 @@ export const SplineScene: React.FC = () => {
       }
     }
 
+    const throttledCheckForDragAchievement = throttle(checkForDragAchievement, 500);
+
     document.addEventListener('mousedown', saveObjectPositions);
     document.addEventListener('mouseup', checkForDragAchievement);
+    document.addEventListener('mousemove', throttledCheckForDragAchievement);
 
     return () => {
       document.removeEventListener('mousedown', saveObjectPositions);
       document.removeEventListener('mouseup', checkForDragAchievement);
+      document.removeEventListener('mousemove', throttledCheckForDragAchievement);
     };
   }, [splineApp.current, unlockedAchievements]);
 
