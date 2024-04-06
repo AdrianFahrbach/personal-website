@@ -69,7 +69,7 @@ export const SplineScene: React.FC = () => {
   useEffect(() => {
     if (splineIsReady && textIsReady) {
       splineApp.current?.setVariable('hasStarted', true);
-      setTimeout(() => setIsVisible(true), 100);
+      setTimeout(() => setIsVisible(true), 250);
     }
   }, [splineIsReady, textIsReady]);
 
@@ -141,12 +141,9 @@ export const SplineScene: React.FC = () => {
 
   return (
     <>
-      <Spline
-        className={styles.container}
-        scene='/assets/scene.splinecode'
-        onLoad={onLoad}
-        style={{ opacity: isVisible ? 1 : 0 }}
-      />
+      <div className={styles.opacityContainer} style={{ opacity: isVisible ? 1 : 0 }}>
+        <Spline className={styles.container} scene='/assets/scene.splinecode' onLoad={onLoad} />
+      </div>
       <SmokeEffectsSpawner splineApp={splineApp} splineIsReady={splineIsReady} />
     </>
   );
