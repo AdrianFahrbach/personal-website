@@ -32,7 +32,7 @@ export const SplineScene: React.FC = () => {
     splineApp.current = spline;
     updateBoundaries(spline);
     // We give it some extra time to make sure everything is ready
-    setTimeout(() => setSplineIsReady(true), 300);
+    setTimeout(() => setSplineIsReady(true), 350);
   }
 
   function setTextToReady() {
@@ -68,7 +68,7 @@ export const SplineScene: React.FC = () => {
   useEffect(() => {
     if (splineIsReady && textIsReady) {
       splineApp.current?.setVariable('hasStarted', true);
-      setTimeout(() => setIsVisible(true), 300);
+      setTimeout(() => setIsVisible(true), 400);
     }
   }, [splineIsReady, textIsReady]);
 
