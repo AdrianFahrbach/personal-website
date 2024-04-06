@@ -7,6 +7,9 @@ import '../styles/globals.scss';
 export const metadata: Metadata = {
   title: 'Adrian Fahrbach',
   description: "Hey! I'm Adrian Fahrbach, a designer and developer from Germany.",
+  icons: {
+    apple: '/assets/apple-icon.png',
+  },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

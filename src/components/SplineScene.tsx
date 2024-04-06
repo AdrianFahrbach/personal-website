@@ -40,7 +40,9 @@ export const SplineScene: React.FC = () => {
    * We have to wait until the text fade in animation is finished
    */
   useEffect(() => {
-    setTimeout(() => setTextIsReady(true), 1300);
+    setTimeout(() => {
+      setTextIsReady(true);
+    }, 1200);
   }, []);
 
   /**
@@ -60,7 +62,7 @@ export const SplineScene: React.FC = () => {
   useEffect(() => {
     if (splineIsReady && textIsReady) {
       splineApp.current?.setVariable('hasStarted', true);
-      setIsVisible(true);
+      setTimeout(() => setIsVisible(true), 100);
     }
   }, [splineIsReady, textIsReady]);
 
