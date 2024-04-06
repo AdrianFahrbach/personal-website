@@ -34,7 +34,8 @@ export type ObjectId =
   | 'obj-controller-icon'
   | 'obj-rocket-icon'
   | 'obj-edges-icon'
-  | 'obj-heart-icon';
+  | 'obj-heart-icon'
+  | 'obj-airplane-icon';
 
 export const achievementToObjectNameMap: Record<Achievement, ObjectId> = {
   drag: 'obj-cursor-icon',
@@ -48,6 +49,7 @@ export const achievementToObjectNameMap: Record<Achievement, ObjectId> = {
   'to-the-moon': 'obj-rocket-icon',
   edges: 'obj-edges-icon',
   'its-a-match': 'obj-heart-icon',
+  'mile-high-club': 'obj-airplane-icon',
 };
 
 export const achievementToVariableNameMap: Record<Achievement, string> = {
@@ -62,6 +64,7 @@ export const achievementToVariableNameMap: Record<Achievement, string> = {
   'to-the-moon': 'hasRocketIcon',
   edges: 'hasEdgesIcon',
   'its-a-match': 'hasHeartIcon',
+  'mile-high-club': 'hasAirplaneIcon',
 };
 
 /**
@@ -91,7 +94,8 @@ export function checkForAchievements(
   if (
     !unlockedAchievements.includes('nickname') ||
     !unlockedAchievements.includes('edges') ||
-    !unlockedAchievements.includes('its-a-match')
+    !unlockedAchievements.includes('its-a-match') ||
+    !unlockedAchievements.includes('mile-high-club')
   ) {
     // All objects relevant for achievements start with 'obj-'
     allObjects = spline.getAllObjects().filter(obj => obj.visible && obj.name.startsWith('obj-'));
@@ -182,31 +186,39 @@ export function checkForAchievements(
     const hasObjForDeveloper = unlockedAchievements.includes('github');
     const hasObjForCompany = unlockedAchievements.includes('linkedin') || unlockedAchievements.includes('cv');
 
-    if (!hasObjForName || !hasObjForDesigner || !hasObjForDeveloper || !hasObjForCompany) {
-      // The user hasn't unlocked enough achievements to complete this one yet
-      return;
-    }
+    // Make sure that the user has unlocked enough objects for the achievement
+    if (hasObjForName && !hasObjForDesigner && !hasObjForDeveloper && !hasObjForCompany) {
+      const possibleMatches: Array<[string, Array<ObjectId>]> = [
+        ['name', ['obj-user-icon', 'obj-contact-icon']],
+        ['designer', ['obj-dribbble-logo']],
+        ['developer', ['obj-github-logo']],
+        ['company', ['obj-linkedin-logo', 'obj-cv-icon']],
+      ];
 
-    const possibleMatches: Array<[string, Array<ObjectId>]> = [
-      ['name', ['obj-user-icon', 'obj-contact-icon']],
-      ['designer', ['obj-dribbble-logo']],
-      ['developer', ['obj-github-logo']],
-      ['company', ['obj-linkedin-logo', 'obj-cv-icon']],
-    ];
-
-    const itsAMatch = possibleMatches.every(([area, objIds]) => {
-      const areaRect = document.querySelector<HTMLSpanElement>(`[data-tag="${area}"]`)?.getBoundingClientRect();
-      if (!areaRect) {
-        return false;
-      }
-      return objIds.some(objId => {
-        const obj = allObjects.find(obj => obj.name === objId);
-        return obj && isWithinDomReactArea(obj, areaRect);
+      const itsAMatch = possibleMatches.every(([area, objIds]) => {
+        const areaRect = document.querySelector<HTMLSpanElement>(`[data-tag="${area}"]`)?.getBoundingClientRect();
+        if (!areaRect) {
+          return false;
+        }
+        return objIds.some(objId => {
+          const obj = allObjects.find(obj => obj.name === objId);
+          return obj && isWithinDomReactArea(obj, areaRect);
+        });
       });
-    });
 
-    if (itsAMatch) {
-      unlockAchievement('its-a-match');
+      if (itsAMatch) {
+        unlockAchievement('its-a-match');
+      }
+    }
+  }
+
+  /**
+   * Check for the mile-high-club achievement
+   */
+  if (!unlockedAchievements.includes('mile-high-club')) {
+    allObjects.forEach(obj => console.log(obj.name, window.innerHeight / 2 - obj.position.y, obj.position.y));
+    if (allObjects.every(obj => window.innerHeight / 2 - obj.position.y < 225)) {
+      unlockAchievement('mile-high-club');
     }
   }
 }

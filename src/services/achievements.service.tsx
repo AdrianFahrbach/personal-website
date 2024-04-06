@@ -1,5 +1,6 @@
 import { Cheatcode } from '@/components/Cheatcode';
 import {
+  Airplane,
   CornersOut,
   CursorClick,
   DribbbleLogo,
@@ -25,6 +26,7 @@ export const allAchievements = [
   'to-the-moon',
   'edges',
   'its-a-match',
+  'mile-high-club',
 ] as const;
 export type Achievement = (typeof allAchievements)[number];
 
@@ -86,5 +88,10 @@ export const achievementToToastMap: Record<
     icon: <Heart size={28} />,
     headline: "It's a match!",
     subline: 'Match each highlighted word with a fitting balloon.',
+  },
+  'mile-high-club': {
+    icon: <Airplane size={28} />,
+    headline: 'Mile High Club',
+    subline: 'Keep all balloons at the top of the screen.',
   },
 };
