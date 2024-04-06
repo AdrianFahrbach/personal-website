@@ -11,11 +11,11 @@ import {
 } from '@/services/spline.service';
 import Spline from '@splinetool/react-spline';
 import { Application as SplineApp } from '@splinetool/runtime';
+import { throttle } from 'lodash';
 import debounce from 'lodash/debounce';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { SmokeEffectsSpawner } from './SmokeEffectsSpawner';
 import styles from './SplineScene.module.scss';
-import { throttle } from 'lodash';
 
 export const SplineScene: React.FC = () => {
   const [splineIsReady, setSplineIsReady] = useState(false);
@@ -31,9 +31,8 @@ export const SplineScene: React.FC = () => {
   function onLoad(spline: SplineApp) {
     splineApp.current = spline;
     updateBoundaries(spline);
-    splineApp.current.addEventListener('start', () => {
-      setSplineIsReady(true);
-    });
+    // We give it some extra time to make sure everything is ready
+    setTimeout(() => setSplineIsReady(true), 300);
   }
 
   function setTextToReady() {
@@ -61,7 +60,7 @@ export const SplineScene: React.FC = () => {
     if (currentSplineApp) {
       setTimeout(() => updateVisibleAchievementObjects(currentSplineApp, unlockedAchievements), 200);
     }
-  }, [splineApp.current, visibleAchievements]);
+  }, [splineApp.current, splineIsReady, visibleAchievements]);
 
   /**
    * When Spline and text are ready, show the scene
@@ -141,9 +140,12 @@ export const SplineScene: React.FC = () => {
 
   return (
     <>
-      <div className={styles.opacityContainer} style={{ opacity: isVisible ? 1 : 0 }}>
-        <Spline className={styles.container} scene='/assets/scene.splinecode' onLoad={onLoad} />
-      </div>
+      <Spline
+        className={styles.container}
+        scene='/assets/scene.splinecode'
+        onLoad={onLoad}
+        style={{ opacity: isVisible ? 1 : 0 }}
+      />
       <SmokeEffectsSpawner splineApp={splineApp} splineIsReady={splineIsReady} />
     </>
   );
