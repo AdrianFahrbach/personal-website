@@ -1,6 +1,5 @@
 'use client';
 
-import { FC } from 'react';
 import styles from './SmokeEffect.module.scss';
 
 interface SmokeEffectProps {
@@ -9,7 +8,7 @@ interface SmokeEffectProps {
   y?: number;
 }
 
-export const SmokeEffect: FC<SmokeEffectProps> = ({ isVisible, x, y }) => {
+export const SmokeEffect: React.FC<SmokeEffectProps> = ({ isVisible, x, y }) => {
   if (!isVisible || x === undefined || y === undefined) {
     return null;
   }

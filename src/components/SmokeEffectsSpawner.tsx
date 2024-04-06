@@ -5,14 +5,14 @@ import { AchievementsContext } from '@/providers/AchievementsProvider';
 import { Achievement, allAchievements } from '@/services/achievements.service';
 import { achievementToObjectNameMap } from '@/services/spline.service';
 import { Application as SplineApp } from '@splinetool/runtime';
-import { FC, useContext, useMemo } from 'react';
+import { useContext, useMemo } from 'react';
 
 interface SmokeEffectsSpawnerProps {
   splineApp: React.MutableRefObject<SplineApp | undefined>;
   splineIsReady: boolean;
 }
 
-export const SmokeEffectsSpawner: FC<SmokeEffectsSpawnerProps> = ({ splineApp, splineIsReady }) => {
+export const SmokeEffectsSpawner: React.FC<SmokeEffectsSpawnerProps> = ({ splineApp, splineIsReady }) => {
   const { smokeEmitters } = useContext(AchievementsContext);
 
   /**

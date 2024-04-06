@@ -26,6 +26,8 @@ export const AchievementsProvider: React.FC<{ children: React.ReactNode }> = ({ 
   const [achievementQueue, setAchievementQueue] = useState<Achievement[]>([]);
   const [visibleAchievements, setVisibleAchievements] = useState<Achievement[]>([]);
   const [smokeEmitters, setSmokeEmitters] = useState<Achievement[]>([]);
+  const typingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const cheatcodeRef = useRef<string>('');
 
   /**
    * Get current achievements from local storage
@@ -95,6 +97,47 @@ export const AchievementsProvider: React.FC<{ children: React.ReactNode }> = ({ 
     document.addEventListener('visibilitychange', handleVisibilityChange);
     return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
   }, [achievementQueue]);
+
+  /**
+   * Check for the cheatcode achievement
+   */
+  useEffect(() => {
+    console.log('useEffect');
+    if (unlockedAchievements.includes('cheatcode')) {
+      return;
+    }
+
+    const cheatCode = 'ArrowUpArrowUpArrowDownArrowDownArrowLeftArrowRightArrowLeftArrowRightba';
+
+    function resetCode() {
+      cheatcodeRef.current = '';
+    }
+
+    function checkForCheatCode() {
+      if (cheatcodeRef.current === cheatCode) {
+        unlockAchievement('cheatcode');
+        resetCode();
+      }
+    }
+
+    function handleKeyDown(event: KeyboardEvent) {
+      cheatcodeRef.current += event.key;
+      console.log(cheatcodeRef.current);
+      if (typingTimeoutRef.current) {
+        clearTimeout(typingTimeoutRef.current);
+      }
+      typingTimeoutRef.current = setTimeout(resetCode, 500);
+      checkForCheatCode();
+    }
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      if (typingTimeoutRef.current) {
+        clearTimeout(typingTimeoutRef.current);
+      }
+    };
+  }, []);
 
   return (
     <AchievementsContext.Provider
