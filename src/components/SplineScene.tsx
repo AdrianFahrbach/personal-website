@@ -36,13 +36,20 @@ export const SplineScene: React.FC = () => {
     });
   }
 
+  function setTextToReady() {
+    setTextIsReady(true);
+  }
+
   /**
    * We have to wait until the text fade in animation is finished
    */
   useEffect(() => {
-    setTimeout(() => {
-      setTextIsReady(true);
-    }, 1200);
+    const words = document.querySelectorAll<HTMLSpanElement>('[data-word]');
+    const lastWord = words[words.length - 1];
+    lastWord.addEventListener('animationend', setTextToReady);
+    return () => {
+      lastWord.removeEventListener('animationend', setTextToReady);
+    };
   }, []);
 
   /**
