@@ -102,7 +102,6 @@ export const AchievementsProvider: React.FC<{ children: React.ReactNode }> = ({ 
    * Check for the cheatcode achievement
    */
   useEffect(() => {
-    console.log('useEffect');
     if (unlockedAchievements.includes('cheatcode')) {
       return;
     }
@@ -122,7 +121,6 @@ export const AchievementsProvider: React.FC<{ children: React.ReactNode }> = ({ 
 
     function handleKeyDown(event: KeyboardEvent) {
       cheatcodeRef.current += event.key;
-      console.log(cheatcodeRef.current);
       if (typingTimeoutRef.current) {
         clearTimeout(typingTimeoutRef.current);
       }
