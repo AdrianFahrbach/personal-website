@@ -40,7 +40,7 @@ export const SplineScene: React.FC = () => {
    * We have to wait until the text fade in animation is finished
    */
   useEffect(() => {
-    setTimeout(() => setTextIsReady(true), 1200);
+    setTimeout(() => setTextIsReady(true), 1300);
   }, []);
 
   /**
