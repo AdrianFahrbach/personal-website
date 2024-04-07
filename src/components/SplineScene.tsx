@@ -21,6 +21,7 @@ export const SplineScene: React.FC = () => {
   const [splineIsReady, setSplineIsReady] = useState(false);
   const [textIsReady, setTextIsReady] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [isResizing, setIsResizing] = useState(false);
   const { unlockedAchievements, unlockAchievement, visibleAchievements } = useContext(AchievementsContext);
   const splineApp = useRef<SplineApp>();
 
@@ -82,16 +83,24 @@ export const SplineScene: React.FC = () => {
   /**
    * Update the boundaries when the window resizes
    */
-  function resizeHandler() {
+  function resizeStartHandler() {
+    setIsResizing(true);
+  }
+  const throttledResizeStartHandler = useCallback(throttle(resizeEndHandler, 5000), []);
+  function resizeEndHandler() {
+    setIsResizing(false);
     if (splineApp.current) {
       updateBoundaries(splineApp.current);
     }
   }
-  const debouncedResizeHandler = useCallback(debounce(resizeHandler, 100), [splineApp.current]);
+  const debouncedResizeEndHandler = useCallback(debounce(resizeEndHandler, 500), []);
+
   useEffect(() => {
-    window.addEventListener('resize', debouncedResizeHandler);
+    window.addEventListener('resize', resizeStartHandler);
+    window.addEventListener('resize', debouncedResizeEndHandler);
     return () => {
-      window.removeEventListener('resize', debouncedResizeHandler);
+      window.removeEventListener('resize', resizeStartHandler);
+      window.removeEventListener('resize', debouncedResizeEndHandler);
     };
   }, []);
 
@@ -100,13 +109,14 @@ export const SplineScene: React.FC = () => {
    */
   useEffect(() => {
     const currentSplineApp = splineApp.current;
-    if (currentSplineApp) {
+    if (currentSplineApp && !isResizing) {
       const interval = setInterval(() => {
         checkForAchievements(currentSplineApp, unlockedAchievements, unlockAchievement);
       }, 2000);
+
       return () => clearInterval(interval);
     }
-  }, [splineApp.current, unlockedAchievements]);
+  }, [splineApp.current, unlockedAchievements, isResizing]);
 
   /**
    * Check for the drag achievement
