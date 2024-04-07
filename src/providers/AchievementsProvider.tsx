@@ -149,7 +149,7 @@ export const AchievementsProvider: React.FC<{ children: React.ReactNode }> = ({ 
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, []);
+  }, [unlockedAchievements]);
 
   return (
     <AchievementsContext.Provider
