@@ -1,17 +1,45 @@
+'use client';
+
 import { HeaderLink } from '@/components/HeaderLink';
 import { PageTransitionContext } from '@/providers/PageTransitionsProvider';
 import classNames from 'classnames';
 import { usePathname } from 'next/navigation';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import styles from './Header.module.scss';
 
 export const Header: React.FC = () => {
   const { nextRoute, pending } = useContext(PageTransitionContext);
   const pathname = usePathname();
   const showHomeNav = (!pending && pathname === '/') || (pending && nextRoute === '/');
+  const headerRef = React.createRef<HTMLElement>();
+
+  /**
+   * Disable pointer events when dragging starts outside of a link
+   */
+  useEffect(() => {
+    const handlePointerDown = (e: PointerEvent) => {
+      if (headerRef.current && !headerRef.current.contains(e.target as Node)) {
+        headerRef.current.style.pointerEvents = 'none';
+      }
+    };
+
+    const handlePointerUp = () => {
+      if (headerRef.current) {
+        headerRef.current.style.pointerEvents = 'auto';
+      }
+    };
+
+    document.addEventListener('pointerdown', handlePointerDown);
+    document.addEventListener('pointerup', handlePointerUp);
+
+    return () => {
+      document.removeEventListener('pointerdown', handlePointerDown);
+      document.removeEventListener('pointerup', handlePointerUp);
+    };
+  }, []);
 
   return (
-    <header>
+    <header ref={headerRef}>
       <div className={classNames([styles.linkContainer, styles.topLeft, showHomeNav && styles.isHidden])}>
         <HeaderLink to='/' label='Back to home' isBackButton hasPageTransition />
       </div>

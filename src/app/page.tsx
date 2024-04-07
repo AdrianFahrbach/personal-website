@@ -11,10 +11,10 @@ export default function Home() {
       <SplineScene />
       <Headline
         text={[
-          ['Hey!', 'I’m', { text: 'Adrian', isHighlighted: true }, ','],
-          ['a', { text: 'designer', isHighlighted: true }],
-          ['and', { text: 'developer', isHighlighted: true }],
-          ['working', 'at', { text: 'Orcaya', isHighlighted: true }, '.'],
+          ['Hey!', 'I’m', { text: 'Adrian', isHighlighted: true, dataTag: 'name' }, ','],
+          ['a', { text: 'designer', isHighlighted: true, dataTag: 'designer' }],
+          ['and', { text: 'developer', isHighlighted: true, dataTag: 'developer' }],
+          ['working', 'at', { text: 'Orcaya', isHighlighted: true, dataTag: 'company' }, '.'],
         ]}
       />
     </section>

@@ -6,9 +6,10 @@ import {
   checkForAchievements,
   didObjectsGetMoved,
   getObjectPositions,
-  updateBoundaries,
+  updateViewport,
   updateVisibleAchievementObjects,
 } from '@/services/spline.service';
+import { useViewport } from '@/services/viewport.service';
 import Spline from '@splinetool/react-spline';
 import { Application as SplineApp } from '@splinetool/runtime';
 import { throttle } from 'lodash';
@@ -21,18 +22,27 @@ export const SplineScene: React.FC = () => {
   const [splineIsReady, setSplineIsReady] = useState(false);
   const [textIsReady, setTextIsReady] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [isResizing, setIsResizing] = useState(false);
   const { unlockedAchievements, unlockAchievement, visibleAchievements } = useContext(AchievementsContext);
   const splineApp = useRef<SplineApp>();
+  const viewport = useViewport();
 
   /**
    * Setup the Spline scene
    * @param spline
    */
   function onLoad(spline: SplineApp) {
+    if (spline.getAllObjects().length === 0 || !viewport) {
+      // The scene is not loaded yet
+      return;
+    }
     splineApp.current = spline;
-    updateBoundaries(spline);
+    updateViewport(spline, viewport);
     // We give it some extra time to make sure everything is ready
-    setTimeout(() => setSplineIsReady(true), 300);
+    updateVisibleAchievementObjects(spline, unlockedAchievements);
+    setTimeout(() => {
+      setSplineIsReady(true);
+    }, 200);
   }
 
   function setTextToReady() {
@@ -60,7 +70,7 @@ export const SplineScene: React.FC = () => {
     if (currentSplineApp) {
       setTimeout(() => updateVisibleAchievementObjects(currentSplineApp, unlockedAchievements), 200);
     }
-  }, [splineApp.current, splineIsReady, visibleAchievements]);
+  }, [splineApp.current, visibleAchievements]);
 
   /**
    * When Spline and text are ready, show the scene
@@ -68,38 +78,47 @@ export const SplineScene: React.FC = () => {
   useEffect(() => {
     if (splineIsReady && textIsReady) {
       splineApp.current?.setVariable('hasStarted', true);
-      setTimeout(() => setIsVisible(true), 250);
+      setTimeout(() => setIsVisible(true), 100);
     }
   }, [splineIsReady, textIsReady]);
 
   /**
    * Update the boundaries when the window resizes
    */
-  function resizeHandler() {
-    if (splineApp.current) {
-      updateBoundaries(splineApp.current);
+  function resizeStartHandler() {
+    setIsResizing(true);
+  }
+  const throttledResizeStartHandler = useCallback(throttle(resizeStartHandler, 5000), [viewport]);
+  function resizeEndHandler() {
+    setIsResizing(false);
+    if (splineApp.current && viewport) {
+      updateViewport(splineApp.current, viewport);
     }
   }
-  const debouncedResizeHandler = useCallback(debounce(resizeHandler, 100), [splineApp.current]);
+  const debouncedResizeEndHandler = useCallback(debounce(resizeEndHandler, 100), [viewport]);
+
   useEffect(() => {
-    window.addEventListener('resize', debouncedResizeHandler);
+    window.addEventListener('resize', throttledResizeStartHandler);
+    window.addEventListener('resize', debouncedResizeEndHandler);
     return () => {
-      window.removeEventListener('resize', debouncedResizeHandler);
+      window.removeEventListener('resize', throttledResizeStartHandler);
+      window.removeEventListener('resize', debouncedResizeEndHandler);
     };
-  }, []);
+  }, [viewport]);
 
   /**
-   * Check for achievements every two seconds
+   * Check for achievements every 2 seconds
    */
   useEffect(() => {
     const currentSplineApp = splineApp.current;
-    if (currentSplineApp) {
+    if (currentSplineApp && !isResizing && viewport) {
       const interval = setInterval(() => {
-        checkForAchievements(currentSplineApp, unlockedAchievements, unlockAchievement);
+        checkForAchievements(currentSplineApp, unlockedAchievements, unlockAchievement, viewport);
       }, 2000);
+
       return () => clearInterval(interval);
     }
-  }, [splineApp.current, unlockedAchievements]);
+  }, [splineApp.current, unlockedAchievements, isResizing, viewport]);
 
   /**
    * Check for the drag achievement
@@ -122,21 +141,28 @@ export const SplineScene: React.FC = () => {
     function checkForDragAchievement() {
       if (currentSplineApp && didObjectsGetMoved(currentSplineApp, objectPositions)) {
         unlockAchievement('drag');
+        document.removeEventListener('pointerdown', saveObjectPositions);
+        document.removeEventListener('pointerup', checkForDragAchievement);
+        document.removeEventListener('pointermove', throttledCheckForDragAchievement);
       }
     }
 
     const throttledCheckForDragAchievement = throttle(checkForDragAchievement, 500);
 
-    document.addEventListener('mousedown', saveObjectPositions);
-    document.addEventListener('mouseup', checkForDragAchievement);
-    document.addEventListener('mousemove', throttledCheckForDragAchievement);
+    document.addEventListener('pointerdown', saveObjectPositions);
+    document.addEventListener('pointerup', checkForDragAchievement);
+    document.addEventListener('pointermove', throttledCheckForDragAchievement);
 
     return () => {
-      document.removeEventListener('mousedown', saveObjectPositions);
-      document.removeEventListener('mouseup', checkForDragAchievement);
-      document.removeEventListener('mousemove', throttledCheckForDragAchievement);
+      document.removeEventListener('pointerdown', saveObjectPositions);
+      document.removeEventListener('pointerup', checkForDragAchievement);
+      document.removeEventListener('pointermove', throttledCheckForDragAchievement);
     };
   }, [splineApp.current, unlockedAchievements]);
+
+  if (!viewport) {
+    return null;
+  }
 
   return (
     <>

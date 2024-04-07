@@ -1,11 +1,13 @@
 import { Cheatcode } from '@/components/Cheatcode';
 import {
+  Airplane,
   CornersOut,
   CursorClick,
   DribbbleLogo,
   Envelope,
   GameController,
   GithubLogo,
+  Heart,
   LinkedinLogo,
   ReadCvLogo,
   Rocket,
@@ -23,6 +25,8 @@ export const allAchievements = [
   'cheatcode',
   'to-the-moon',
   'edges',
+  'its-a-match',
+  'mile-high-club',
 ] as const;
 export type Achievement = (typeof allAchievements)[number];
 
@@ -58,16 +62,16 @@ export const achievementToToastMap: Record<
   contact: {
     icon: <Envelope size={28} />,
     headline: "Please don't spam me.",
-    subline: 'Send me a message.',
+    subline: 'Send me an email.',
   },
   'to-the-moon': {
     icon: <Rocket size={28} />,
     headline: 'To the moon!',
-    subline: 'Throw an object out of the viewport.',
+    subline: 'Throw an object out far of the viewport.',
   },
   edges: {
     icon: <CornersOut size={28} />,
-    headline: 'Edgelord',
+    headline: 'Corner Connoisseur',
     subline: 'Have an object in all corners of the viewport.',
   },
   nickname: {
@@ -79,5 +83,15 @@ export const achievementToToastMap: Record<
     icon: <GameController size={28} />,
     headline: <Cheatcode />,
     subline: 'Use the Konami cheatcode at the homepage.',
+  },
+  'its-a-match': {
+    icon: <Heart size={28} />,
+    headline: "It's a match!",
+    subline: 'Match each highlighted word with a fitting balloon.',
+  },
+  'mile-high-club': {
+    icon: <Airplane size={28} />,
+    headline: 'Mile High Club',
+    subline: 'Keep all balloons at the top of the screen.',
   },
 };

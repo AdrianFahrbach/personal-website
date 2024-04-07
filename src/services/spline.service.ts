@@ -1,5 +1,6 @@
 import { SPEObject, Application as SplineApp } from '@splinetool/runtime';
 import { Achievement, allAchievements } from './achievements.service';
+import { Viewport } from './viewport.service';
 
 /**
  * This function moves the boundary planes to the correct position by adjusting a Spline variable.
@@ -8,16 +9,63 @@ import { Achievement, allAchievements } from './achievements.service';
  * We also have two planes for each side, to decrease the chance of object clipping through.
  * @param spline The current spline instance
  */
-export function updateBoundaries(spline: SplineApp) {
+export function updateViewport(spline: SplineApp, viewport: Viewport) {
+  const { x: edgeLeft, y: edgeTop } = screenToSplineCoordinates(0, 0, viewport);
+  const { x: edgeRight, y: edgeBottom } = screenToSplineCoordinates(window.innerWidth, window.innerHeight, viewport);
+
   spline.setVariables({
-    edgeLeft: -(window.innerWidth / 2),
-    edgeRight: window.innerWidth / 2,
-    edgeTop: window.innerHeight / 2,
-    edgeBottom: -(window.innerHeight / 2),
+    edgeLeft,
+    edgeRight,
+    edgeTop,
+    edgeTopFar: edgeTop + 5000,
+    edgeBottom,
+    viewport: viewport,
+    isTablet: viewport === 'tablet',
+    isDesktop: viewport === 'desktop',
   });
 }
 
-export const achievementToObjectNameMap: Record<Achievement, string> = {
+/**
+ * Converts screen coordinates to Spline coordinates.
+ */
+export function screenToSplineCoordinates(x: number, y: number, viewport: Viewport) {
+  const zoom = viewport === 'tablet' ? 0.75 : 1;
+  const splineX = x - window.innerWidth / 2;
+  const splineY = window.innerHeight / 2 - y;
+  return { x: splineX / zoom, y: splineY / zoom };
+}
+
+/**
+ * Converts Spline coordinates to screen coordinates.
+ */
+export function splineToScreenCoordinates(x: number, y: number, viewport: Viewport) {
+  const zoom = viewport === 'tablet' ? 0.75 : 1;
+  const screenX = x * zoom + window.innerWidth / 2;
+  const screenY = window.innerHeight / 2 - y * zoom;
+  return { x: screenX, y: screenY };
+}
+
+export type ObjectId =
+  | 'obj-a-1'
+  | 'obj-d'
+  | 'obj-r'
+  | 'obj-i'
+  | 'obj-a-2'
+  | 'obj-n'
+  | 'obj-cursor-icon'
+  | 'obj-github-logo'
+  | 'obj-linkedin-logo'
+  | 'obj-dribbble-logo'
+  | 'obj-cv-icon'
+  | 'obj-contact-icon'
+  | 'obj-user-icon'
+  | 'obj-controller-icon'
+  | 'obj-rocket-icon'
+  | 'obj-edges-icon'
+  | 'obj-heart-icon'
+  | 'obj-airplane-icon';
+
+export const achievementToObjectNameMap: Record<Achievement, ObjectId> = {
   drag: 'obj-cursor-icon',
   github: 'obj-github-logo',
   linkedin: 'obj-linkedin-logo',
@@ -28,6 +76,8 @@ export const achievementToObjectNameMap: Record<Achievement, string> = {
   cheatcode: 'obj-controller-icon',
   'to-the-moon': 'obj-rocket-icon',
   edges: 'obj-edges-icon',
+  'its-a-match': 'obj-heart-icon',
+  'mile-high-club': 'obj-airplane-icon',
 };
 
 export const achievementToVariableNameMap: Record<Achievement, string> = {
@@ -41,6 +91,8 @@ export const achievementToVariableNameMap: Record<Achievement, string> = {
   cheatcode: 'hasControllerIcon',
   'to-the-moon': 'hasRocketIcon',
   edges: 'hasEdgesIcon',
+  'its-a-match': 'hasHeartIcon',
+  'mile-high-club': 'hasAirplaneIcon',
 };
 
 /**
@@ -64,12 +116,13 @@ export function updateVisibleAchievementObjects(splineApp: SplineApp, unlockedAc
 export function checkForAchievements(
   spline: SplineApp,
   unlockedAchievements: Achievement[],
-  unlockAchievement: (achievement: Achievement) => void
+  unlockAchievement: (achievement: Achievement) => void,
+  viewport: Viewport
 ) {
   let allObjects: SPEObject[] = [];
-  if (!unlockedAchievements.includes('nickname') || !unlockedAchievements.includes('edges')) {
+  if (!unlockedAchievements.includes('nickname') || !unlockedAchievements.includes('its-a-match')) {
     // All objects relevant for achievements start with 'obj-'
-    allObjects = spline.getAllObjects().filter(obj => obj.name.startsWith('obj-'));
+    allObjects = spline.getAllObjects().filter(obj => obj.visible && obj.name.startsWith('obj-'));
   }
 
   /**
@@ -85,7 +138,7 @@ export function checkForAchievements(
    * Check for the nickname achievement
    */
   if (!unlockedAchievements.includes('nickname')) {
-    const relevantObjNames = ['obj-a-1', 'obj-a-2', 'obj-d', 'obj-i'];
+    const relevantObjNames: ObjectId[] = ['obj-a-1', 'obj-a-2', 'obj-d', 'obj-i'];
     const [objLetterA1, objLetterA2, objLetterD, objLetterI] = relevantObjNames.map(name =>
       allObjects.find(obj => obj.name === name)
     );
@@ -107,7 +160,7 @@ export function checkForAchievements(
         if (!nextLetter || !thisLetter) {
           return false;
         }
-        if (!isWithinRelativeArea(thisLetter, nextLetter, range)) {
+        if (!isInRange(thisLetter, nextLetter, range)) {
           return false;
         }
 
@@ -115,7 +168,7 @@ export function checkForAchievements(
         const objsToAvoid = allObjects.filter(
           obj => obj.visible && word.every(objLetter => objLetter?.name !== obj.name)
         );
-        if (objsToAvoid.some(obj => isWithinRelativeArea(thisLetter, obj, range))) {
+        if (objsToAvoid.some(obj => isInRange(thisLetter, obj, range))) {
           return false;
         }
 
@@ -132,19 +185,60 @@ export function checkForAchievements(
    * Check for the edges achievement
    */
   if (!unlockedAchievements.includes('edges')) {
-    const topLeft = { x: -(window.innerWidth / 2), y: window.innerHeight / 2 };
-    const topRight = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-    const bottomLeft = { x: -(window.innerWidth / 2), y: -(window.innerHeight / 2) };
-    const bottomRight = { x: window.innerWidth / 2, y: -(window.innerHeight / 2) };
-
-    const allEdgesFilled = [topLeft, topRight, bottomLeft, bottomRight].every(corner =>
-      allObjects.some(obj => {
-        return Math.abs(obj.position.x - corner.x) < 70 && Math.abs(obj.position.y - corner.y) < 70;
-      })
-    );
+    const allEdgesFilled = [
+      'cornerTopLeftFilled',
+      'cornerTopRightFilled',
+      'cornerBottomLeftFilled',
+      'cornerBottomRightFilled',
+    ].every(variable => spline.getVariable(variable));
 
     if (allEdgesFilled) {
       unlockAchievement('edges');
+    }
+  }
+
+  /**
+   * Check for the its-a-match achievement
+   */
+  if (!unlockedAchievements.includes('its-a-match')) {
+    const hasObjForName = unlockedAchievements.includes('nickname') || unlockedAchievements.includes('contact');
+    const hasObjForDesigner = unlockedAchievements.includes('dribbble');
+    const hasObjForDeveloper = unlockedAchievements.includes('github');
+    const hasObjForCompany = unlockedAchievements.includes('linkedin') || unlockedAchievements.includes('cv');
+
+    // Make sure that the user has unlocked enough objects for the achievement
+    if (hasObjForName && hasObjForDesigner && hasObjForDeveloper && hasObjForCompany) {
+      const possibleMatches: Array<[string, Array<ObjectId>]> = [
+        ['name', ['obj-user-icon', 'obj-contact-icon']],
+        ['designer', ['obj-dribbble-logo']],
+        ['developer', ['obj-github-logo']],
+        ['company', ['obj-linkedin-logo', 'obj-cv-icon']],
+      ];
+
+      const itsAMatch = possibleMatches.every(([area, objIds]) => {
+        const areaRect = document.querySelector<HTMLSpanElement>(`[data-tag="${area}"]`)?.getBoundingClientRect();
+        if (!areaRect) {
+          return false;
+        }
+        return objIds.some(objId => {
+          const obj = allObjects.find(obj => obj.name === objId);
+          return obj && isWithinDomReactArea(obj, areaRect, viewport);
+        });
+      });
+
+      if (itsAMatch) {
+        unlockAchievement('its-a-match');
+      }
+    }
+  }
+
+  /**
+   * Check for the mile-high-club achievement
+   */
+  if (!unlockedAchievements.includes('mile-high-club')) {
+    const objectsOnTop = spline.getVariable('objectsOnTop') as number;
+    if (objectsOnTop >= 5 + unlockedAchievements.length) {
+      unlockAchievement('mile-high-club');
     }
   }
 }
@@ -152,7 +246,7 @@ export function checkForAchievements(
 /**
  * Checks if the objects are within a certain range of each other.
  */
-function isWithinRelativeArea(
+function isInRange(
   fromObj: SPEObject,
   toObj: SPEObject,
   range: { x: { min: number; max: number }; y: { min: number; max: number } }
@@ -160,6 +254,20 @@ function isWithinRelativeArea(
   const x = toObj.position.x - fromObj.position.x;
   const y = toObj.position.y - fromObj.position.y;
   return x > range.x.min && x < range.x.max && y > range.y.min && y < range.y.max;
+}
+
+/**
+ * Checks if the object is within the DOM area.
+ */
+function isWithinDomReactArea(obj: SPEObject, rect: DOMRect, viewport: Viewport) {
+  const { x: splineRectLeft, y: splineRectTop } = screenToSplineCoordinates(rect.left, rect.top, viewport);
+  const { x: splineRectRight, y: splineRectBottom } = screenToSplineCoordinates(rect.right, rect.bottom, viewport);
+  return (
+    obj.position.x > splineRectLeft &&
+    obj.position.x < splineRectRight &&
+    obj.position.y < splineRectTop &&
+    obj.position.y > splineRectBottom
+  );
 }
 
 export type ObjectPositions = Record<string, { x: number; y: number }>;

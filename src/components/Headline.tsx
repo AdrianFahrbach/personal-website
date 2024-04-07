@@ -8,7 +8,7 @@ interface HeadlineProps {
   /**
    * The text split into an array of lines with an array of words.
    */
-  text: (string | { text: string; isHighlighted?: boolean; classNames?: string[] })[][];
+  text: (string | { text: string; isHighlighted?: boolean; classNames?: string[]; dataTag?: string })[][];
 }
 
 const charactersWithoutSpace = ['.', ',', '!', '?'];
@@ -28,6 +28,7 @@ export const Headline: React.FC<HeadlineProps> = ({ as = 'h1', text }) => {
             <span
               // Dots, commas, etc. should be animated with the previous word
               data-word={hasSpaceBefore ? i++ : i - 1}
+              data-tag={typeof word === 'string' ? undefined : word.dataTag}
               className={classNames([styles.w, isHighlighted && styles.isHighlighted])}>
               {text}
             </span>

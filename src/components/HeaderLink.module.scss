@@ -35,6 +35,13 @@
   transform: translate(0, -50%);
 }
 
+.labelTop,
+.labelBottom {
+  &::selection {
+    background-color: transparent;
+  }
+}
+
 .labelTop {
   display: inline-block;
 }

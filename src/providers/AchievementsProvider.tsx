@@ -26,8 +26,7 @@ export const AchievementsProvider: React.FC<{ children: React.ReactNode }> = ({ 
   const [achievementQueue, setAchievementQueue] = useState<Achievement[]>([]);
   const [visibleAchievements, setVisibleAchievements] = useState<Achievement[]>([]);
   const [smokeEmitters, setSmokeEmitters] = useState<Achievement[]>([]);
-  const typingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const cheatcodeRef = useRef<string>('');
+  const typingSequenzRef = useRef<string[]>([]);
 
   /**
    * Get current achievements from local storage
@@ -55,12 +54,18 @@ export const AchievementsProvider: React.FC<{ children: React.ReactNode }> = ({ 
    * Unlock an achievement which means it will be stored in the local storage.
    */
   function unlockAchievement(achievement: Achievement) {
-    setUnlockedAchievements([...(unlockedAchievements ?? []), achievement]);
-    if (document.hidden) {
-      setAchievementQueue([...achievementQueue, achievement]);
-    } else {
-      showAchievement(achievement);
+    if (unlockedAchievements.includes(achievement)) {
+      // The unlock was probably triggered multiple times
+      return;
     }
+    setUnlockedAchievements([...(unlockedAchievements ?? []), achievement]);
+    setTimeout(() => {
+      if (document.hidden) {
+        setAchievementQueue([...achievementQueue, achievement]);
+      } else {
+        showAchievement(achievement);
+      }
+    }, 100);
   }
 
   /**
@@ -106,36 +111,45 @@ export const AchievementsProvider: React.FC<{ children: React.ReactNode }> = ({ 
       return;
     }
 
-    const cheatCode = 'ArrowUpArrowUpArrowDownArrowDownArrowLeftArrowRightArrowLeftArrowRightba';
-
-    function resetCode() {
-      cheatcodeRef.current = '';
-    }
-
-    function checkForCheatCode() {
-      if (cheatcodeRef.current === cheatCode) {
-        unlockAchievement('cheatcode');
-        resetCode();
-      }
-    }
+    const cheatcode = [
+      'ArrowUp',
+      'ArrowUp',
+      'ArrowDown',
+      'ArrowDown',
+      'ArrowLeft',
+      'ArrowRight',
+      'ArrowLeft',
+      'ArrowRight',
+      'b',
+      'a',
+    ];
 
     function handleKeyDown(event: KeyboardEvent) {
-      cheatcodeRef.current += event.key;
-      if (typingTimeoutRef.current) {
-        clearTimeout(typingTimeoutRef.current);
+      const newSequenz = [...typingSequenzRef.current, event.key];
+      const matches = newSequenz.every((key, index) => key === cheatcode[index]);
+
+      if (matches && cheatcode.length === newSequenz.length) {
+        // The user typed the cheatcode
+        unlockAchievement('cheatcode');
+        document.removeEventListener('keydown', handleKeyDown);
+        return;
       }
-      typingTimeoutRef.current = setTimeout(resetCode, 500);
-      checkForCheatCode();
+
+      if (matches) {
+        // The user typed the correct keys so far
+        typingSequenzRef.current.push(event.key);
+        return;
+      }
+
+      // The user typed the wrong key
+      typingSequenzRef.current = [event.key];
     }
 
     document.addEventListener('keydown', handleKeyDown);
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
-      if (typingTimeoutRef.current) {
-        clearTimeout(typingTimeoutRef.current);
-      }
     };
-  }, []);
+  }, [unlockedAchievements]);
 
   return (
     <AchievementsContext.Provider

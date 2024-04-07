@@ -3,7 +3,8 @@
 import { SmokeEffect } from '@/components/SmokeEffect';
 import { AchievementsContext } from '@/providers/AchievementsProvider';
 import { Achievement, allAchievements } from '@/services/achievements.service';
-import { achievementToObjectNameMap } from '@/services/spline.service';
+import { achievementToObjectNameMap, splineToScreenCoordinates } from '@/services/spline.service';
+import { useViewport } from '@/services/viewport.service';
 import { Application as SplineApp } from '@splinetool/runtime';
 import { useContext, useMemo } from 'react';
 
@@ -14,6 +15,7 @@ interface SmokeEffectsSpawnerProps {
 
 export const SmokeEffectsSpawner: React.FC<SmokeEffectsSpawnerProps> = ({ splineApp, splineIsReady }) => {
   const { smokeEmitters } = useContext(AchievementsContext);
+  const viewport = useViewport();
 
   /**
    * The smoke effect only spawns on the initial position of an object.
@@ -26,9 +28,7 @@ export const SmokeEffectsSpawner: React.FC<SmokeEffectsSpawnerProps> = ({ spline
       allAchievements.forEach(achievement => {
         const object = allObjects.find(obj => obj.name === achievementToObjectNameMap[achievement]);
         if (object) {
-          const x = window.innerWidth / 2 + object.position.x;
-          const y = window.innerHeight / 2 - object.position.y;
-          newSplineObjectPositions[achievement] = { x, y };
+          newSplineObjectPositions[achievement] = { x: object.position.x, y: object.position.y };
         }
       });
       return newSplineObjectPositions;
@@ -36,16 +36,17 @@ export const SmokeEffectsSpawner: React.FC<SmokeEffectsSpawnerProps> = ({ spline
     return undefined;
   }, [splineApp.current, splineIsReady, smokeEmitters]);
 
-  if (!splineObjectPositions) {
+  if (!viewport || !splineIsReady || !splineObjectPositions) {
     return null;
   }
 
-  return Array.from(smokeEmitters).map(achievement => (
-    <SmokeEffect
-      key={achievement}
-      x={splineObjectPositions[achievement]?.x}
-      y={splineObjectPositions[achievement]?.y}
-      isVisible={smokeEmitters.includes(achievement)}
-    />
-  ));
+  return Array.from(smokeEmitters).map(achievement => {
+    const splinePosition = splineObjectPositions[achievement];
+    if (!splinePosition) {
+      return null;
+    }
+
+    const { x, y } = splineToScreenCoordinates(splinePosition.x, splinePosition.y, viewport);
+    return <SmokeEffect key={achievement} x={x} y={y} isVisible={smokeEmitters.includes(achievement)} />;
+  });
 };

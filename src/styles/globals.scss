@@ -1,7 +1,11 @@
 :root {
   --neutral-100: #fafafa;
+  --neutral-100-transparent: rgba(250, 250, 250, 0.45);
   --neutral-900: #222;
   --neutral-900-transparent: rgba(22, 22, 22, 0.45);
+  --gold-500: #ba9c7a;
+  --gold-500-transparent: rgba(186, 156, 122, 0.35);
+
   --wrapper-padding-x: 32px;
   --wrapper-padding-y: 22px;
 
@@ -13,16 +17,14 @@
   --pt-circle-size: max(225vw, 225vh);
 }
 
-/* @media (prefers-color-scheme: dark) {
-  :root {
-    
-  }
-} */
-
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+
+  ::selection {
+    background-color: var(--gold-500-transparent);
+  }
 }
 
 html,
