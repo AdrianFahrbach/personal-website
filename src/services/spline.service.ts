@@ -1,5 +1,6 @@
 import { SPEObject, Application as SplineApp } from '@splinetool/runtime';
 import { Achievement, allAchievements } from './achievements.service';
+import { Viewport } from './viewport.service';
 
 /**
  * This function moves the boundary planes to the correct position by adjusting a Spline variable.
@@ -8,14 +9,40 @@ import { Achievement, allAchievements } from './achievements.service';
  * We also have two planes for each side, to decrease the chance of object clipping through.
  * @param spline The current spline instance
  */
-export function updateBoundaries(spline: SplineApp) {
+export function updateViewport(spline: SplineApp, viewport: Viewport) {
+  const { x: edgeLeft, y: edgeTop } = screenToSplineCoordinates(0, 0, viewport);
+  const { x: edgeRight, y: edgeBottom } = screenToSplineCoordinates(window.innerWidth, window.innerHeight, viewport);
+
   spline.setVariables({
-    edgeLeft: -(window.innerWidth / 2),
-    edgeRight: window.innerWidth / 2,
-    edgeTop: window.innerHeight / 2,
-    edgeTopFar: window.innerHeight / 2 + 5000,
-    edgeBottom: -(window.innerHeight / 2),
+    edgeLeft,
+    edgeRight,
+    edgeTop,
+    edgeTopFar: edgeTop + 5000,
+    edgeBottom,
+    viewport: viewport,
+    isTablet: viewport === 'tablet',
+    isDesktop: viewport === 'desktop',
   });
+}
+
+/**
+ * Converts screen coordinates to Spline coordinates.
+ */
+export function screenToSplineCoordinates(x: number, y: number, viewport: Viewport) {
+  const zoom = viewport === 'tablet' ? 0.75 : 1;
+  const splineX = x - window.innerWidth / 2;
+  const splineY = window.innerHeight / 2 - y;
+  return { x: splineX / zoom, y: splineY / zoom };
+}
+
+/**
+ * Converts Spline coordinates to screen coordinates.
+ */
+export function splineToScreenCoordinates(x: number, y: number, viewport: Viewport) {
+  const zoom = viewport === 'tablet' ? 0.75 : 1;
+  const screenX = x * zoom + window.innerWidth / 2;
+  const screenY = window.innerHeight / 2 - y * zoom;
+  return { x: screenX, y: screenY };
 }
 
 export type ObjectId =
@@ -89,7 +116,8 @@ export function updateVisibleAchievementObjects(splineApp: SplineApp, unlockedAc
 export function checkForAchievements(
   spline: SplineApp,
   unlockedAchievements: Achievement[],
-  unlockAchievement: (achievement: Achievement) => void
+  unlockAchievement: (achievement: Achievement) => void,
+  viewport: Viewport
 ) {
   let allObjects: SPEObject[] = [];
   if (!unlockedAchievements.includes('nickname') || !unlockedAchievements.includes('its-a-match')) {
@@ -179,7 +207,7 @@ export function checkForAchievements(
     const hasObjForCompany = unlockedAchievements.includes('linkedin') || unlockedAchievements.includes('cv');
 
     // Make sure that the user has unlocked enough objects for the achievement
-    if (hasObjForName && !hasObjForDesigner && !hasObjForDeveloper && !hasObjForCompany) {
+    if (hasObjForName && hasObjForDesigner && hasObjForDeveloper && hasObjForCompany) {
       const possibleMatches: Array<[string, Array<ObjectId>]> = [
         ['name', ['obj-user-icon', 'obj-contact-icon']],
         ['designer', ['obj-dribbble-logo']],
@@ -194,7 +222,7 @@ export function checkForAchievements(
         }
         return objIds.some(objId => {
           const obj = allObjects.find(obj => obj.name === objId);
-          return obj && isWithinDomReactArea(obj, areaRect);
+          return obj && isWithinDomReactArea(obj, areaRect, viewport);
         });
       });
 
@@ -231,12 +259,14 @@ function isInRange(
 /**
  * Checks if the object is within the DOM area.
  */
-function isWithinDomReactArea(obj: SPEObject, rect: DOMRect) {
+function isWithinDomReactArea(obj: SPEObject, rect: DOMRect, viewport: Viewport) {
+  const { x: splineRectLeft, y: splineRectTop } = screenToSplineCoordinates(rect.left, rect.top, viewport);
+  const { x: splineRectRight, y: splineRectBottom } = screenToSplineCoordinates(rect.right, rect.bottom, viewport);
   return (
-    window.innerWidth / 2 + obj.position.x > rect.left &&
-    window.innerWidth / 2 + obj.position.x < rect.right &&
-    window.innerHeight / 2 - obj.position.y > rect.top &&
-    window.innerHeight / 2 - obj.position.y < rect.bottom
+    obj.position.x > splineRectLeft &&
+    obj.position.x < splineRectRight &&
+    obj.position.y < splineRectTop &&
+    obj.position.y > splineRectBottom
   );
 }
 

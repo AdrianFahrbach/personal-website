@@ -6,9 +6,10 @@ import {
   checkForAchievements,
   didObjectsGetMoved,
   getObjectPositions,
-  updateBoundaries,
+  updateViewport,
   updateVisibleAchievementObjects,
 } from '@/services/spline.service';
+import { useViewport } from '@/services/viewport.service';
 import Spline from '@splinetool/react-spline';
 import { Application as SplineApp } from '@splinetool/runtime';
 import { throttle } from 'lodash';
@@ -24,18 +25,19 @@ export const SplineScene: React.FC = () => {
   const [isResizing, setIsResizing] = useState(false);
   const { unlockedAchievements, unlockAchievement, visibleAchievements } = useContext(AchievementsContext);
   const splineApp = useRef<SplineApp>();
+  const viewport = useViewport();
 
   /**
    * Setup the Spline scene
    * @param spline
    */
   function onLoad(spline: SplineApp) {
-    if (spline.getAllObjects().length === 0) {
+    if (spline.getAllObjects().length === 0 || !viewport) {
       // The scene is not loaded yet
       return;
     }
     splineApp.current = spline;
-    updateBoundaries(spline);
+    updateViewport(spline, viewport);
     // We give it some extra time to make sure everything is ready
     updateVisibleAchievementObjects(spline, unlockedAchievements);
     setTimeout(() => {
@@ -86,14 +88,14 @@ export const SplineScene: React.FC = () => {
   function resizeStartHandler() {
     setIsResizing(true);
   }
-  const throttledResizeStartHandler = useCallback(throttle(resizeStartHandler, 5000), []);
+  const throttledResizeStartHandler = useCallback(throttle(resizeStartHandler, 5000), [viewport]);
   function resizeEndHandler() {
     setIsResizing(false);
-    if (splineApp.current) {
-      updateBoundaries(splineApp.current);
+    if (splineApp.current && viewport) {
+      updateViewport(splineApp.current, viewport);
     }
   }
-  const debouncedResizeEndHandler = useCallback(debounce(resizeEndHandler, 500), []);
+  const debouncedResizeEndHandler = useCallback(debounce(resizeEndHandler, 100), [viewport]);
 
   useEffect(() => {
     window.addEventListener('resize', throttledResizeStartHandler);
@@ -102,21 +104,21 @@ export const SplineScene: React.FC = () => {
       window.removeEventListener('resize', throttledResizeStartHandler);
       window.removeEventListener('resize', debouncedResizeEndHandler);
     };
-  }, []);
+  }, [viewport]);
 
   /**
    * Check for achievements every 2 seconds
    */
   useEffect(() => {
     const currentSplineApp = splineApp.current;
-    if (currentSplineApp && !isResizing) {
+    if (currentSplineApp && !isResizing && viewport) {
       const interval = setInterval(() => {
-        checkForAchievements(currentSplineApp, unlockedAchievements, unlockAchievement);
+        checkForAchievements(currentSplineApp, unlockedAchievements, unlockAchievement, viewport);
       }, 2000);
 
       return () => clearInterval(interval);
     }
-  }, [splineApp.current, unlockedAchievements, isResizing]);
+  }, [splineApp.current, unlockedAchievements, isResizing, viewport]);
 
   /**
    * Check for the drag achievement
@@ -157,6 +159,10 @@ export const SplineScene: React.FC = () => {
       document.removeEventListener('pointermove', throttledCheckForDragAchievement);
     };
   }, [splineApp.current, unlockedAchievements]);
+
+  if (!viewport) {
+    return null;
+  }
 
   return (
     <>

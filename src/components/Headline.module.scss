@@ -5,12 +5,15 @@
   z-index: 1;
   padding: 32px;
   margin: 0;
-  font-size: 100px;
+  font-size: 72px;
   font-weight: 400;
   line-height: 1;
   color: var(--neutral-900-transparent);
   white-space: nowrap;
   transform: translate(-50%, -50%);
+  @media (min-width: 992px) {
+    font-size: 100px;
+  }
 }
 
 .isHighlighted {
