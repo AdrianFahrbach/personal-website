@@ -13,6 +13,7 @@ export function updateBoundaries(spline: SplineApp) {
     edgeLeft: -(window.innerWidth / 2),
     edgeRight: window.innerWidth / 2,
     edgeTop: window.innerHeight / 2,
+    edgeTopFar: window.innerHeight / 2 + 5000,
     edgeBottom: -(window.innerHeight / 2),
   });
 }
@@ -91,12 +92,7 @@ export function checkForAchievements(
   unlockAchievement: (achievement: Achievement) => void
 ) {
   let allObjects: SPEObject[] = [];
-  if (
-    !unlockedAchievements.includes('nickname') ||
-    !unlockedAchievements.includes('edges') ||
-    !unlockedAchievements.includes('its-a-match') ||
-    !unlockedAchievements.includes('mile-high-club')
-  ) {
+  if (!unlockedAchievements.includes('nickname') || !unlockedAchievements.includes('its-a-match')) {
     // All objects relevant for achievements start with 'obj-'
     allObjects = spline.getAllObjects().filter(obj => obj.visible && obj.name.startsWith('obj-'));
   }
@@ -161,16 +157,12 @@ export function checkForAchievements(
    * Check for the edges achievement
    */
   if (!unlockedAchievements.includes('edges')) {
-    const topLeft = { x: -(window.innerWidth / 2), y: window.innerHeight / 2 };
-    const topRight = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-    const bottomLeft = { x: -(window.innerWidth / 2), y: -(window.innerHeight / 2) };
-    const bottomRight = { x: window.innerWidth / 2, y: -(window.innerHeight / 2) };
-
-    const allEdgesFilled = [topLeft, topRight, bottomLeft, bottomRight].every(corner =>
-      allObjects.some(obj => {
-        return Math.abs(obj.position.x - corner.x) < 70 && Math.abs(obj.position.y - corner.y) < 70;
-      })
-    );
+    const allEdgesFilled = [
+      'cornerTopLeftFilled',
+      'cornerTopRightFilled',
+      'cornerBottomLeftFilled',
+      'cornerBottomRightFilled',
+    ].every(variable => spline.getVariable(variable));
 
     if (allEdgesFilled) {
       unlockAchievement('edges');
@@ -216,7 +208,8 @@ export function checkForAchievements(
    * Check for the mile-high-club achievement
    */
   if (!unlockedAchievements.includes('mile-high-club')) {
-    if (allObjects.every(obj => window.innerHeight / 2 - obj.position.y < 225)) {
+    const objectsOnTop = spline.getVariable('objectsOnTop') as number;
+    if (objectsOnTop >= 5 + unlockedAchievements.length) {
       unlockAchievement('mile-high-club');
     }
   }
