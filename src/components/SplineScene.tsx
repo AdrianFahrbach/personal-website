@@ -86,7 +86,7 @@ export const SplineScene: React.FC = () => {
   function resizeStartHandler() {
     setIsResizing(true);
   }
-  const throttledResizeStartHandler = useCallback(throttle(resizeEndHandler, 5000), []);
+  const throttledResizeStartHandler = useCallback(throttle(resizeStartHandler, 5000), []);
   function resizeEndHandler() {
     setIsResizing(false);
     if (splineApp.current) {
@@ -96,10 +96,10 @@ export const SplineScene: React.FC = () => {
   const debouncedResizeEndHandler = useCallback(debounce(resizeEndHandler, 500), []);
 
   useEffect(() => {
-    window.addEventListener('resize', resizeStartHandler);
+    window.addEventListener('resize', throttledResizeStartHandler);
     window.addEventListener('resize', debouncedResizeEndHandler);
     return () => {
-      window.removeEventListener('resize', resizeStartHandler);
+      window.removeEventListener('resize', throttledResizeStartHandler);
       window.removeEventListener('resize', debouncedResizeEndHandler);
     };
   }, []);
