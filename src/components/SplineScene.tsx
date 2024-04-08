@@ -177,7 +177,7 @@ export const SplineScene: React.FC = () => {
       <svg className={styles.bloomEffectSvg}>
         <filter id='bloom-effect'>
           {/* Shadow Blur */}
-          <feGaussianBlur stdDeviation={viewport === 'desktop' ? 7 : 4.66666} result='blur' />
+          <feGaussianBlur stdDeviation={viewport === 'desktop' ? 6 : 4} result='blur' />
 
           {/* Invert the drop shadow to create an inner shadow */}
           <feComposite operator='out' in='SourceGraphic' in2='blur' result='inverse' />
