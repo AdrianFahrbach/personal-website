@@ -17,7 +17,6 @@ import debounce from 'lodash/debounce';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { SmokeEffectsSpawner } from './SmokeEffectsSpawner';
 import styles from './SplineScene.module.scss';
-import { Headline } from './Headline';
 
 export const SplineScene: React.FC = () => {
   const [splineIsReady, setSplineIsReady] = useState(false);
@@ -57,6 +56,12 @@ export const SplineScene: React.FC = () => {
     const words = document.querySelectorAll<HTMLSpanElement>('[data-word]');
     const lastWord = words[words.length - 1];
     lastWord.addEventListener('animationend', setTextToReady);
+
+    if (process.env.NODE_ENV === 'development') {
+      // Prevent HMR from not triggering the animationend event
+      setTimeout(setTextToReady, 1500);
+    }
+
     return () => {
       lastWord.removeEventListener('animationend', setTextToReady);
     };
@@ -165,13 +170,6 @@ export const SplineScene: React.FC = () => {
     return null;
   }
 
-  const imageCoordinates = {
-    x: typeof window !== 'undefined' ? window.innerWidth / 2 - 849 / 2 + 4 : 0,
-    y: typeof window !== 'undefined' ? window.innerHeight / 2 - 410 / 2 - 11 : 0,
-    width: 832,
-    height: 402,
-  };
-
   return (
     <>
       <svg className={styles.bloomEffectSvg}>
@@ -192,7 +190,6 @@ export const SplineScene: React.FC = () => {
           <feComposite operator='over' in='shadow' in2='SourceGraphic' />
         </filter>
       </svg>
-
       <Spline
         className={styles.container}
         scene='/assets/scene.splinecode'
