@@ -237,7 +237,10 @@ export function checkForAchievements(
    */
   if (!unlockedAchievements.includes('mile-high-club')) {
     const objectsOnTop = spline.getVariable('objectsOnTop') as number;
-    if (objectsOnTop >= 5 + unlockedAchievements.length) {
+    // We allow one object to be missing when the to-the-moon achievement is unlocked
+    // because it could be out of the viewport
+    const additionalObjects = unlockedAchievements.includes('to-the-moon') ? 5 : 6;
+    if (objectsOnTop >= unlockedAchievements.length + additionalObjects) {
       unlockAchievement('mile-high-club');
     }
   }
