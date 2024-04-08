@@ -42,7 +42,7 @@ export function screenToSplineCoordinates(x: number, y: number, viewport: Viewpo
 export function splineToScreenCoordinates(x: number, y: number, viewport: Viewport) {
   const { zoom, splineOffsetX, splineOffsetY } = getViewportInfo(viewport);
   const screenX = x * zoom + window.innerWidth / 2 - splineOffsetX * zoom;
-  const screenY = window.innerHeight / 2 - y * zoom - splineOffsetY * zoom;
+  const screenY = window.innerHeight / 2 - y * zoom + splineOffsetY * zoom;
   return { x: screenX, y: screenY };
 }
 

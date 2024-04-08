@@ -10,10 +10,20 @@
 .icon {
   position: relative;
   flex-shrink: 0;
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
+  @media (min-width: 576px) {
+    width: 28px;
+    height: 28px;
+  }
 
   > svg {
     display: block;
+    width: 24px;
+    height: 24px;
+    @media (min-width: 576px) {
+      width: 28px;
+      height: 28px;
+    }
   }
 }
