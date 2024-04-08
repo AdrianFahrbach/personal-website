@@ -43,11 +43,11 @@ export const SplineScene: React.FC = () => {
     updateVisibleAchievementObjects(spline, unlockedAchievements);
     setTimeout(() => {
       setSplineIsReady(true);
-    }, 200);
+    }, 300);
     // Update the variables again, just in case that Spline is super slow
     setTimeout(() => {
       updateVisibleAchievementObjects(spline, unlockedAchievements);
-    }, 500);
+    }, 600);
   }
 
   function setTextToReady() {
