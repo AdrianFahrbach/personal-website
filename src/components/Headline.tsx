@@ -2,6 +2,7 @@ import { merchant } from '@/styles/fonts';
 import classNames from 'classnames';
 import React from 'react';
 import styles from './Headline.module.scss';
+import { useViewport } from '@/services/viewport.service';
 
 interface HeadlineProps {
   as?: 'h1' | 'h2';
@@ -14,6 +15,8 @@ interface HeadlineProps {
 const charactersWithoutSpace = ['.', ',', '!', '?'];
 
 export const Headline: React.FC<HeadlineProps> = ({ as = 'h1', text }) => {
+  const viewport = useViewport();
+
   let i = 0;
   const parsedText = text.map(line =>
     line.map((word, j) => {
@@ -29,7 +32,11 @@ export const Headline: React.FC<HeadlineProps> = ({ as = 'h1', text }) => {
               // Dots, commas, etc. should be animated with the previous word
               data-word={hasSpaceBefore ? i++ : i - 1}
               data-tag={typeof word === 'string' ? undefined : word.dataTag}
-              className={classNames([styles.w, isHighlighted && styles.isHighlighted])}>
+              className={classNames([
+                styles.word,
+                isHighlighted && styles.isHighlighted,
+                viewport && styles.hasAnimation,
+              ])}>
               {text}
             </span>
           </span>

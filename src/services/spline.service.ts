@@ -20,6 +20,7 @@ export function updateViewport(spline: SplineApp, viewport: Viewport) {
     edgeTopFar: edgeTop + 5000,
     edgeBottom,
     viewport: viewport,
+    isMobile: viewport === 'mobile',
     isTablet: viewport === 'tablet',
     isDesktop: viewport === 'desktop',
   });
@@ -29,9 +30,9 @@ export function updateViewport(spline: SplineApp, viewport: Viewport) {
  * Converts screen coordinates to Spline coordinates.
  */
 export function screenToSplineCoordinates(x: number, y: number, viewport: Viewport) {
-  const zoom = viewport === 'tablet' ? 0.75 : 1;
-  const splineX = x - window.innerWidth / 2;
-  const splineY = window.innerHeight / 2 - y;
+  const { zoom, splineOffsetX, splineOffsetY } = getViewportInfo(viewport);
+  const splineX = x - window.innerWidth / 2 + splineOffsetX * zoom;
+  const splineY = window.innerHeight / 2 - y + splineOffsetY * zoom;
   return { x: splineX / zoom, y: splineY / zoom };
 }
 
@@ -39,10 +40,20 @@ export function screenToSplineCoordinates(x: number, y: number, viewport: Viewpo
  * Converts Spline coordinates to screen coordinates.
  */
 export function splineToScreenCoordinates(x: number, y: number, viewport: Viewport) {
-  const zoom = viewport === 'tablet' ? 0.75 : 1;
-  const screenX = x * zoom + window.innerWidth / 2;
-  const screenY = window.innerHeight / 2 - y * zoom;
+  const { zoom, splineOffsetX, splineOffsetY } = getViewportInfo(viewport);
+  const screenX = x * zoom + window.innerWidth / 2 - splineOffsetX * zoom;
+  const screenY = window.innerHeight / 2 - y * zoom + splineOffsetY * zoom;
   return { x: screenX, y: screenY };
+}
+
+/**
+ * Gets additional information about the viewport.
+ */
+export function getViewportInfo(viewport: Viewport) {
+  const zoom = viewport === 'mobile' ? 0.6 : viewport === 'tablet' ? 0.75 : 1;
+  const splineOffsetX = viewport === 'mobile' ? 100 : 0;
+  const splineOffsetY = viewport === 'mobile' ? 30 : 0;
+  return { zoom, splineOffsetX, splineOffsetY };
 }
 
 export type ObjectId =
@@ -129,7 +140,7 @@ export function checkForAchievements(
    * Check for the to-the-moon achievement
    */
   if (!unlockedAchievements.includes('to-the-moon')) {
-    if (spline.getVariable('isOutOfBounds') === true) {
+    if ((spline.getVariable('objectsOutOfBounds') as number) > 0) {
       unlockAchievement('to-the-moon');
     }
   }
@@ -237,7 +248,9 @@ export function checkForAchievements(
    */
   if (!unlockedAchievements.includes('mile-high-club')) {
     const objectsOnTop = spline.getVariable('objectsOnTop') as number;
-    if (objectsOnTop >= 5 + unlockedAchievements.length) {
+    // We don't require the objects that are out of bounds to be on top
+    const additionalObjects = 6 - (spline.getVariable('objectsOutOfBounds') as number);
+    if (objectsOnTop >= unlockedAchievements.length + additionalObjects) {
       unlockAchievement('mile-high-club');
     }
   }

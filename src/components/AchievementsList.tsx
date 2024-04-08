@@ -1,11 +1,11 @@
 'use client';
 
-import classNames from 'classnames';
-import React, { useContext } from 'react';
-import styles from './AchievementsList.module.scss';
 import { AchievementsContext } from '@/providers/AchievementsProvider';
 import { achievementToToastMap, allAchievements } from '@/services/achievements.service';
 import { QuestionMark } from '@phosphor-icons/react';
+import classNames from 'classnames';
+import React, { useContext } from 'react';
+import styles from './AchievementsList.module.scss';
 
 export const AchievementsList: React.FC<React.HTMLAttributes<HTMLDivElement>> = () => {
   const { unlockedAchievements } = useContext(AchievementsContext);

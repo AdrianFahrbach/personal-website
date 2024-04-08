@@ -6,6 +6,7 @@ import {
   checkForAchievements,
   didObjectsGetMoved,
   getObjectPositions,
+  getViewportInfo,
   updateViewport,
   updateVisibleAchievementObjects,
 } from '@/services/spline.service';
@@ -42,7 +43,11 @@ export const SplineScene: React.FC = () => {
     updateVisibleAchievementObjects(spline, unlockedAchievements);
     setTimeout(() => {
       setSplineIsReady(true);
-    }, 200);
+    }, 300);
+    // Update the variables again, just in case that Spline is super slow
+    setTimeout(() => {
+      updateVisibleAchievementObjects(spline, unlockedAchievements);
+    }, 600);
   }
 
   function setTextToReady() {
@@ -56,6 +61,12 @@ export const SplineScene: React.FC = () => {
     const words = document.querySelectorAll<HTMLSpanElement>('[data-word]');
     const lastWord = words[words.length - 1];
     lastWord.addEventListener('animationend', setTextToReady);
+
+    if (process.env.NODE_ENV === 'development') {
+      // Prevent HMR from not triggering the animationend event
+      setTimeout(setTextToReady, 1500);
+    }
+
     return () => {
       lastWord.removeEventListener('animationend', setTextToReady);
     };
@@ -164,8 +175,28 @@ export const SplineScene: React.FC = () => {
     return null;
   }
 
+  const { zoom } = getViewportInfo(viewport);
+
   return (
     <>
+      <svg className={styles.bloomEffectSvg}>
+        <filter id='bloom-effect'>
+          {/* Shadow Blur */}
+          <feGaussianBlur stdDeviation={6.5 * zoom - (viewport === 'mobile' ? 1 : 0)} result='blur' />
+
+          {/* Invert the drop shadow to create an inner shadow */}
+          <feComposite operator='out' in='SourceGraphic' in2='blur' result='inverse' />
+
+          {/* Color & Opacity */}
+          <feFlood floodColor='white' floodOpacity='1' result='color' />
+
+          {/* Clip color inside shadow */}
+          <feComposite operator='in' in='color' in2='inverse' result='shadow' />
+
+          {/* Put shadow over original object */}
+          <feComposite operator='over' in='shadow' in2='SourceGraphic' />
+        </filter>
+      </svg>
       <Spline
         className={styles.container}
         scene='/assets/scene.splinecode'

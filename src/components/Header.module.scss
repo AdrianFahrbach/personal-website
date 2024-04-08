@@ -1,13 +1,71 @@
-.linkContainer {
+.mobileNav {
   position: fixed;
+  top: 0;
+  left: 0;
   z-index: 999;
   display: flex;
-  gap: 18px;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  margin: var(--wrapper-padding-y) var(--wrapper-padding-x);
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  text-align: center;
+  background-color: var(--neutral-100);
+  transition: 0.375s ease;
+  transform: translateY(-101%);
+  @media (min-width: 576px) {
+    display: contents;
+    text-align: unset;
+    background-color: transparent;
+  }
+
+  &.isOpen {
+    transform: translateY(0);
+  }
+}
+
+.mobileNavButton {
+  top: 0;
+  right: 0;
+  z-index: 999;
+  display: block;
+  padding: 12px;
+  color: var(--neutral-900);
+  appearance: none;
+  cursor: pointer;
+  background: none;
+  border: none;
+  transition: opacity 0.25s ease;
+  @media (min-width: 576px) {
+    display: none;
+  }
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.mobileNavOpenButton {
+  position: fixed;
+}
+
+.mobileNavCloseButton {
+  position: absolute;
+}
+
+.linkContainer {
+  z-index: 999;
   transition: transform 0.5s ease;
   transition-delay: 1.25s;
+  @media (min-width: 576px) {
+    position: fixed;
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    justify-content: space-between;
+    margin: var(--wrapper-padding-y) var(--wrapper-padding-x);
+  }
 
   &.isHidden {
     transition-delay: 0s;
@@ -26,19 +84,32 @@
 
 .topLeft,
 .topRight {
+  @media (min-width: 576px) {
+    text-align: center;
+  }
+
   &.isHidden {
-    transform: translateY(-200%);
+    @media (min-width: 576px) {
+      transform: translateY(-200%);
+    }
   }
 }
 
-
 .bottomCenter {
-  bottom: 0;
+  position: fixed !important;
+  bottom: 8px;
   left: 50%;
+  margin-right: 0 !important;
+  margin-left: 0 !important;
   transform: translateX(-50%);
+  @media (min-width: 576px) {
+    bottom: 0;
+  }
 
   &.isHidden {
-    transform: translate(-50%, 200%);
+    @media (min-width: 576px) {
+      transform: translate(-50%, 200%);
+    }
   }
 }
 
@@ -53,12 +124,30 @@
   display: flex;
   flex-direction: column;
   gap: 3px;
-  align-items: flex-end;
+  align-items: center;
+  @media (min-width: 576px) {
+    align-items: flex-end;
+  }
 }
 
 .bottomLeft,
 .bottomRight {
   &.isHidden {
-    transform: translateY(200%);
+    @media (min-width: 576px) {
+      transform: translateY(200%);
+    }
+  }
+}
+
+.backToHome {
+  @media (max-width: 575.98px) {
+    position: fixed !important;
+    top: 10px;
+    left: 8px;
+    z-index: 998;
+
+    &.isHidden {
+      transform: translateY(-200%);
+    }
   }
 }

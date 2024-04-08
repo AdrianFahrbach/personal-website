@@ -1,6 +1,7 @@
 'use client';
 
 import { Achievement, achievementToToastMap } from '@/services/achievements.service';
+import { useViewport } from '@/services/viewport.service';
 import toastStyles from '@/styles/toast.module.scss';
 import { createContext, useEffect, useRef, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
@@ -27,6 +28,7 @@ export const AchievementsProvider: React.FC<{ children: React.ReactNode }> = ({ 
   const [visibleAchievements, setVisibleAchievements] = useState<Achievement[]>([]);
   const [smokeEmitters, setSmokeEmitters] = useState<Achievement[]>([]);
   const typingSequenzRef = useRef<string[]>([]);
+  const viewport = useViewport();
 
   /**
    * Get current achievements from local storage
@@ -76,11 +78,13 @@ export const AchievementsProvider: React.FC<{ children: React.ReactNode }> = ({ 
     setSmokeEmitters([...(smokeEmitters ?? []), achievement]);
     const { icon, headline, subline } = achievementToToastMap[achievement];
     toast(
-      <div>
-        <p className={toastStyles.toastHeadline}>{headline}</p>
-        <p className={toastStyles.toastSubline}>{subline}</p>
-      </div>,
-      { icon: <div className={toastStyles.icon}>{icon}</div>, duration: 5000 }
+      t => (
+        <div onClick={() => toast.dismiss(t.id)}>
+          <p className={toastStyles.toastHeadline}>{headline}</p>
+          <p className={toastStyles.toastSubline}>{subline}</p>
+        </div>
+      ),
+      { icon: <div className={toastStyles.icon}>{icon}</div>, duration: 4000 }
     );
   }
 
@@ -162,17 +166,19 @@ export const AchievementsProvider: React.FC<{ children: React.ReactNode }> = ({ 
       {children}
       <Toaster
         position='bottom-center'
+        gutter={viewport === 'mobile' ? 0 : 8}
         containerStyle={{
           top: 0,
           left: 0,
           bottom: 0,
           right: 0,
+          gap: viewport === 'mobile' ? '0' : '8px',
         }}
         toastOptions={{
           style: {
-            gap: '12px',
+            width: viewport === 'mobile' ? '100%' : 'auto',
             maxWidth: '500px',
-            padding: '10px 24px',
+            padding: viewport === 'mobile' ? '8px 16px' : '10px 24px',
             border: 'none',
             borderRadius: '0',
             boxShadow: 'none',
