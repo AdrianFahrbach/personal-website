@@ -76,11 +76,13 @@ export const AchievementsProvider: React.FC<{ children: React.ReactNode }> = ({ 
     setSmokeEmitters([...(smokeEmitters ?? []), achievement]);
     const { icon, headline, subline } = achievementToToastMap[achievement];
     toast(
-      <div>
-        <p className={toastStyles.toastHeadline}>{headline}</p>
-        <p className={toastStyles.toastSubline}>{subline}</p>
-      </div>,
-      { icon: <div className={toastStyles.icon}>{icon}</div>, duration: 5000 }
+      t => (
+        <div onClick={() => toast.dismiss(t.id)}>
+          <p className={toastStyles.toastHeadline}>{headline}</p>
+          <p className={toastStyles.toastSubline}>{subline}</p>
+        </div>
+      ),
+      { icon: <div className={toastStyles.icon}>{icon}</div>, duration: 4000 }
     );
   }
 
