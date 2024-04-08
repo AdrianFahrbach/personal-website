@@ -18,6 +18,7 @@ interface HeaderLinkProps {
   achievementToUnlock?: Achievement;
   hasPageTransition?: boolean;
   isBackButton?: boolean;
+  setMobileNavOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const HeaderLink: React.FC<HeaderLinkProps> = ({
@@ -29,11 +30,13 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({
   achievementToUnlock,
   hasPageTransition,
   isBackButton,
+  setMobileNavOpen,
 }) => {
   const { unlockedAchievements: achievements, unlockAchievement } = useContext(AchievementsContext);
   const { navigate } = useContext(PageTransitionContext);
 
   const handeClick: React.MouseEventHandler = e => {
+    setMobileNavOpen(false);
     if (hasPageTransition) {
       e.preventDefault();
       navigate(to, { x: `${e.clientX}px`, y: `${e.clientY}px` });
@@ -42,6 +45,18 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({
       unlockAchievement(achievementToUnlock);
     }
   };
+
+  const InnerElements = (
+    <>
+      {isBackButton && <ArrowLeft className={styles.icon} size={24} />}
+      <div className={styles.transitionContainer}>
+        <span className={classNames([styles.labelTop, !!isBackButton && styles.hasIcon])}>{label}</span>
+        <span className={classNames([styles.labelBottom, !!isBackButton && styles.hasIcon])} aria-hidden>
+          {label}
+        </span>
+      </div>
+    </>
+  );
 
   // Files can't use the Next.js Link component
   if (isFile) {
@@ -53,11 +68,7 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({
         rel={isExternal ? 'noopener noreferrer' : undefined}
         className={classNames([styles.container, isSmall && styles.isSmall])}
         aria-label={label}>
-        {isBackButton && <ArrowLeft className={styles.icon} size={24} />}
-        <span className={classNames([styles.labelTop, !!isBackButton && styles.hasIcon])}>{label}</span>
-        <span className={classNames([styles.labelBottom, !!isBackButton && styles.hasIcon])} aria-hidden>
-          {label}
-        </span>
+        {InnerElements}
       </a>
     );
   }
@@ -71,10 +82,7 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({
       className={classNames([styles.container, isSmall && styles.isSmall])}
       aria-label={label}>
       {isBackButton && <ArrowLeft className={styles.icon} size={24} />}
-      <span className={classNames([styles.labelTop, !!isBackButton && styles.hasIcon])}>{label}</span>
-      <span className={classNames([styles.labelBottom, !!isBackButton && styles.hasIcon])} aria-hidden>
-        {label}
-      </span>
+      {InnerElements}
     </Link>
   );
 };

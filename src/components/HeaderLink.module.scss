@@ -1,10 +1,18 @@
 .container {
   position: relative;
   z-index: 2;
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
   overflow: hidden;
   font-size: 16px;
   line-height: 1.25;
+  text-align: center;
+  @media (min-width: 576px) {
+    padding: 0;
+    text-align: unset;
+  }
 
   &:hover {
     .labelTop,
@@ -23,16 +31,28 @@
   }
 
   &.isSmall {
-    font-size: 13px;
+    @media (min-width: 576px) {
+      font-size: 13px;
+    }
   }
+}
+
+.transitionContainer {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
 }
 
 .icon {
   position: absolute;
   top: 50%;
-  left: 0;
+  left: 10px;
+  display: block;
   transition: transform 0.25s ease;
   transform: translate(0, -50%);
+  @media (min-width: 576px) {
+    left: 0;
+  }
 }
 
 .labelTop,

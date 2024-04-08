@@ -79,3 +79,10 @@ h1.headline {
     height: var(--pt-circle-size);
   }
 }
+
+.mobileOnlyMessage {
+  margin-top: 20px;
+  @media (min-width: 576px) {
+    display: none;
+  }
+}

@@ -13,6 +13,9 @@ export default function Achievements() {
               <br />
               Good luck with catching them all!
             </p>
+            <p className={pageStyles.mobileOnlyMessage}>
+              But watch out! Some of them can only be unlocked on desktop.
+            </p>
             <AchievementsList />
           </div>
         </div>

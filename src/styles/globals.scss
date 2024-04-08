@@ -6,8 +6,12 @@
   --gold-500: #ba9c7a;
   --gold-500-transparent: rgba(186, 156, 122, 0.35);
 
-  --wrapper-padding-x: 32px;
-  --wrapper-padding-y: 22px;
+  --wrapper-padding-x: 24px;
+  --wrapper-padding-y: 20px;
+  @media (min-width: 576px) {
+    --wrapper-padding-x: 32px;
+    --wrapper-padding-y: 22px;
+  }
 
   --font-size-h1: 32px;
   --font-size-h2: 24px;
