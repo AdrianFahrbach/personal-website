@@ -17,6 +17,7 @@ import debounce from 'lodash/debounce';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { SmokeEffectsSpawner } from './SmokeEffectsSpawner';
 import styles from './SplineScene.module.scss';
+import { Headline } from './Headline';
 
 export const SplineScene: React.FC = () => {
   const [splineIsReady, setSplineIsReady] = useState(false);
@@ -164,8 +165,34 @@ export const SplineScene: React.FC = () => {
     return null;
   }
 
+  const imageCoordinates = {
+    x: typeof window !== 'undefined' ? window.innerWidth / 2 - 849 / 2 + 4 : 0,
+    y: typeof window !== 'undefined' ? window.innerHeight / 2 - 410 / 2 - 11 : 0,
+    width: 832,
+    height: 402,
+  };
+
   return (
     <>
+      <svg className={styles.bloomEffectSvg}>
+        <filter id='bloom-effect'>
+          {/* Shadow Blur */}
+          <feGaussianBlur stdDeviation={viewport === 'desktop' ? 7 : 4.66666} result='blur' />
+
+          {/* Invert the drop shadow to create an inner shadow */}
+          <feComposite operator='out' in='SourceGraphic' in2='blur' result='inverse' />
+
+          {/* Color & Opacity */}
+          <feFlood flood-color='white' flood-opacity='1' result='color' />
+
+          {/* Clip color inside shadow */}
+          <feComposite operator='in' in='color' in2='inverse' result='shadow' />
+
+          {/* Put shadow over original object */}
+          <feComposite operator='over' in='shadow' in2='SourceGraphic' />
+        </filter>
+      </svg>
+
       <Spline
         className={styles.container}
         scene='/assets/scene.splinecode'
