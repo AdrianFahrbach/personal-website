@@ -6,6 +6,7 @@ import {
   checkForAchievements,
   didObjectsGetMoved,
   getObjectPositions,
+  getViewportInfo,
   updateViewport,
   updateVisibleAchievementObjects,
 } from '@/services/spline.service';
@@ -174,12 +175,14 @@ export const SplineScene: React.FC = () => {
     return null;
   }
 
+  const { zoom } = getViewportInfo(viewport);
+
   return (
     <>
       <svg className={styles.bloomEffectSvg}>
         <filter id='bloom-effect'>
           {/* Shadow Blur */}
-          <feGaussianBlur stdDeviation={viewport === 'desktop' ? 7 : 4.66666} result='blur' />
+          <feGaussianBlur stdDeviation={6.5 * zoom} result='blur' />
 
           {/* Invert the drop shadow to create an inner shadow */}
           <feComposite operator='out' in='SourceGraphic' in2='blur' result='inverse' />

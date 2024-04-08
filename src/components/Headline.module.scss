@@ -5,19 +5,21 @@
   z-index: 1;
   padding: 32px;
   margin: 0;
-  font-size: 72px;
+  font-size: 46px;
   font-weight: 400;
   line-height: 1;
   color: var(--neutral-900-transparent);
   white-space: nowrap;
   transform: translate(-50%, -50%);
+  @media (min-width: 330px) {
+    font-size: 50px;
+  }
+  @media (min-width: 700px) {
+    font-size: 72px;
+  }
   @media (min-width: 992px) {
     font-size: 100px;
   }
-}
-
-.isHighlighted {
-  color: var(--neutral-900);
 }
 
 .wordContainer {
@@ -26,15 +28,22 @@
   overflow: hidden;
 }
 
-.w {
+.word {
   display: inline-block;
   transform: translateY(100%);
-  animation: fadeIn 0.5s ease forwards;
 
-  @for $i from 1 through 12 {
-    &[data-word='#{$i}'] {
-      animation-delay: #{$i}00ms;
+  &.hasAnimation {
+    animation: fadeIn 0.5s ease forwards;
+
+    @for $i from 1 through 12 {
+      &[data-word='#{$i}'] {
+        animation-delay: #{$i}00ms;
+      }
     }
+  }
+
+  &.isHighlighted {
+    color: var(--neutral-900);
   }
 }
 
