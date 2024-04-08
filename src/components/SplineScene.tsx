@@ -185,7 +185,7 @@ export const SplineScene: React.FC = () => {
           <feComposite operator='out' in='SourceGraphic' in2='blur' result='inverse' />
 
           {/* Color & Opacity */}
-          <feFlood flood-color='white' flood-opacity='1' result='color' />
+          <feFlood floodColor='white' floodOpacity='1' result='color' />
 
           {/* Clip color inside shadow */}
           <feComposite operator='in' in='color' in2='inverse' result='shadow' />

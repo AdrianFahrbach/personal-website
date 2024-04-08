@@ -129,7 +129,7 @@ export function checkForAchievements(
    * Check for the to-the-moon achievement
    */
   if (!unlockedAchievements.includes('to-the-moon')) {
-    if (spline.getVariable('isOutOfBounds') === true) {
+    if ((spline.getVariable('objectsOutOfBounds') as number) > 0) {
       unlockAchievement('to-the-moon');
     }
   }
@@ -236,10 +236,10 @@ export function checkForAchievements(
    * Check for the mile-high-club achievement
    */
   if (!unlockedAchievements.includes('mile-high-club')) {
+    console.log(spline.getVariable('objectsOutOfBounds'));
     const objectsOnTop = spline.getVariable('objectsOnTop') as number;
-    // We allow one object to be missing when the to-the-moon achievement is unlocked
-    // because it could be out of the viewport
-    const additionalObjects = unlockedAchievements.includes('to-the-moon') ? 5 : 6;
+    // We don't require the objects that are out of bounds to be on top
+    const additionalObjects = 6 - (spline.getVariable('objectsOutOfBounds') as number);
     if (objectsOnTop >= unlockedAchievements.length + additionalObjects) {
       unlockAchievement('mile-high-club');
     }
