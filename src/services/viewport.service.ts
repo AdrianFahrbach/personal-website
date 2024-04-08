@@ -1,6 +1,10 @@
 import { useEffect, useLayoutEffect, useState } from 'react';
 
 export type Viewport = 'mobile' | 'tablet' | 'desktop';
+const mediaQueries = {
+  tablet: '(min-width: 768px)',
+  desktop: '(min-width: 992px)',
+};
 
 /**
  * Get the current viewport size
@@ -18,19 +22,38 @@ export function useViewport(): Viewport | undefined {
   }, []);
 
   function handleChange() {
-    if (window.innerWidth < 768) {
-      setViewport('mobile');
-    } else if (window.innerWidth < 992) {
+    if (window.matchMedia(mediaQueries.desktop).matches) {
+      setViewport('desktop');
+    } else if (window.matchMedia(mediaQueries.tablet).matches) {
       setViewport('tablet');
     } else {
-      setViewport('desktop');
+      setViewport('mobile');
     }
   }
 
   useEffect(() => {
-    window.addEventListener('resize', handleChange);
+    const matchMediaDesktop = window.matchMedia(mediaQueries.desktop);
+    const matchMediaTablet = window.matchMedia(mediaQueries.tablet);
+    const isModern = !!matchMediaDesktop?.addEventListener;
+
+    handleChange();
+    if (isModern) {
+      matchMediaDesktop.addEventListener('change', handleChange);
+      matchMediaTablet.addEventListener('change', handleChange);
+    } else {
+      // Fallback for old Safari browsers
+      matchMediaDesktop.addListener(handleChange);
+      matchMediaTablet.addListener(handleChange);
+    }
     return () => {
-      window.removeEventListener('resize', handleChange);
+      if (isModern) {
+        matchMediaDesktop.removeEventListener('change', handleChange);
+        matchMediaTablet.removeEventListener('change', handleChange);
+      } else {
+        // Fallback for old Safari browsers
+        matchMediaDesktop.removeListener(handleChange);
+        matchMediaTablet.removeListener(handleChange);
+      }
     };
   }, []);
 
