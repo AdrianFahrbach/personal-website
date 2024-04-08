@@ -33,6 +33,7 @@
   transform: translateY(100%);
 
   &.hasAnimation {
+    transform-origin: center top;
     animation: fadeIn 0.5s ease forwards;
 
     @for $i from 1 through 12 {
@@ -49,10 +50,10 @@
 
 @keyframes fadeIn {
   0% {
-    transform: translateY(100%);
+    transform: translateY(100%) scaleY(1.5);
   }
 
   100% {
-    transform: translateY(0);
+    transform: translateY(0) scaleY(1);
   }
 }
