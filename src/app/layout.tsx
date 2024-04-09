@@ -2,6 +2,7 @@ import { AchievementsProvider } from '@/providers/AchievementsProvider';
 import { PageTransitionProvider } from '@/providers/PageTransitionsProvider';
 import { montserrat } from '@/styles/fonts';
 import type { Metadata } from 'next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import '@/styles/globals.scss';
 
 export const metadata: Metadata = {
@@ -19,6 +20,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <AchievementsProvider>
           <PageTransitionProvider>{children}</PageTransitionProvider>
         </AchievementsProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
