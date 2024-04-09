@@ -1,9 +1,10 @@
 import { AchievementsProvider } from '@/providers/AchievementsProvider';
 import { PageTransitionProvider } from '@/providers/PageTransitionsProvider';
 import { montserrat } from '@/styles/fonts';
-import type { Metadata } from 'next';
-import { SpeedInsights } from '@vercel/speed-insights/next';
 import '@/styles/globals.scss';
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Adrian Fahrbach',
@@ -20,6 +21,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <AchievementsProvider>
           <PageTransitionProvider>{children}</PageTransitionProvider>
         </AchievementsProvider>
+        <Analytics />
         <SpeedInsights />
       </body>
     </html>
