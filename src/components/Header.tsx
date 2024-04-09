@@ -2,18 +2,18 @@
 
 import { HeaderLink } from '@/components/HeaderLink';
 import { PageTransitionContext } from '@/providers/PageTransitionsProvider';
+import { useViewport } from '@/services/viewport.service';
+import { List, X } from '@phosphor-icons/react';
 import classNames from 'classnames';
 import { usePathname } from 'next/navigation';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import styles from './Header.module.scss';
-import { List, X } from '@phosphor-icons/react';
-import { useViewport } from '@/services/viewport.service';
 
 export const Header: React.FC = () => {
   const { nextRoute, pending } = useContext(PageTransitionContext);
   const pathname = usePathname();
   const showHomeNav = (!pending && pathname === '/') || (pending && nextRoute === '/');
-  const headerRef = React.createRef<HTMLElement>();
+  const headerRef = useRef<HTMLElement | null>(null);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const viewport = useViewport();
 
@@ -22,6 +22,8 @@ export const Header: React.FC = () => {
    */
   useEffect(() => {
     const handlePointerDown = (e: PointerEvent) => {
+      console.log(headerRef.current);
+      console.log(headerRef.current?.contains(e.target as Node));
       if (headerRef.current && !headerRef.current.contains(e.target as Node)) {
         headerRef.current.style.pointerEvents = 'none';
       }
@@ -40,7 +42,9 @@ export const Header: React.FC = () => {
       document.removeEventListener('pointerdown', handlePointerDown);
       document.removeEventListener('pointerup', handlePointerUp);
     };
-  }, []);
+  }, [headerRef.current]);
+
+  console.log('main', headerRef.current);
 
   return (
     <header ref={headerRef}>
