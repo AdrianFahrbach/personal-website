@@ -22,8 +22,6 @@ export const Header: React.FC = () => {
    */
   useEffect(() => {
     const handlePointerDown = (e: PointerEvent) => {
-      console.log(headerRef.current);
-      console.log(headerRef.current?.contains(e.target as Node));
       if (headerRef.current && !headerRef.current.contains(e.target as Node)) {
         headerRef.current.style.pointerEvents = 'none';
       }
@@ -43,8 +41,6 @@ export const Header: React.FC = () => {
       document.removeEventListener('pointerup', handlePointerUp);
     };
   }, [headerRef.current]);
-
-  console.log('main', headerRef.current);
 
   return (
     <header ref={headerRef}>
