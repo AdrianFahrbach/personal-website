@@ -115,8 +115,10 @@ export function updateVisibleAchievementObjects(splineApp: SplineApp, unlockedAc
     const obj = splineApp.findObjectByName(achievementToObjectNameMap[achievement]);
     if (obj) {
       const isUnlocked = unlockedAchievements.includes(achievement);
-      obj.visible = isUnlocked;
       splineApp.setVariable(achievementToVariableNameMap[achievement], isUnlocked);
+      setTimeout(() => {
+        obj.visible = isUnlocked;
+      }, 500);
     }
   });
 }
