@@ -82,7 +82,7 @@ export const achievementToToastMap: Record<
   cheatcode: {
     icon: <GameController size={28} />,
     headline: <Cheatcode />,
-    subline: 'Type the Konami cheatcode.',
+    subline: 'Did you know that I have a game design background?',
   },
   'its-a-match': {
     icon: <Heart size={28} />,
