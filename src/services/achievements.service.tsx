@@ -46,7 +46,7 @@ export const achievementToToastMap: Record<
   },
   linkedin: {
     icon: <LinkedinLogo size={28} />,
-    headline: "I am a business man, I'm doing business.",
+    headline: "I am a business man, doing business.",
     subline: 'Check out my LinkedIn profile.',
   },
   dribbble: {
