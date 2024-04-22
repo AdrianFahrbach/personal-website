@@ -79,7 +79,7 @@ export const SplineScene: React.FC = () => {
   useEffect(() => {
     const currentSplineApp = splineApp.current;
     if (currentSplineApp) {
-      setTimeout(() => updateVisibleAchievementObjects(currentSplineApp, unlockedAchievements), 700);
+      setTimeout(() => updateVisibleAchievementObjects(currentSplineApp, unlockedAchievements), 800);
     }
   }, [splineApp.current, visibleAchievements]);
 

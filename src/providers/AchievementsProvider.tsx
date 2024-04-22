@@ -13,6 +13,7 @@ interface AchievementsData {
   visibleAchievements: Achievement[];
   unlockAchievement: (achievement: Achievement) => void;
   smokeEmitters: Achievement[];
+  setSmokeEmitters: React.Dispatch<React.SetStateAction<Achievement[]>>;
 }
 
 export const AchievementsContext = createContext<AchievementsData>({
@@ -20,6 +21,7 @@ export const AchievementsContext = createContext<AchievementsData>({
   unlockAchievement: () => {},
   visibleAchievements: [],
   smokeEmitters: [],
+  setSmokeEmitters: () => {},
 });
 
 export const AchievementsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -161,6 +163,7 @@ export const AchievementsProvider: React.FC<{ children: React.ReactNode }> = ({ 
         unlockedAchievements,
         unlockAchievement,
         smokeEmitters,
+        setSmokeEmitters,
         visibleAchievements,
       }}>
       {children}

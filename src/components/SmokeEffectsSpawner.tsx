@@ -6,7 +6,7 @@ import { Achievement, allAchievements } from '@/services/achievements.service';
 import { achievementToObjectNameMap, splineToScreenCoordinates } from '@/services/spline.service';
 import { useViewport } from '@/services/viewport.service';
 import { Application as SplineApp } from '@splinetool/runtime';
-import { useContext, useMemo } from 'react';
+import { useContext, useEffect, useMemo } from 'react';
 
 interface SmokeEffectsSpawnerProps {
   splineApp: React.MutableRefObject<SplineApp | undefined>;
@@ -14,8 +14,15 @@ interface SmokeEffectsSpawnerProps {
 }
 
 export const SmokeEffectsSpawner: React.FC<SmokeEffectsSpawnerProps> = ({ splineApp, splineIsReady }) => {
-  const { smokeEmitters } = useContext(AchievementsContext);
+  const { smokeEmitters, setSmokeEmitters } = useContext(AchievementsContext);
   const viewport = useViewport();
+
+  /**
+   * Reset smoke emitters on unmount
+   */
+  useEffect(() => {
+    setSmokeEmitters([]);
+  }, []);
 
   /**
    * The smoke effect only spawns on the initial position of an object.
