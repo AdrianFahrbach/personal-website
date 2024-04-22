@@ -110,15 +110,22 @@ export const achievementToVariableNameMap: Record<Achievement, string> = {
  * This function updates the visibility and position of the unlocked objects in the scene.
  * We need to hide them on the first load, because we can't hide them in Spline.
  */
-export function updateVisibleAchievementObjects(splineApp: SplineApp, unlockedAchievements: Achievement[]) {
+export function updateVisibleAchievementObjects(
+  splineApp: SplineApp,
+  unlockedAchievements: Achievement[],
+  isInitialLoad = false
+) {
   allAchievements.forEach(achievement => {
     const obj = splineApp.findObjectByName(achievementToObjectNameMap[achievement]);
     if (obj) {
       const isUnlocked = unlockedAchievements.includes(achievement);
       splineApp.setVariable(achievementToVariableNameMap[achievement], isUnlocked);
-      setTimeout(() => {
-        obj.visible = isUnlocked;
-      }, 500);
+      setTimeout(
+        () => {
+          obj.visible = isUnlocked;
+        },
+        isInitialLoad ? 0 : 800
+      );
     }
   });
 }

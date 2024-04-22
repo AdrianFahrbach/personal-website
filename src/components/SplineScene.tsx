@@ -40,13 +40,13 @@ export const SplineScene: React.FC = () => {
     splineApp.current = spline;
     updateViewport(spline, viewport);
     // We give it some extra time to make sure everything is ready
-    updateVisibleAchievementObjects(spline, unlockedAchievements);
+    updateVisibleAchievementObjects(spline, unlockedAchievements, true);
     setTimeout(() => {
       setSplineIsReady(true);
     }, 300);
     // Update the variables again, just in case that Spline is super slow
     setTimeout(() => {
-      updateVisibleAchievementObjects(spline, unlockedAchievements);
+      updateVisibleAchievementObjects(spline, unlockedAchievements, true);
     }, 600);
   }
 
@@ -79,7 +79,7 @@ export const SplineScene: React.FC = () => {
   useEffect(() => {
     const currentSplineApp = splineApp.current;
     if (currentSplineApp) {
-      setTimeout(() => updateVisibleAchievementObjects(currentSplineApp, unlockedAchievements), 800);
+      updateVisibleAchievementObjects(currentSplineApp, unlockedAchievements);
     }
   }, [splineApp.current, visibleAchievements]);
 
@@ -125,7 +125,7 @@ export const SplineScene: React.FC = () => {
     if (currentSplineApp && !isResizing && viewport) {
       const interval = setInterval(() => {
         checkForAchievements(currentSplineApp, unlockedAchievements, unlockAchievement, viewport);
-      }, 2000);
+      }, 1500);
 
       return () => clearInterval(interval);
     }

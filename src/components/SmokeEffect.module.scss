@@ -8,7 +8,7 @@
   background-size: auto 72px;
   opacity: 0;
   transform: translate(-50%, -50%);
-  animation: smoke 0.5s steps(14) 1s 1;
+  animation: smoke 0.5s steps(14) 0.7s 1;
   @media (min-width: 700px) {
     width: 91.5px;
     height: 90px;
