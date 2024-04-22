@@ -1,0 +1,151 @@
+.cvContent {
+  max-width: 860px;
+  color: var(--neutral-600);
+
+  h1,
+  h2,
+  h3,
+  b {
+    margin: 0;
+    color: var(--neutral-900);
+  }
+
+  h1 {
+    margin-bottom: 6px;
+    line-height: 1.2;
+    @media (max-width: 575.98px) {
+      font-size: 20px;
+    }
+  }
+
+  h2,
+  h3 {
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  h2 {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    margin: 0 0 24px;
+    font-size: 20px;
+    @media (min-width: 576px) {
+      margin: 0;
+    }
+    @media (min-width: 768px) {
+      grid-column-end: 2;
+      font-size: 16px;
+    }
+  }
+}
+
+.portraitRow {
+  display: flex;
+  gap: 24px;
+  align-items: stretch;
+  justify-content: stretch;
+  @media (min-width: 576px) {
+    gap: 40px;
+  }
+}
+
+.portrait {
+  width: 120px;
+  height: 120px;
+  @media (min-width: 576px) {
+    width: 200px;
+    height: 200px;
+  }
+}
+
+.headerTextContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.gridContainer {
+  margin-top: 40px;
+  @media (min-width: 576px) {
+    display: grid;
+    grid-template-columns: minmax(110px, 160px) auto;
+    gap: 20px 12px;
+  }
+  @media (min-width: 768px) {
+    grid-template-columns: minmax(110px, 200px) minmax(110px, 160px) minmax(320px, auto);
+    gap: 24px 16px;
+  }
+}
+
+.hr {
+  display: none;
+  grid-column-start: 2;
+  grid-column-end: 4;
+  width: 100%;
+  height: 2px;
+  background-color: var(--neutral-400);
+  border: none;
+  @media (min-width: 768px) {
+    display: block;
+  }
+}
+
+.fullWidthHr {
+  display: block !important;
+  grid-column-start: 1;
+  margin: 24px 0;
+  @media (min-width: 576px) {
+    margin: 0;
+  }
+}
+
+.text {
+  grid-column-start: 2;
+  grid-column-end: 3;
+  @media (min-width: 768px) {
+    grid-column-start: 3;
+    grid-column-end: 4;
+  }
+}
+
+.wideText {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  @media (min-width: 768px) {
+    grid-column-start: 2;
+    grid-column-end: 4;
+  }
+}
+
+.infoCol {
+  margin: 24px 0 6px;
+  @media (min-width: 576px) {
+    grid-column-start: 1;
+    grid-column-end: 2;
+    margin: 0;
+  }
+  @media (min-width: 768px) {
+    grid-column-start: 2;
+    grid-column-end: 3;
+  }
+}
+
+.stackColContainer {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  @media (min-width: 768px) {
+    grid-column-start: 2;
+    grid-column-end: 4;
+  }
+}
+
+.stackContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  margin-bottom: 12px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}

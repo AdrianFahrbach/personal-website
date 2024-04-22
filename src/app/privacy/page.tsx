@@ -10,7 +10,7 @@ export default function Privacy() {
         <div className={pageStyles.wrapper}>
           <div className={pageStyles.contentContainer}>
             <h1 className={pageStyles.headline}>Privacy information</h1>
-            <div className={pageStyles.textContainer}>
+            <div className={pageStyles.fadeIn}>
               <h2>Purpose of the collection of personal data</h2>
               <p>We collect personal data for the following reasons:</p>
               <ul>

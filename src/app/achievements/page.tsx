@@ -7,7 +7,7 @@ export default function Achievements() {
       <div className={pageStyles.wrapper}>
         <div className={pageStyles.contentContainer} style={{ maxWidth: '540px' }}>
           <h1 className={pageStyles.headline}>Your achievements</h1>
-          <div className={pageStyles.textContainer}>
+          <div className={pageStyles.fadeIn}>
             <p>
               This page is full of hidden achievements. You can unlock them by interacting with the page.
               <br />

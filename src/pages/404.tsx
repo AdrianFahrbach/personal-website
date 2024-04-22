@@ -11,7 +11,7 @@ export default function Custom404() {
       <div className={pageStyles.wrapper}>
         <div className={classNames([montserrat.className, pageStyles.contentContainer, styles.container])}>
           <h1 className={classNames([pageStyles.headline, styles.headline])}>404</h1>
-          <div className={classNames([pageStyles.textContainer, styles.textContainer])}>
+          <div className={classNames([pageStyles.fadeIn, styles.fadeIn])}>
             <p>The page you are looking for does not exist.</p>
             <p>
               <Link href='/'>Go back to the homepage</Link>

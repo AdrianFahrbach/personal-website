@@ -12,10 +12,12 @@ import styles from './Header.module.scss';
 export const Header: React.FC = () => {
   const { nextRoute, pending } = useContext(PageTransitionContext);
   const pathname = usePathname();
-  const showHomeNav = (!pending && pathname === '/') || (pending && nextRoute === '/');
+  const showFullNav = (!pending && pathname === '/') || (pending && nextRoute === '/');
   const headerRef = useRef<HTMLElement | null>(null);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const viewport = useViewport();
+  const isHome = pathname === '/';
+  const isCvPage = pathname === '/cv';
 
   /**
    * Disable pointer events when dragging starts outside of a link
@@ -55,7 +57,7 @@ export const Header: React.FC = () => {
           onClick={() => setMobileNavOpen(false)}>
           <X size={32} />
         </button>
-        <div className={classNames([styles.linkContainer, styles.topLeft, !showHomeNav && styles.isHidden])}>
+        <div className={classNames([styles.linkContainer, styles.topLeft, !showFullNav && styles.isHidden])}>
           <HeaderLink
             to='https://github.com/AdrianFahrbach'
             label='GitHub'
@@ -78,7 +80,7 @@ export const Header: React.FC = () => {
             setMobileNavOpen={setMobileNavOpen}
           />
         </div>
-        <div className={classNames([styles.linkContainer, styles.topRight, !showHomeNav && styles.isHidden])}>
+        <div className={classNames([styles.linkContainer, styles.topRight, !showFullNav && styles.isHidden])}>
           <HeaderLink
             to='mailto:adrianfahrbach@me.com'
             label='Contact me'
@@ -86,7 +88,16 @@ export const Header: React.FC = () => {
             setMobileNavOpen={setMobileNavOpen}
           />
         </div>
-        <div className={classNames([styles.linkContainer, styles.bottomRight, !showHomeNav && styles.isHidden])}>
+        <div className={classNames([styles.linkContainer, styles.topRight, !isCvPage && styles.isHidden])}>
+          <HeaderLink
+            to='/assets/cv.pdf'
+            label='Download as PDF'
+            isExternal
+            isFile
+            setMobileNavOpen={setMobileNavOpen}
+          />
+        </div>
+        <div className={classNames([styles.linkContainer, styles.bottomRight, !showFullNav && styles.isHidden])}>
           <HeaderLink
             isSmall
             to='/privacy'
@@ -102,13 +113,12 @@ export const Header: React.FC = () => {
             setMobileNavOpen={setMobileNavOpen}
           />
         </div>
-        <div className={classNames([styles.linkContainer, styles.bottomLeft, !showHomeNav && styles.isHidden])}>
+        <div className={classNames([styles.linkContainer, styles.bottomLeft, !showFullNav && styles.isHidden])}>
           <HeaderLink
-            to='/assets/cv.pdf'
-            label='My CV'
-            isExternal
+            to='/cv'
+            label='CV'
             achievementToUnlock='cv'
-            isFile
+            hasPageTransition={viewport !== 'mobile'}
             setMobileNavOpen={setMobileNavOpen}
           />
         </div>
@@ -117,12 +127,12 @@ export const Header: React.FC = () => {
         className={classNames([
           styles.linkContainer,
           styles.topLeft,
-          showHomeNav && styles.isHidden,
+          showFullNav && styles.isHidden,
           styles.backToHome,
         ])}>
         <HeaderLink to='/' label='Back to home' isBackButton hasPageTransition setMobileNavOpen={setMobileNavOpen} />
       </div>
-      <div className={classNames([styles.linkContainer, styles.bottomCenter, !showHomeNav && styles.isHidden])}>
+      <div className={classNames([styles.linkContainer, styles.bottomCenter, !isHome && styles.isHidden])}>
         <HeaderLink
           to='/achievements'
           label='Your achievements'

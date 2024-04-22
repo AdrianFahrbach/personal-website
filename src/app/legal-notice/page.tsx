@@ -7,7 +7,7 @@ export default function LegalNotice() {
       <div className={pageStyles.wrapper}>
         <div className={pageStyles.contentContainer}>
           <h1 className={pageStyles.headline}>Legal notice</h1>
-          <div className={pageStyles.textContainer}>
+          <div className={pageStyles.fadeIn}>
             <h2>Contact</h2>
             <p>
               Adrian Fahrbach
