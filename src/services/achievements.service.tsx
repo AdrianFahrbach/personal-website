@@ -57,7 +57,7 @@ export const achievementToToastMap: Record<
   cv: {
     icon: <ReadCvLogo size={28} />,
     headline: 'All the information you need.',
-    subline: 'Download my CV.',
+    subline: 'Take a look at my CV.',
   },
   contact: {
     icon: <Envelope size={28} />,
