@@ -2,7 +2,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 999;
+  z-index: 9999;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -12,12 +12,11 @@
   height: 100dvh;
   text-align: center;
   background-color: var(--neutral-100);
+  box-shadow: 0 1px 0 0 var(--neutral-900);
   transition: 0.375s ease;
-  transform: translateY(-101%);
-  @media (min-width: 576px) {
-    display: contents;
-    text-align: unset;
-    background-color: transparent;
+  transform: translateY(-105%);
+  @media (min-width: 768px) {
+    display: none;
   }
 
   &.isOpen {
@@ -37,7 +36,7 @@
   background: none;
   border: none;
   transition: opacity 0.25s ease;
-  @media (min-width: 576px) {
+  @media (min-width: 768px) {
     display: none;
   }
 
@@ -58,7 +57,7 @@
   z-index: 999;
   transition: transform 0.5s ease;
   transition-delay: 1.25s;
-  @media (min-width: 576px) {
+  @media (min-width: 768px) {
     position: fixed;
     display: flex;
     gap: 18px;
@@ -84,32 +83,24 @@
 
 .topLeft,
 .topRight {
-  @media (min-width: 576px) {
-    text-align: center;
-  }
-
   &.isHidden {
-    @media (min-width: 576px) {
-      transform: translateY(-200%);
-    }
+    transform: translateY(-200%);
   }
 }
 
 .bottomCenter {
-  position: fixed !important;
+  position: fixed;
   bottom: 8px;
   left: 50%;
-  margin-right: 0 !important;
-  margin-left: 0 !important;
+  margin-right: 0;
+  margin-left: 0;
   transform: translateX(-50%);
-  @media (min-width: 576px) {
+  @media (min-width: 768px) {
     bottom: 0;
   }
 
   &.isHidden {
-    @media (min-width: 576px) {
-      transform: translate(-50%, 200%);
-    }
+    transform: translate(-50%, 200%);
   }
 }
 
@@ -124,25 +115,20 @@
   display: flex;
   flex-direction: column;
   gap: 3px;
-  align-items: center;
-  @media (min-width: 576px) {
-    align-items: flex-end;
-  }
+  align-items: flex-end;
 }
 
 .bottomLeft,
 .bottomRight {
   &.isHidden {
-    @media (min-width: 576px) {
-      transform: translateY(200%);
-    }
+    transform: translateY(200%);
   }
 }
 
 .backToHome {
-  @media (max-width: 575.98px) {
+  @media (max-width: 767.98px) {
     position: fixed !important;
-    top: 10px;
+    top: 8px;
     left: 8px;
     z-index: 998;
 

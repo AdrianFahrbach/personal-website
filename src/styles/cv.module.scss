@@ -149,3 +149,12 @@
     margin-bottom: 0;
   }
 }
+
+.downloadButton {
+  display: inline-flex;
+  margin-top: 60px;
+  color: var(--neutral-900);
+  @media (min-width: 768px) {
+    display: none;
+  }
+}

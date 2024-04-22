@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useState } from 'react';
 
 export type Viewport = 'mobile' | 'tablet' | 'desktop';
 const mediaQueries = {
-  tablet: '(min-width: 700px)',
+  tablet: '(min-width: 768px)',
   desktop: '(min-width: 992px)',
 };
 

@@ -1,10 +1,10 @@
 'use client';
 
-import pageStyles from '@/styles/page.module.scss';
 import cvStyles from '@/styles/cv.module.scss';
-import Link from 'next/link';
-import Image from 'next/image';
+import pageStyles from '@/styles/page.module.scss';
 import classNames from 'classnames';
+import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Privacy() {
   return (
@@ -117,6 +117,9 @@ export default function Privacy() {
                 </p>
               </div>
             </div>
+            <a className={cvStyles.downloadButton} href='/assets/cv.pdf' target='_blank' rel='noopener noreferrer'>
+              Download as PDF
+            </a>
           </div>
         </div>
       </section>

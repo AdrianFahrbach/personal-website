@@ -18,7 +18,8 @@ interface HeaderLinkProps {
   achievementToUnlock?: Achievement;
   hasPageTransition?: boolean;
   isBackButton?: boolean;
-  setMobileNavOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setMobileNavOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+  className?: string;
 }
 
 export const HeaderLink: React.FC<HeaderLinkProps> = ({
@@ -31,12 +32,13 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({
   hasPageTransition,
   isBackButton,
   setMobileNavOpen,
+  className,
 }) => {
   const { unlockedAchievements: achievements, unlockAchievement } = useContext(AchievementsContext);
   const { navigate } = useContext(PageTransitionContext);
 
   const handeClick: React.MouseEventHandler = e => {
-    setMobileNavOpen(false);
+    setMobileNavOpen && setMobileNavOpen(false);
     if (hasPageTransition) {
       e.preventDefault();
       navigate(to, { x: `${e.clientX}px`, y: `${e.clientY}px` });
@@ -66,7 +68,7 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({
         onClick={handeClick}
         target={isExternal ? '_blank' : undefined}
         rel={isExternal ? 'noopener noreferrer' : undefined}
-        className={classNames([styles.container, isSmall && styles.isSmall])}
+        className={classNames([styles.container, isSmall && styles.isSmall, className])}
         aria-label={label}>
         {InnerElements}
       </a>
@@ -79,7 +81,7 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({
       onClick={handeClick}
       target={isExternal ? '_blank' : undefined}
       rel={isExternal ? 'noopener noreferrer' : undefined}
-      className={classNames([styles.container, isSmall && styles.isSmall])}
+      className={classNames([styles.container, isSmall && styles.isSmall, className])}
       aria-label={label}>
       {isBackButton && <ArrowLeft className={styles.icon} size={24} />}
       {InnerElements}
