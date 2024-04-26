@@ -1,0 +1,36 @@
+.projectContainer {
+  display: grid;
+  grid-template-columns: 2fr minMax(470px, 1fr);
+  height: 100vh;
+  height: 100dvh;
+}
+
+.imageCol {
+  position: relative;
+
+  img {
+    object-fit: contain;
+  }
+}
+
+.contentCol {
+  align-self: flex-end;
+  padding: 100px 60px;
+
+  p {
+    margin: 1em 0;
+  }
+}
+
+.headline {
+  margin-bottom: 30px;
+}
+
+.description {
+  margin-bottom: 40px;
+  color: var(--neutral-600);
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}

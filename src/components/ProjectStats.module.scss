@@ -1,0 +1,19 @@
+.row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 0 8px !important;
+
+  &:last-child {
+    margin-bottom: 0 !important;
+  }
+}
+
+.title {
+  color: var(--neutral-900);
+}
+
+.text {
+  color: var(--neutral-600);
+}

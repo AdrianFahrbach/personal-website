@@ -8,7 +8,7 @@ import Link from 'next/link';
 
 export default function Privacy() {
   return (
-    <main key='privacy'>
+    <main key='cv'>
       <section className={pageStyles.section}>
         <div className={pageStyles.wrapper}>
           <div className={classNames(pageStyles.contentContainer, cvStyles.cvContent)}>
