@@ -25,8 +25,22 @@ export default function Privacy() {
     if (!isMoving) {
       return;
     }
-    setTargetSlideIndex(isForwardSwipe ? Math.ceil(currentSlideIndex) : Math.floor(currentSlideIndex) - 1);
+    setTargetSlideIndex(isForwardSwipe ? Math.round(currentSlideIndex) + 1 : Math.round(currentSlideIndex) - 1);
   }, [isForwardSwipe, isMoving]);
+
+  function changeSlideNext() {
+    if (currentSwiper) {
+      currentSwiper.slideTo(currentSlideIndex + 1);
+      setTargetSlideIndex(null);
+    }
+  }
+
+  function changeSlidePrevious() {
+    if (currentSwiper) {
+      currentSwiper.slideTo(currentSlideIndex - 1);
+      setTargetSlideIndex(null);
+    }
+  }
 
   return (
     <main key='work'>
@@ -34,12 +48,13 @@ export default function Privacy() {
         slidesPerView={1}
         virtualTranslate
         watchSlidesProgress
+        threshold={10}
         onInit={swiper => setCurrentSwiper(swiper)}
         onTouchStart={swiper => {
-          setIsMoving(true);
           initialProgress.current = swiper.progress;
           previousSlide.current = currentSlideIndex;
         }}
+        onTouchMove={() => setIsMoving(true)}
         onTouchEnd={() => {
           setIsMoving(false);
           initialProgress.current = null;
@@ -49,17 +64,19 @@ export default function Privacy() {
           // The position of this slide from -1 to 1
           const thisSlidesPosition = Math.max(Math.min(currentSlideIndex, projects.length - 1), 0) - index;
           const isActive = thisSlidesPosition === 0 || initialSlideIndex === index;
+          const zIndex = targetSlideIndex === index ? 6 : isActive ? 3 : 0;
           return (
-            <SwiperSlide key={project.headline}>
+            <SwiperSlide key={project.headline} style={{ zIndex }}>
               <ProjectSlide
                 key={project.headline}
                 {...project}
                 position={previousSlide.current === index ? 0 : thisSlidesPosition}
                 index={index}
-                zIndex={targetSlideIndex === index ? 4 : isActive ? 2 : 0}
+                zIndex={zIndex}
                 contentIsVisible={isActive || previousSlide.current === index}
                 isMoving={isMoving}
-                swiper={currentSwiper}
+                changeSlidePrevious={changeSlidePrevious}
+                changeSlideNext={changeSlideNext}
                 slidesCount={projects.length}
                 style={{
                   opacity: isActive || targetSlideIndex === index || previousSlide.current === index ? 1 : 0,
