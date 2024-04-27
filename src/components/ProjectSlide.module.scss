@@ -58,7 +58,7 @@
       padding-top: 32px;
     }
     @media (min-width: 768px) {
-      padding-top: 20px;
+      padding: 16px 0;
     }
   }
 }
@@ -69,7 +69,7 @@
   align-items: flex-end;
   justify-content: stretch;
   overflow: hidden;
-  
+
   p {
     margin: 1em 0;
   }
@@ -81,7 +81,7 @@
   padding: 32px var(--wrapper-padding-x);
   overflow: auto;
   @media (min-width: 768px) {
-    padding: 100px 60px;
+    padding: 100px 60px 40px;
   }
 }
 

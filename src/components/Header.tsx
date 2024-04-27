@@ -12,12 +12,12 @@ import styles from './Header.module.scss';
 export const Header: React.FC = () => {
   const { nextRoute, pending } = useContext(PageTransitionContext);
   const pathname = usePathname();
-  const showFullNav = (!pending && pathname === '/') || (pending && nextRoute === '/');
   const headerRef = useRef<HTMLElement | null>(null);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const viewport = useViewport();
-  const isHome = pathname === '/';
-  const isCvPage = pathname === '/cv';
+  const isHome = (!pending && pathname === '/') || (pending && nextRoute === '/');
+  const isCvPage = (!pending && pathname === '/cv') || (pending && nextRoute === '/cv');
+  const isWorkPage = (!pending && pathname === '/work') || (pending && nextRoute === '/work');
 
   /**
    * Disable pointer events when dragging starts outside of a link
@@ -81,6 +81,7 @@ export const Header: React.FC = () => {
               setMobileNavOpen={setMobileNavOpen}
             />
             <HeaderLink to='/cv' label='CV' achievementToUnlock='cv' setMobileNavOpen={setMobileNavOpen} />
+            <HeaderLink to='/work' label='Work' setMobileNavOpen={setMobileNavOpen} />
             <HeaderLink to='/achievements' label='Your achievements' setMobileNavOpen={setMobileNavOpen} />
             <HeaderLink isSmall to='/privacy' label='Privacy' setMobileNavOpen={setMobileNavOpen} />
             <HeaderLink isSmall to='/legal-notice' label='Legal notice' setMobileNavOpen={setMobileNavOpen} />
@@ -89,7 +90,7 @@ export const Header: React.FC = () => {
       )}
       {viewport !== 'mobile' && (
         <>
-          <div className={classNames([styles.linkContainer, styles.topLeft, !showFullNav && styles.isHidden])}>
+          <div className={classNames([styles.linkContainer, styles.topLeft, !isHome && styles.isHidden])}>
             <HeaderLink to='https://github.com/AdrianFahrbach' label='GitHub' isExternal achievementToUnlock='github' />
             <HeaderLink to='https://dribbble.com/Adrn' label='Dribbble' isExternal achievementToUnlock='dribbble' />
             <HeaderLink
@@ -99,28 +100,34 @@ export const Header: React.FC = () => {
               achievementToUnlock='linkedin'
             />
           </div>
-          <div className={classNames([styles.linkContainer, styles.topRight, !showFullNav && styles.isHidden])}>
+          <div className={classNames([styles.linkContainer, styles.topRight, isCvPage && styles.isHidden])}>
             <HeaderLink to='mailto:adrianfahrbach@me.com' label='Contact me' achievementToUnlock='contact' />
           </div>
-          <div className={classNames([styles.linkContainer, styles.bottomRight, !showFullNav && styles.isHidden])}>
+          <div className={classNames([styles.linkContainer, styles.bottomRight, isWorkPage && styles.isHidden])}>
             <HeaderLink isSmall to='/privacy' label='Privacy' hasPageTransition />
             <HeaderLink isSmall to='/legal-notice' label='Legal notice' hasPageTransition />
           </div>
-          <div className={classNames([styles.linkContainer, styles.bottomLeft, !showFullNav && styles.isHidden])}>
+          <div className={classNames([styles.linkContainer, styles.bottomLeft, !isCvPage && styles.isHidden])}>
+            <HeaderLink to='/work' label='Work' hasPageTransition />
+          </div>
+          <div className={classNames([styles.linkContainer, styles.bottomLeft, !isWorkPage && styles.isHidden])}>
             <HeaderLink to='/cv' label='CV' achievementToUnlock='cv' hasPageTransition />
+          </div>
+          <div
+            className={classNames([
+              styles.linkContainer,
+              styles.bottomLeft,
+              (isCvPage || isWorkPage) && styles.isHidden,
+            ])}>
+            <HeaderLink to='/cv' label='CV' achievementToUnlock='cv' hasPageTransition />
+            <HeaderLink to='/work' label='Work' hasPageTransition />
           </div>
           <div className={classNames([styles.linkContainer, styles.topRight, !isCvPage && styles.isHidden])}>
             <HeaderLink to='/assets/cv.pdf' label='Download as PDF' isExternal isFile />
           </div>
         </>
       )}
-      <div
-        className={classNames([
-          styles.linkContainer,
-          styles.topLeft,
-          showFullNav && styles.isHidden,
-          styles.backToHome,
-        ])}>
+      <div className={classNames([styles.linkContainer, styles.topLeft, isHome && styles.isHidden, styles.backToHome])}>
         <HeaderLink to='/' label='Back to home' isBackButton hasPageTransition />
       </div>
       <div className={classNames([styles.linkContainer, styles.bottomCenter, !isHome && styles.isHidden])}>
