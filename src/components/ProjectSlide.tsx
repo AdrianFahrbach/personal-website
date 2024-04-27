@@ -1,9 +1,10 @@
 import { ProjectProps } from '@/services/projects.service';
-import pageStyles from '@/styles/page.module.scss';
 import classNames from 'classnames';
 import Image from 'next/image';
+import { Swiper as SwiperInstance } from 'swiper/types';
 import styles from './ProjectSlide.module.scss';
 import { ProjectStats } from './ProjectStats';
+import { SwiperControls } from './SwiperControls';
 
 export interface ProjectSlideProps extends ProjectProps {
   isActive?: boolean;
@@ -12,9 +13,12 @@ export interface ProjectSlideProps extends ProjectProps {
    * The position of this slide from -1 to 1
    */
   position: number;
+  index: number;
   zIndex: number;
   contentIsVisible: boolean;
   isMoving: boolean;
+  swiper: SwiperInstance | null;
+  slidesCount: number;
 }
 
 export const ProjectSlide: React.FC<ProjectSlideProps> = ({
@@ -26,9 +30,12 @@ export const ProjectSlide: React.FC<ProjectSlideProps> = ({
   stats,
   style,
   position,
+  index,
   zIndex,
   contentIsVisible,
   isMoving,
+  swiper,
+  slidesCount,
 }) => {
   return (
     <section
@@ -50,6 +57,7 @@ export const ProjectSlide: React.FC<ProjectSlideProps> = ({
           <h2 className={styles.headline}>{headline}</h2>
           <div className={styles.description}>{description}</div>
           {stats && <ProjectStats entries={stats} />}
+          <SwiperControls index={index} swiper={swiper} slidesCount={slidesCount} />
         </div>
         <div className={styles.contentBgLayer} style={{ left: `${position * -1 * 101}%`, zIndex: zIndex }} />
       </div>

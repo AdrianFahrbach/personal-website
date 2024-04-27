@@ -2,8 +2,9 @@
 
 import { ProjectSlide } from '@/components/ProjectSlide';
 import { projects } from '@/services/projects.service';
-import { use, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { Swiper as SwiperInstance } from 'swiper/types';
 
 export default function Privacy() {
   // We are using a state for now although a ref could provide better performance when done correctly
@@ -12,6 +13,7 @@ export default function Privacy() {
   const [targetSlideIndex, setTargetSlideIndex] = useState<number | null>(null);
   const initialProgress = useRef<number | null>(null);
   const previousSlide = useRef<number | null>(null);
+  const [currentSwiper, setCurrentSwiper] = useState<SwiperInstance | null>(null);
   const currentSlideIndex = progress * (projects.length - 1);
   const initialSlideIndex = initialProgress.current === null ? null : initialProgress.current * (projects.length - 1);
   const isForwardSwipe = initialProgress.current === null ? null : progress > initialProgress.current;
@@ -32,6 +34,7 @@ export default function Privacy() {
         slidesPerView={1}
         virtualTranslate
         watchSlidesProgress
+        onInit={swiper => setCurrentSwiper(swiper)}
         onTouchStart={swiper => {
           setIsMoving(true);
           initialProgress.current = swiper.progress;
@@ -52,9 +55,12 @@ export default function Privacy() {
                 key={project.headline}
                 {...project}
                 position={previousSlide.current === index ? 0 : thisSlidesPosition}
+                index={index}
                 zIndex={targetSlideIndex === index ? 4 : isActive ? 2 : 0}
                 contentIsVisible={isActive || previousSlide.current === index}
                 isMoving={isMoving}
+                swiper={currentSwiper}
+                slidesCount={projects.length}
                 style={{
                   opacity: isActive || targetSlideIndex === index || previousSlide.current === index ? 1 : 0,
                   pointerEvents: isActive ? 'auto' : 'none',

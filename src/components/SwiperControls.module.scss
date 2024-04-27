@@ -1,0 +1,38 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 60px;
+}
+
+.count {
+  color: var(--neutral-600);
+
+}
+
+.controlsContainer {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+
+.controlBtn {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  padding: 10px;
+  margin: -10px;
+  font-family: inherit;
+  font-size: inherit;
+  color: var(--neutral-900);
+  appearance: none;
+  cursor: pointer;
+  background: none;
+  border: none;
+  transition: opacity 0.25s ease;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
