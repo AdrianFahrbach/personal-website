@@ -1,25 +1,70 @@
 .projectContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
   display: grid;
   grid-template-columns: 2fr minMax(470px, 1fr);
+  width: 100vw;
   height: 100vh;
   height: 100dvh;
+
+  &.isMoving {
+    .imageBgLayer,
+    .contentBgLayer {
+      transition: none;
+    }
+  }
+
+  &.contentIsVisible {
+    .imageCol img,
+    .content {
+      animation: fadeIn 0.5s ease 0.35s forwards;
+    }
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .imageCol {
   position: relative;
+  overflow: hidden;
 
   img {
+    position: relative;
     object-fit: contain;
   }
 }
 
 .contentCol {
-  align-self: flex-end;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: stretch;
   padding: 100px 60px;
+  overflow: hidden;
 
   p {
     margin: 1em 0;
   }
+}
+
+.content {
+  position: relative;
+}
+
+.imageCol img,
+.content {
+  opacity: 0;
 }
 
 .headline {
@@ -33,4 +78,19 @@
   &:last-child {
     margin-bottom: 0;
   }
+}
+
+.imageBgLayer,
+.contentBgLayer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: left 0.35s ease;
+}
+
+.contentBgLayer {
+  background-color: var(--neutral-100);
+  box-shadow: 0 0 0 1px var(--neutral-400);
 }

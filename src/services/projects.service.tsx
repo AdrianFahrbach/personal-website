@@ -1,6 +1,15 @@
-import { ProjectSlideProps } from '@/components/ProjectSlide';
+import { ProjectStatsEntry } from '@/components/ProjectStats';
 
-export const projects: ProjectSlideProps[] = [
+export interface ProjectProps {
+  imageSrc: string;
+  imageAlt: string;
+  imageBgColor?: string;
+  headline: string;
+  description: React.ReactNode;
+  stats?: ProjectStatsEntry[];
+}
+
+export const projects: ProjectProps[] = [
   {
     headline: 'The Mobility House Website',
     imageSrc: '/assets/screens-tmh-website.jpg',
@@ -107,37 +116,6 @@ export const projects: ProjectSlideProps[] = [
     ],
   },
   {
-    headline: 'DIANA Leuchten Website',
-    imageSrc: '/assets/screens-diana.jpg',
-    imageAlt: 'Screenshots of the DIANA website',
-    imageBgColor: '#D7E5F2',
-    description: (
-      <>
-        <p>
-          DIANA develops various LED light sources, primarily for the industrial sector. We redesigned the website for
-          the company using the Kirby CMS. React components are also used for some of the more complex sections.
-        </p>
-        <p>
-          As the products are usually requested individually and in large quantities, we developed a &ldquo;store system&rdquo;
-          without a payment function. The user places products in a shopping cart and then creates an individual request
-          at the end.
-        </p>
-      </>
-    ),
-    stats: [
-      { title: 'Technologie', text: 'React, Kirby CMS' },
-      { title: 'My role', text: 'Designer and developer' },
-      {
-        title: 'Link',
-        text: (
-          <a href='https://diana-leuchten.de' target='_blank' rel='noopener noreferrer'>
-            diana-leuchten.de
-          </a>
-        ),
-      },
-    ],
-  },
-  {
     headline: '1337 Camp Website',
     imageSrc: '/assets/screens-1337-camp.jpg',
     imageAlt: 'Screenshots of the 1337 Camp website',
@@ -162,6 +140,37 @@ export const projects: ProjectSlideProps[] = [
         text: (
           <a href='https://1337.camp' target='_blank' rel='noopener noreferrer'>
             1337.camp
+          </a>
+        ),
+      },
+    ],
+  },
+  {
+    headline: 'DIANA Leuchten Website',
+    imageSrc: '/assets/screens-diana.jpg',
+    imageAlt: 'Screenshots of the DIANA website',
+    imageBgColor: '#D7E5F2',
+    description: (
+      <>
+        <p>
+          DIANA develops various LED light sources, primarily for the industrial sector. We redesigned the website for
+          the company using the Kirby CMS. React components are also used for some of the more complex sections.
+        </p>
+        <p>
+          As the products are usually requested individually and in large quantities, we developed a &ldquo;store
+          system&rdquo; without a payment function. The user places products in a shopping cart and then creates an
+          individual request at the end.
+        </p>
+      </>
+    ),
+    stats: [
+      { title: 'Technologie', text: 'React, Kirby CMS' },
+      { title: 'My role', text: 'Designer and developer' },
+      {
+        title: 'Link',
+        text: (
+          <a href='https://diana-leuchten.de' target='_blank' rel='noopener noreferrer'>
+            diana-leuchten.de
           </a>
         ),
       },

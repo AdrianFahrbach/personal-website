@@ -1,16 +1,20 @@
+import { ProjectProps } from '@/services/projects.service';
 import pageStyles from '@/styles/page.module.scss';
 import classNames from 'classnames';
 import Image from 'next/image';
 import styles from './ProjectSlide.module.scss';
-import { ProjectStats, ProjectStatsEntry } from './ProjectStats';
+import { ProjectStats } from './ProjectStats';
 
-export interface ProjectSlideProps {
-  imageSrc: string;
-  imageAlt: string;
-  imageBgColor?: string;
-  headline: string;
-  description: React.ReactNode;
-  stats?: ProjectStatsEntry[];
+export interface ProjectSlideProps extends ProjectProps {
+  isActive?: boolean;
+  style?: React.CSSProperties;
+  /**
+   * The position of this slide from -1 to 1
+   */
+  position: number;
+  zIndex: number;
+  contentIsVisible: boolean;
+  isMoving: boolean;
 }
 
 export const ProjectSlide: React.FC<ProjectSlideProps> = ({
@@ -20,16 +24,34 @@ export const ProjectSlide: React.FC<ProjectSlideProps> = ({
   headline,
   description,
   stats,
+  style,
+  position,
+  zIndex,
+  contentIsVisible,
+  isMoving,
 }) => {
   return (
-    <section className={styles.projectContainer}>
-      <div className={styles.imageCol} style={{ backgroundColor: imageBgColor }}>
-        <Image src={imageSrc} alt={imageAlt} fill />
+    <section
+      className={classNames([
+        styles.projectContainer,
+        isMoving && styles.isMoving,
+        contentIsVisible && styles.contentIsVisible,
+      ])}
+      style={{ ...style, zIndex: zIndex }}>
+      <div className={styles.imageCol}>
+        <Image src={imageSrc} alt={imageAlt} fill style={{ zIndex: zIndex + 1 }} />
+        <div
+          className={styles.imageBgLayer}
+          style={{ left: `${position * -1 * 100}%`, zIndex: zIndex, backgroundColor: imageBgColor }}
+        />
       </div>
       <div className={styles.contentCol}>
-        <h2 className={classNames([pageStyles.headline, styles.headline])}>{headline}</h2>
-        <div className={classNames([styles.description, pageStyles.fadeIn])}>{description}</div>
-        {stats && <ProjectStats className={pageStyles.fadeIn} entries={stats} />}
+        <div className={styles.content} style={{ zIndex: zIndex + 1 }}>
+          <h2 className={styles.headline}>{headline}</h2>
+          <div className={styles.description}>{description}</div>
+          {stats && <ProjectStats entries={stats} />}
+        </div>
+        <div className={styles.contentBgLayer} style={{ left: `${position * -1 * 101}%`, zIndex: zIndex }} />
       </div>
     </section>
   );
