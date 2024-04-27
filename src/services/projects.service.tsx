@@ -12,7 +12,7 @@ export interface ProjectProps {
 export const projects: ProjectProps[] = [
   {
     headline: 'The Mobility House Website',
-    imageSrc: '/assets/screens-tmh-website.jpg',
+    imageSrc: '/assets/screens-tmh-website.png',
     imageAlt: 'Screenshots of the The Mobility House website',
     imageBgColor: '#D7E5F2',
     description: (
@@ -47,7 +47,7 @@ export const projects: ProjectProps[] = [
   },
   {
     headline: 'The Mobility House Electricity Tariff',
-    imageSrc: '/assets/screens-electricity-tariff.jpg',
+    imageSrc: '/assets/screens-electricity-tariff.png',
     imageAlt: 'Screenshots of the The Mobility House Electricity Tariff website',
     imageBgColor: '#BED4CF',
     description: (
@@ -81,7 +81,7 @@ export const projects: ProjectProps[] = [
   },
   {
     headline: 'Jira Time Tracker App',
-    imageSrc: '/assets/screens-jtt.jpg',
+    imageSrc: '/assets/screens-jtt.png',
     imageAlt: 'Screenshots of the Jira Time Tracker app',
     imageBgColor: '#D7E5F2',
     description: (
@@ -117,7 +117,7 @@ export const projects: ProjectProps[] = [
   },
   {
     headline: '1337 Camp Website',
-    imageSrc: '/assets/screens-1337-camp.jpg',
+    imageSrc: '/assets/screens-1337-camp.png',
     imageAlt: 'Screenshots of the 1337 Camp website',
     imageBgColor: '#C7BDD5',
     description: (
@@ -147,7 +147,7 @@ export const projects: ProjectProps[] = [
   },
   {
     headline: 'DIANA Leuchten Website',
-    imageSrc: '/assets/screens-diana.jpg',
+    imageSrc: '/assets/screens-diana.png',
     imageAlt: 'Screenshots of the DIANA website',
     imageBgColor: '#D7E5F2',
     description: (

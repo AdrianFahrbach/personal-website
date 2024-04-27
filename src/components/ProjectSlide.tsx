@@ -99,8 +99,8 @@ export const ProjectSlide: React.FC<ProjectSlideProps> = ({
           alt={imageAlt}
           fill
           style={{ zIndex: zIndex + 1 }}
-          sizes='(min-width: 992px) 66vw, 100vw'
-          quality={94}
+          sizes='(min-width: 992px) 70vw, 100vw'
+          quality={97}
         />
         <div
           className={styles.imageBgLayer}

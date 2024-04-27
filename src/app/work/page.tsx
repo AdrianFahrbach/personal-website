@@ -5,6 +5,7 @@ import { projects } from '@/services/projects.service';
 import { useEffect, useRef, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Swiper as SwiperInstance } from 'swiper/types';
+import styles from '@/styles/work.module.scss';
 
 export default function Privacy() {
   // We are using a state for now although a ref could provide better performance when done correctly
@@ -43,7 +44,7 @@ export default function Privacy() {
   }
 
   return (
-    <main key='work'>
+    <main key='work' className={styles.main}>
       <Swiper
         slidesPerView={1}
         virtualTranslate
@@ -73,7 +74,7 @@ export default function Privacy() {
                 position={previousSlide.current === index ? 0 : thisSlidesPosition}
                 index={index}
                 zIndex={zIndex}
-                contentIsVisible={isActive || previousSlide.current === index}
+                contentIsVisible={isActive || previousSlide.current === index || currentSlideIndex === index}
                 isMoving={isMoving}
                 changeSlidePrevious={changeSlidePrevious}
                 changeSlideNext={changeSlideNext}

@@ -59,9 +59,9 @@ export const PageTransitionProvider: React.FC<{ children: React.ReactNode }> = (
     <PageTransitionContext.Provider value={{ pending, navigate, nextRoute }}>
       <Header />
       {pending && <Circle position={position} />}
-      <main style={pending ? { animation: `hidePageChildren ${PAGE_TRANSITION_DURATION + 100}ms forwards` } : undefined}>
+      <div style={pending ? { animation: `hidePageChildren ${PAGE_TRANSITION_DURATION + 100}ms forwards` } : undefined}>
         {children}
-      </main>
+      </div>
     </PageTransitionContext.Provider>
   );
 };
