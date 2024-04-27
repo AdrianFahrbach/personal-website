@@ -20,9 +20,9 @@ import { SmokeEffectsSpawner } from './SmokeEffectsSpawner';
 import styles from './SplineScene.module.scss';
 
 export const SplineScene: React.FC = () => {
+  const [loadSpline, setLoadSpline] = useState(false);
   const [splineIsReady, setSplineIsReady] = useState(false);
-  const [textIsReady, setTextIsReady] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
+  const [splineIsVisible, setSplineIsVisible] = useState(false);
   const [isResizing, setIsResizing] = useState(false);
   const { unlockedAchievements, unlockAchievement, visibleAchievements } = useContext(AchievementsContext);
   const splineApp = useRef<SplineApp>();
@@ -50,8 +50,8 @@ export const SplineScene: React.FC = () => {
     }, 600);
   }
 
-  function setTextToReady() {
-    setTextIsReady(true);
+  function startLoadingSpline() {
+    setLoadSpline(true);
   }
 
   /**
@@ -59,16 +59,17 @@ export const SplineScene: React.FC = () => {
    */
   useEffect(() => {
     const words = document.querySelectorAll<HTMLSpanElement>('[data-word]');
-    const lastWord = words[words.length - 1];
-    lastWord.addEventListener('animationend', setTextToReady);
+    // We don't pick the last word because we want to start spline a bit earlier
+    const fourthLastWord = words[words.length - 4];
+    fourthLastWord.addEventListener('animationend', startLoadingSpline);
 
     if (process.env.NODE_ENV === 'development') {
       // Prevent HMR from not triggering the animationend event
-      setTimeout(setTextToReady, 1500);
+      setTimeout(startLoadingSpline, 1500);
     }
 
     return () => {
-      lastWord.removeEventListener('animationend', setTextToReady);
+      fourthLastWord.removeEventListener('animationend', startLoadingSpline);
     };
   }, []);
 
@@ -87,11 +88,11 @@ export const SplineScene: React.FC = () => {
    * When Spline and text are ready, show the scene
    */
   useEffect(() => {
-    if (splineIsReady && textIsReady) {
+    if (splineIsReady) {
       splineApp.current?.setVariable('hasStarted', true);
-      setTimeout(() => setIsVisible(true), 100);
+      setTimeout(() => setSplineIsVisible(true), 100);
     }
-  }, [splineIsReady, textIsReady]);
+  }, [splineIsReady]);
 
   /**
    * Update the boundaries when the window resizes
@@ -197,12 +198,14 @@ export const SplineScene: React.FC = () => {
           <feComposite operator='over' in='shadow' in2='SourceGraphic' />
         </filter>
       </svg>
-      <Spline
-        className={styles.container}
-        scene='/assets/scene.splinecode'
-        onLoad={onLoad}
-        style={{ opacity: isVisible ? 1 : 0 }}
-      />
+      {loadSpline && (
+        <Spline
+          className={styles.container}
+          scene='/assets/scene.splinecode'
+          onLoad={onLoad}
+          style={{ opacity: splineIsVisible ? 1 : 0 }}
+        />
+      )}
       <SmokeEffectsSpawner splineApp={splineApp} splineIsReady={splineIsReady} />
     </>
   );
