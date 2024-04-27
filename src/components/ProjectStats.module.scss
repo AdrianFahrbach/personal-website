@@ -17,4 +17,8 @@
 .text {
   color: var(--neutral-600);
   text-align: right;
+
+  a {
+    text-decoration: underline;
+  }
 }
