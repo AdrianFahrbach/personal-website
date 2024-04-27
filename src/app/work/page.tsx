@@ -42,20 +42,6 @@ export default function Privacy() {
           initialProgress.current = null;
         }}
         onProgress={swiper => setProgress(swiper.progress)}>
-        <div
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            zIndex: 999,
-            backgroundColor: 'red',
-            color: 'black',
-            padding: '10px',
-          }}>
-          <code>
-            <pre>{targetSlideIndex}</pre>
-          </code>
-        </div>
         {projects.map((project, index) => {
           // The position of this slide from -1 to 1
           const thisSlidesPosition = Math.max(Math.min(currentSlideIndex, projects.length - 1), 0) - index;
