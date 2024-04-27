@@ -94,7 +94,14 @@ export const ProjectSlide: React.FC<ProjectSlideProps> = ({
       ])}
       style={{ ...style, zIndex: zIndex }}>
       <div className={styles.imageCol}>
-        <Image src={imageSrc} alt={imageAlt} fill style={{ zIndex: zIndex + 1 }} />
+        <Image
+          src={imageSrc}
+          alt={imageAlt}
+          fill
+          style={{ zIndex: zIndex + 1 }}
+          sizes='(min-width: 992px) 66vw, 100vw'
+          quality={94}
+        />
         <div
           className={styles.imageBgLayer}
           style={{ left: `${position * -1 * 100}%`, zIndex: zIndex, backgroundColor: imageBgColor }}
