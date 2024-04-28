@@ -18,7 +18,7 @@ export const SwiperControls: React.FC<SwiperControlsProps> = ({
   return (
     <div className={styles.container}>
       <span className={styles.count}>
-        {index + 1}/{slidesCount}
+        {index + 1} / {slidesCount}
       </span>
       <div className={styles.controlsContainer}>
         <button

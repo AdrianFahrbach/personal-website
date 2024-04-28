@@ -176,4 +176,65 @@ export const projects: ProjectProps[] = [
       },
     ],
   },
+  {
+    headline: 'Progrez Project Management App',
+    imageSrc: '/assets/screens-progrez.png',
+    imageAlt: 'Screenshots of the Progrez web app',
+    imageBgColor: '#BED4CF',
+    description: (
+      <>
+        <p>
+          We at hatchery have always wanted to develop our own SAAS product and during COVID we decided to do so with
+          the Progrez project. Progrez is a project management tool that works with the OKR framework.
+        </p>
+        <p>
+          Our first prototype was created in a few days with Firebase and was used internally for all our projects early
+          on. A later version of the software used our own backend to improve performance and flexibility.
+        </p>
+        <p>
+          We put a lot of{' '}
+          <a href='https://dribbble.com/shots/15079542-Task-complete' target='_blank' rel='noopener noreferrer'>
+            attention to detail
+          </a>{' '}
+          into this project and learned a lot about how to develop and market a SAAS product. However, we decided to
+          shut down the product when we no longer had enough time to continue development in a regular and meaningful
+          way.
+        </p>
+      </>
+    ),
+    stats: [
+      { title: 'Technologie', text: 'React, Kirby CMS' },
+      { title: 'My role', text: 'Part of hatcherys Development Team' },
+    ],
+  },
+  {
+    headline: 'Mercedes-Benz CAC Website',
+    imageSrc: '/assets/screens-cac.png',
+    imageAlt: 'Screenshots of the Mercedes-Benz CAC website',
+    imageBgColor: '#D7E5F2',
+    description: (
+      <>
+        <p>
+          hatchery was commissioned to renew the website of the Mercedes-Benz Customer Assistance Center. Mercedes-Benz
+          provided us with a branding on the basis of which we designed the new website.
+        </p>
+        <p>
+          The focus of the site was on recruiting new employees. Accordingly, we integrated various image films, content
+          from social networks and a jobs platform.
+        </p>
+      </>
+    ),
+    stats: [
+      { title: 'Technologie', text: 'React, Kirby CMS' },
+      { title: 'My role', text: 'Part of hatcherys Development Team' },
+      {
+        title: 'Link',
+        text: (
+          <a href='https://cac.mercedes-benz.com' target='_blank' rel='noopener noreferrer'>
+            cac.mercedes-benz.com
+          </a>
+        ),
+      },
+    ],
+  },
 ];
