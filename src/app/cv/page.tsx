@@ -9,7 +9,7 @@ import Link from 'next/link';
 export default function Privacy() {
   return (
     <main key='cv'>
-      <section className={pageStyles.section}>
+      <section className={classNames(pageStyles.section, 'has-underlined-links')}>
         <div className={pageStyles.wrapper}>
           <div className={classNames(pageStyles.contentContainer, cvStyles.cvContent)}>
             <div className={cvStyles.portraitRow}>

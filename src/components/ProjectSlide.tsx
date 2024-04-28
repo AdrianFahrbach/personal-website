@@ -109,7 +109,7 @@ export const ProjectSlide: React.FC<ProjectSlideProps> = ({
           style={{ left: `${position * -1 * 100}%`, zIndex: zIndex, backgroundColor: imageBgColor }}
         />
       </div>
-      <div className={styles.contentCol}>
+      <div className={classNames(styles.contentCol, 'has-underlined-links')}>
         <div
           className={classNames([
             styles.fade,

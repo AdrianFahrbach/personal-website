@@ -18,14 +18,4 @@
 .text {
   color: var(--neutral-600);
   text-align: right;
-
-  a {
-    text-decoration: underline;
-    text-underline-offset: 0.23em;
-    transition: opacity 0.25s ease;
-
-    &:hover {
-      opacity: 0.8;
-    }
-  }
 }

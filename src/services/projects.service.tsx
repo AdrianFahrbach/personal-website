@@ -1,3 +1,4 @@
+import { ExternalLink } from '@/components/ExternalLink';
 import { ProjectStatsEntry } from '@/components/ProjectStats';
 
 export interface ProjectProps {
@@ -37,11 +38,7 @@ export const projects: ProjectProps[] = [
       { title: 'My role', text: 'Part of Orcayas Development Team' },
       {
         title: 'Link',
-        text: (
-          <a href='https://www.mobilityhouse.com/' target='_blank' rel='noopener noreferrer'>
-            mobilityhouse.com
-          </a>
-        ),
+        text: <ExternalLink href='https://www.mobilityhouse.com/'>mobilityhouse.com</ExternalLink>,
       },
     ],
   },
@@ -71,11 +68,7 @@ export const projects: ProjectProps[] = [
       { title: 'My role', text: 'Part of Orcayas Development Team' },
       {
         title: 'Link',
-        text: (
-          <a href='https://eyond.mobilityhouse.com/' target='_blank' rel='noopener noreferrer'>
-            eyond.mobilityhouse.com
-          </a>
-        ),
+        text: <ExternalLink href='https://eyond.mobilityhouse.com/'>eyond.mobilityhouse.com</ExternalLink>,
       },
     ],
   },
@@ -107,11 +100,7 @@ export const projects: ProjectProps[] = [
       { title: 'My role', text: 'Designer and developer' },
       {
         title: 'Link',
-        text: (
-          <a href='https://testflight.apple.com/join/mB7ZA6s5' target='_blank' rel='noopener noreferrer'>
-            Testflight invite
-          </a>
-        ),
+        text: <ExternalLink href='https://testflight.apple.com/join/mB7ZA6s5'>Testflight invite</ExternalLink>,
       },
     ],
   },
@@ -137,11 +126,7 @@ export const projects: ProjectProps[] = [
       { title: 'My role', text: 'Part of Orcayas Development Team' },
       {
         title: 'Link',
-        text: (
-          <a href='https://1337.camp' target='_blank' rel='noopener noreferrer'>
-            1337.camp
-          </a>
-        ),
+        text: <ExternalLink href='https://1337.camp'>1337.camp</ExternalLink>,
       },
     ],
   },
@@ -168,11 +153,7 @@ export const projects: ProjectProps[] = [
       { title: 'My role', text: 'Designer and developer' },
       {
         title: 'Link',
-        text: (
-          <a href='https://diana-leuchten.de' target='_blank' rel='noopener noreferrer'>
-            diana-leuchten.de
-          </a>
-        ),
+        text: <ExternalLink href='https://diana-leuchten.de'>diana-leuchten.de</ExternalLink>,
       },
     ],
   },
@@ -193,12 +174,9 @@ export const projects: ProjectProps[] = [
         </p>
         <p>
           We put a lot of{' '}
-          <a href='https://dribbble.com/shots/15079542-Task-complete' target='_blank' rel='noopener noreferrer'>
-            attention to detail
-          </a>{' '}
-          into this project and learned a lot about how to develop and market a SAAS product. However, we decided to
-          shut down the product when we no longer had enough time to continue development in a regular and meaningful
-          way.
+          <ExternalLink href='https://dribbble.com/shots/15079542-Task-complete'>attention to detail</ExternalLink> into
+          this project and learned a lot about how to develop and market a SAAS product. However, we decided to shut
+          down the product when we no longer had enough time to continue development in a regular and meaningful way.
         </p>
       </>
     ),
@@ -229,11 +207,7 @@ export const projects: ProjectProps[] = [
       { title: 'My role', text: 'Part of hatcherys Development Team' },
       {
         title: 'Link',
-        text: (
-          <a href='https://cac.mercedes-benz.com' target='_blank' rel='noopener noreferrer'>
-            cac.mercedes-benz.com
-          </a>
-        ),
+        text: <ExternalLink href='https://cac.mercedes-benz.com'>cac.mercedes-benz.com</ExternalLink>,
       },
     ],
   },
