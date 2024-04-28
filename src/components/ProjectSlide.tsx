@@ -74,13 +74,15 @@ export const ProjectSlide: React.FC<ProjectSlideProps> = ({
   }, [contentRef.current]);
 
   /**
-   * Scroll to top when content gets visible
+   * Scroll to top when content gets invisible
    */
   useEffect(() => {
     if (!contentIsVisible) {
       const currentEl = contentRef.current;
       if (currentEl) {
-        currentEl.scrollTop = 0;
+        setTimeout(() => {
+          currentEl.scrollTop = 0;
+        }, 500);
       }
     }
   }, [contentIsVisible]);

@@ -29,7 +29,6 @@
     .imageCol img,
     .content {
       opacity: 1;
-      transition: all 0.5s ease 0.35s;
       transform: translateY(0);
     }
   }
@@ -77,6 +76,7 @@
 .imageCol img,
 .content {
   opacity: 0;
+  transition: opacity 0.5s ease 0.35s, transform 0.5s ease 0.35s;
   transform: translateY(20px);
 }
 

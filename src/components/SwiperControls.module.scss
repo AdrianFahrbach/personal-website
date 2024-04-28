@@ -35,4 +35,9 @@
   &:hover {
     opacity: 0.8;
   }
+
+  &.isDisabled {
+    pointer-events: none;
+    opacity: 0.25;
+  }
 }

@@ -32,14 +32,14 @@ export default function Privacy() {
   function changeSlideNext() {
     if (currentSwiper) {
       currentSwiper.slideTo(currentSlideIndex + 1);
-      setTargetSlideIndex(null);
+      setTargetSlideIndex(currentSlideIndex + 1);
     }
   }
 
   function changeSlidePrevious() {
     if (currentSwiper) {
       currentSwiper.slideTo(currentSlideIndex - 1);
-      setTargetSlideIndex(null);
+      setTargetSlideIndex(currentSlideIndex - 1);
     }
   }
 
@@ -71,10 +71,10 @@ export default function Privacy() {
               <ProjectSlide
                 key={project.headline}
                 {...project}
-                position={previousSlide.current === index ? 0 : thisSlidesPosition}
+                position={thisSlidesPosition}
                 index={index}
                 zIndex={zIndex}
-                contentIsVisible={isActive || previousSlide.current === index || currentSlideIndex === index}
+                contentIsVisible={isActive}
                 isMoving={isMoving}
                 changeSlidePrevious={changeSlidePrevious}
                 changeSlideNext={changeSlideNext}
