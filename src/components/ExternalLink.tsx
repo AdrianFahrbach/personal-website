@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './ExternalLink.module.scss';
+import classNames from 'classnames';
 
 interface ExternalLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
   children: React.ReactNode;
@@ -7,7 +8,11 @@ interface ExternalLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement
 
 export const ExternalLink: React.FC<ExternalLinkProps> = ({ children, ...props }) => {
   return (
-    <a target='_blank' rel='noopener noreferrer' {...props}>
+    <a
+      target='_blank'
+      rel='noopener noreferrer'
+      {...props}
+      className={classNames('is-underlined-link', props.className)}>
       {children}
       <svg className={styles.arrow} width='8' height='8' viewBox='0 0 160 160' fill='currentColor'>
         <path d='M155.314 4.686c6.248 6.249 6.248 16.38 0 22.628l-128 128c-6.249 6.248-16.38 6.248-22.628 0-6.248-6.249-6.248-16.379 0-22.628l128-128c6.249-6.248 16.379-6.248 22.628 0z' />

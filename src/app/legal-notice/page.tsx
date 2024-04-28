@@ -1,3 +1,4 @@
+import { ExternalLink } from '@/components/ExternalLink';
 import pageStyles from '@/styles/page.module.scss';
 import Link from 'next/link';
 
@@ -23,23 +24,25 @@ export default function LegalNotice() {
               <ul>
                 <li>
                   Spline balloon material is based on{' '}
-                  <Link href='https://community.spline.design/file/1a12ce58-e8f7-4ae1-8a43-4b1527dab076'>
+                  <ExternalLink href='https://community.spline.design/file/1a12ce58-e8f7-4ae1-8a43-4b1527dab076'>
                     Ballon Experience by aximoris
-                  </Link>
+                  </ExternalLink>
                   .
                 </li>
                 <li>
-                  The icons used come from the <Link href='https://phosphoricons.com/'>Phosphor Icons icon pack</Link>.
+                  The icons used come from the{' '}
+                  <ExternalLink href='https://phosphoricons.com/'>Phosphor Icons icon pack</ExternalLink>.
                 </li>
                 <li>
                   The display font is{' '}
-                  <Link href='https://www.behance.net/gallery/153109125/Merchant-Typeface-Free-Variable-27-Styles'>
+                  <ExternalLink href='https://www.behance.net/gallery/153109125/Merchant-Typeface-Free-Variable-27-Styles'>
                     Merchant by Rajesh Rajput
-                  </Link>
+                  </ExternalLink>
                   .
                 </li>
                 <li>
-                  The body font is <Link href='https://fonts.google.com/specimen/Montserrat'>Montserrat</Link>.
+                  The body font is{' '}
+                  <ExternalLink href='https://fonts.google.com/specimen/Montserrat'>Montserrat</ExternalLink>.
                 </li>
               </ul>
               <h2>Liability for own content</h2>
@@ -53,10 +56,13 @@ export default function LegalNotice() {
                 Links to third-party websites are provided for your information only. The responsibility for this
                 third-party content lies solely with the provider who makes this content available on the linked
                 website. The internet offers of third parties have been checked before the corresponding link was set
-                up. However, we assume no liability for the completeness and accuracy of the information behind a
-                reference or link; in particular, the content of these websites may be changed at any time without our
-                knowledge. If we become aware of any legal infringements on pages to which we have placed a link on our
-                website, we will remove this link immediately.
+                up.
+              </p>
+              <p>
+                However, we assume no liability for the completeness and accuracy of the information behind a reference
+                or link; in particular, the content of these websites may be changed at any time without our knowledge.
+                If we become aware of any legal infringements on pages to which we have placed a link on our website, we
+                will remove this link immediately.
               </p>
               <h2>Changes to the information provided</h2>
               <p>

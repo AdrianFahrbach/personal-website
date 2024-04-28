@@ -57,10 +57,6 @@
   align-items: flex-end;
   justify-content: stretch;
   overflow: hidden;
-
-  p {
-    margin: 1em 0;
-  }
 }
 
 .content {
@@ -76,7 +72,9 @@
 .imageCol img,
 .content {
   opacity: 0;
-  transition: opacity 0.5s ease 0.35s, transform 0.5s ease 0.35s;
+  transition:
+    opacity 0.5s ease 0.35s,
+    transform 0.5s ease 0.35s;
   transform: translateY(20px);
 }
 
@@ -94,7 +92,6 @@
   &:last-child {
     margin-bottom: 0;
   }
-
 }
 
 .fade {

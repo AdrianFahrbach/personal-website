@@ -46,7 +46,7 @@ body {
 }
 
 body {
-  line-height: 1.5;
+  line-height: 1.6;
   color: var(--neutral-900);
   background: var(--neutral-100);
 }
@@ -99,15 +99,26 @@ a {
   text-decoration: none;
 }
 
-.has-underlined-links {
-  a {
-    text-decoration: underline;
-    text-underline-offset: 0.23em;
-    transition: opacity 0.25s ease;
+p {
+  margin: 1em 0;
 
-    &:hover {
-      opacity: 0.8;
-    }
+  &:first-child {
+    margin-top: 0;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.is-underlined-link,
+.has-underlined-links a {
+  text-decoration: underline;
+  text-underline-offset: 0.23em;
+  transition: opacity 0.25s ease;
+
+  &:hover {
+    opacity: 0.8;
   }
 }
 
