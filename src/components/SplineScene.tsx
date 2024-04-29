@@ -6,7 +6,6 @@ import {
   checkForAchievements,
   didObjectsGetMoved,
   getObjectPositions,
-  getViewportInfo,
   updateViewport,
   updateVisibleAchievementObjects,
 } from '@/services/spline.service';
@@ -60,8 +59,9 @@ export const SplineScene: React.FC = () => {
   useEffect(() => {
     const words = document.querySelectorAll<HTMLSpanElement>('[data-word]');
     // We don't pick the last word because we want to start spline a bit earlier
-    const fourthLastWord = words[words.length - 4];
-    fourthLastWord.addEventListener('animationend', startLoadingSpline);
+    console.log(words);
+    const triggerWord = words[Math.max(words.length - 6, 0)];
+    triggerWord.addEventListener('animationend', startLoadingSpline);
 
     if (process.env.NODE_ENV === 'development') {
       // Prevent HMR from not triggering the animationend event
@@ -69,7 +69,7 @@ export const SplineScene: React.FC = () => {
     }
 
     return () => {
-      fourthLastWord.removeEventListener('animationend', startLoadingSpline);
+      triggerWord.removeEventListener('animationend', startLoadingSpline);
     };
   }, []);
 
@@ -175,8 +175,6 @@ export const SplineScene: React.FC = () => {
   if (!viewport) {
     return null;
   }
-
-  const { zoom } = getViewportInfo(viewport);
 
   return (
     <>
