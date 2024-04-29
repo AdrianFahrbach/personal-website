@@ -34,7 +34,7 @@ export const projects: ProjectProps[] = [
       </>
     ),
     stats: [
-      { title: 'Technologie', text: 'Next.js, Strapi CMS, Cypress' },
+      { title: 'Technology', text: 'Next.js, Strapi CMS, Cypress' },
       { title: 'My role', text: 'Part of Orcayas Development Team' },
       {
         title: 'Link',
@@ -64,7 +64,7 @@ export const projects: ProjectProps[] = [
       </>
     ),
     stats: [
-      { title: 'Technologie', text: 'Next.js, Strapi CMS' },
+      { title: 'Technology', text: 'Next.js, Strapi CMS' },
       { title: 'My role', text: 'Part of Orcayas Development Team' },
       {
         title: 'Link',
@@ -96,7 +96,7 @@ export const projects: ProjectProps[] = [
       </>
     ),
     stats: [
-      { title: 'Technologie', text: 'React-Native' },
+      { title: 'Technology', text: 'React-Native' },
       { title: 'My role', text: 'Designer and developer' },
       {
         title: 'Link',
@@ -122,7 +122,7 @@ export const projects: ProjectProps[] = [
       </>
     ),
     stats: [
-      { title: 'Technologie', text: 'React, Kirby CMS' },
+      { title: 'Technology', text: 'React, Kirby CMS' },
       { title: 'My role', text: 'Part of Orcayas Development Team' },
       {
         title: 'Link',
@@ -149,7 +149,7 @@ export const projects: ProjectProps[] = [
       </>
     ),
     stats: [
-      { title: 'Technologie', text: 'React, Kirby CMS' },
+      { title: 'Technology', text: 'React, Kirby CMS' },
       { title: 'My role', text: 'Designer and developer' },
       {
         title: 'Link',
@@ -181,7 +181,7 @@ export const projects: ProjectProps[] = [
       </>
     ),
     stats: [
-      { title: 'Technologie', text: 'React, Kirby CMS' },
+      { title: 'Technology', text: 'React, Kirby CMS' },
       { title: 'My role', text: 'Part of hatcherys Development Team' },
     ],
   },
@@ -203,7 +203,7 @@ export const projects: ProjectProps[] = [
       </>
     ),
     stats: [
-      { title: 'Technologie', text: 'React, Kirby CMS' },
+      { title: 'Technology', text: 'React, Kirby CMS' },
       { title: 'My role', text: 'Part of hatcherys Development Team' },
       {
         title: 'Link',
