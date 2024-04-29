@@ -180,24 +180,6 @@ export const SplineScene: React.FC = () => {
 
   return (
     <>
-      <svg className={styles.bloomEffectSvg}>
-        <filter id='bloom-effect'>
-          {/* Shadow Blur */}
-          <feGaussianBlur stdDeviation={6.5 * zoom - (viewport === 'mobile' ? 1 : 0)} result='blur' />
-
-          {/* Invert the drop shadow to create an inner shadow */}
-          <feComposite operator='out' in='SourceGraphic' in2='blur' result='inverse' />
-
-          {/* Color & Opacity */}
-          <feFlood floodColor='white' floodOpacity='1' result='color' />
-
-          {/* Clip color inside shadow */}
-          <feComposite operator='in' in='color' in2='inverse' result='shadow' />
-
-          {/* Put shadow over original object */}
-          <feComposite operator='over' in='shadow' in2='SourceGraphic' />
-        </filter>
-      </svg>
       {loadSpline && (
         <Spline
           className={styles.container}
