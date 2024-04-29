@@ -133,6 +133,7 @@ export const Header: React.FC = () => {
       <div className={classNames([styles.linkContainer, styles.bottomCenter, !isHome && styles.isHidden])}>
         <HeaderLink to='/achievements' label='Your achievements' hasPageTransition />
       </div>
+      <div className={classNames([styles.mobileHeaderBg, (isHome || isWorkPage) && styles.isHidden])} />
     </header>
   );
 };

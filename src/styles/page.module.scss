@@ -13,10 +13,13 @@
 
 .contentContainer {
   max-width: 640px;
-  padding: 120px 0;
+  padding: 100px 0;
   margin: 0 auto;
   overflow: hidden;
   color: var(--neutral-600);
+  @media (min-width: 768px) {
+    padding: 120px 0;
+  }
 
   h1,
   h2,
