@@ -7,17 +7,18 @@ module.exports = {
   images: {
     formats: ['image/avif', 'image/webp'],
   },
-  async headers() {
-    return [
-      {
-        source: '/',
-        headers: [
-          {
-            key: 'Link',
-            value: '<https://prod.spline.design>; rel=preconnect;',
-          },
-        ],
+  webpack: config => {
+    config.module.rules.push({
+      test: /placeholders\/.+\.svgPlaceholder$/,
+      type: 'asset/source',
+    });
+    return config;
+  },
+  experimental: {
+    turbo: {
+      rules: {
+        '*.svgPlaceholder': ['raw-loader'],
       },
-    ];
+    },
   },
 };

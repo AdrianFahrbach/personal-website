@@ -39,14 +39,20 @@
   overflow: hidden;
 
   img {
-    position: relative;
-    padding-top: 44px;
+    position: absolute;
+    top: 44px;
+    width: 100%;
+    height: calc(100% - 44px);
     object-fit: contain;
+    // Used for the placeholder image
+    background-size: contain !important;
     @media (min-width: 576px) {
-      padding-top: 32px;
+      top: 32px;
+      height: calc(100% - 32px);
     }
     @media (min-width: 768px) {
-      padding: 16px 0;
+      top: 16px;
+      bottom: 16px;
     }
   }
 }

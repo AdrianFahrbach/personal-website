@@ -4,7 +4,7 @@ import { ProjectProps } from '@/services/projects.service';
 import classNames from 'classnames';
 import { throttle } from 'lodash';
 import Image from 'next/image';
-import { useEffect, useRef, useState } from 'react';
+import { use, useEffect, useRef, useState } from 'react';
 import styles from './ProjectSlide.module.scss';
 import { ProjectStats } from './ProjectStats';
 import { SwiperControls } from './SwiperControls';
@@ -26,6 +26,7 @@ export interface ProjectSlideProps extends ProjectProps {
 
 export const ProjectSlide: React.FC<ProjectSlideProps> = ({
   imageSrc,
+  imagePlaceholder,
   imageAlt,
   imageBgColor,
   headline,
@@ -43,6 +44,17 @@ export const ProjectSlide: React.FC<ProjectSlideProps> = ({
 }) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const [overflowingEdges, setOverflowingEdges] = useState<('top' | 'bottom')[]>([]);
+  const [showImage, setShowImage] = useState(false);
+
+  /**
+   * Only load image when it is close to being visible
+   */
+  useEffect(() => {
+    if (!showImage && position >= -1) {
+      console.log('show', index);
+      setShowImage(true);
+    }
+  }, [position]);
 
   /**
    * Check if content is overflowing on top or bottom
@@ -96,14 +108,17 @@ export const ProjectSlide: React.FC<ProjectSlideProps> = ({
       ])}
       style={{ ...style, zIndex: zIndex }}>
       <div className={styles.imageCol}>
-        <Image
-          src={imageSrc}
-          alt={imageAlt}
-          fill
-          style={{ zIndex: zIndex + 1 }}
-          sizes='(min-width: 992px) 70vw, 100vw'
-          quality={97}
-        />
+        {(index === 0 || showImage) && (
+          <Image
+            src={imageSrc}
+            alt={imageAlt}
+            fill
+            style={{ zIndex: zIndex + 1 }}
+            sizes='(min-width: 992px) 70vw, 100vw'
+            quality={97}
+            placeholder={imagePlaceholder}
+          />
+        )}
         <div
           className={styles.imageBgLayer}
           style={{ left: `${position * -1 * 100}%`, zIndex: zIndex, backgroundColor: imageBgColor }}
