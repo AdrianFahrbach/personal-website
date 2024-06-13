@@ -50,8 +50,16 @@ export default function Privacy() {
               <hr className={classNames(cvStyles.hr, cvStyles.fullWidthHr)} />
               <h2>Experience</h2>
               <div className={cvStyles.infoCol}>
+                <h3>Jung von Matt NECKAR</h3>
+                <p>2024 - today</p>
+              </div>
+              <div className={cvStyles.text}>
+                <p>Technical Lead</p>
+              </div>
+              <hr className={cvStyles.hr} />
+              <div className={cvStyles.infoCol}>
                 <h3>ORCAYA GmbH</h3>
-                <p>2023 - today</p>
+                <p>2023 - 2024</p>
               </div>
               <div className={cvStyles.text}>
                 <p>Senior Software Engineer</p>

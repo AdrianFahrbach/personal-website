@@ -22,13 +22,13 @@ export default function Home() {
                 ['a', { text: 'designer', isHighlighted: true, dataTag: 'designer' }],
                 ['and', { text: 'developer', isHighlighted: true, dataTag: 'developer' }],
                 ['working', 'at'],
-                [{ text: 'Orcaya', isHighlighted: true, dataTag: 'company' }, '.'],
+                [{ text: 'Jung von Matt', isHighlighted: true, dataTag: 'company' }, '.'],
               ]
             : [
                 ['Hey!', 'I’m', { text: 'Adrian', isHighlighted: true, dataTag: 'name' }, ','],
                 ['a', { text: 'designer', isHighlighted: true, dataTag: 'designer' }],
                 ['and', { text: 'developer', isHighlighted: true, dataTag: 'developer' }],
-                ['working', 'at', { text: 'Orcaya', isHighlighted: true, dataTag: 'company' }, '.'],
+                ['working', 'at', { text: 'JvM', isHighlighted: true, dataTag: 'company' }, '.'],
               ]
         }
       />
