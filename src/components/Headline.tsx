@@ -1,4 +1,4 @@
-import { merchant } from '@/styles/fonts';
+import { enigma, merchant } from '@/styles/fonts';
 import classNames from 'classnames';
 import React from 'react';
 import styles from './Headline.module.scss';
@@ -47,8 +47,8 @@ export const Headline: React.FC<HeadlineProps> = ({ as = 'h1', text }) => {
   );
 
   return as === 'h1' ? (
-    <h1 className={classNames([styles.container, merchant.className])}>{parsedText}</h1>
+    <h1 className={classNames([styles.container, enigma.className])}>{parsedText}</h1>
   ) : (
-    <h2 className={classNames([styles.container, merchant.className])}>{parsedText}</h2>
+    <h2 className={classNames([styles.container, enigma.className])}>{parsedText}</h2>
   );
 };

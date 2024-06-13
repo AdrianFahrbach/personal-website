@@ -12,3 +12,13 @@ export const merchant = localFont({
     },
   ],
 });
+
+export const enigma = localFont({
+  src: [
+    {
+      path: '../assets/fonts/enigma-regular.woff',
+      weight: '400',
+      style: 'normal',
+    },
+  ],
+});
