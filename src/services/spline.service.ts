@@ -46,14 +46,17 @@ export function splineToScreenCoordinates(x: number, y: number, viewport: Viewpo
   return { x: screenX, y: screenY };
 }
 
+export const viewportDetails: Record<Viewport, { zoom: number; splineOffsetX: number; splineOffsetY: number }> = {
+  mobile: { zoom: 0.6, splineOffsetX: 100, splineOffsetY: 30 },
+  tablet: { zoom: 0.75, splineOffsetX: -50, splineOffsetY: 0 },
+  desktop: { zoom: 1, splineOffsetX: -60, splineOffsetY: 0 },
+};
+
 /**
  * Gets additional information about the viewport.
  */
 export function getViewportInfo(viewport: Viewport) {
-  const zoom = viewport === 'mobile' ? 0.6 : viewport === 'tablet' ? 0.75 : 1;
-  const splineOffsetX = viewport === 'mobile' ? 100 : 0;
-  const splineOffsetY = viewport === 'mobile' ? 30 : 0;
-  return { zoom, splineOffsetX, splineOffsetY };
+  return viewportDetails[viewport];
 }
 
 export type ObjectId =
