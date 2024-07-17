@@ -11,8 +11,8 @@ import styles from './Header.module.scss';
 
 export const Header: React.FC = () => {
   const { nextRoute, pending } = useContext(PageTransitionContext);
-  const pathname = usePathname();
   const headerRef = useRef<HTMLElement | null>(null);
+  const pathname = usePathname();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const viewport = useViewport();
   const isHome = (!pending && pathname === '/') || (pending && nextRoute === '/');
