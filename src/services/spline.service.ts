@@ -232,10 +232,10 @@ export function checkForAchievements(
     // Make sure that the user has unlocked enough objects for the achievement
     if (hasObjForName && hasObjForDesigner && hasObjForDeveloper && hasObjForCompany) {
       const possibleMatches: Array<[string, Array<ObjectId>]> = [
-        ['name', ['obj-user-icon', 'obj-contact-icon']],
+        ['name', ['obj-user-icon', 'obj-contact-icon', 'obj-linkedin-logo']],
         ['designer', ['obj-dribbble-logo']],
         ['developer', ['obj-github-logo']],
-        ['company', ['obj-linkedin-logo', 'obj-cv-icon']],
+        ['company', ['obj-linkedin-logo', 'obj-contact-icon', 'obj-cv-icon', 'obj-rocket-icon']],
       ];
 
       const itsAMatch = possibleMatches.every(([area, objIds]) => {
