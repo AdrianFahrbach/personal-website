@@ -164,7 +164,7 @@ export const projects: ProjectProps[] = [
     ),
     stats: [
       { title: 'Technology', text: 'React, Kirby CMS' },
-      { title: 'My role', text: 'Designer and developer' },
+      { title: 'My role', text: 'Part of hatcherys Development Team' },
       {
         title: 'Link',
         text: <ExternalLink href='https://diana-leuchten.de'>diana-leuchten.de</ExternalLink>,
