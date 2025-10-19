@@ -1,12 +1,14 @@
 import { ExternalLink } from '@/components/ExternalLink';
 import { ProjectStatsEntry } from '@/components/ProjectStats';
-import screensTmhWebsitePlaceholder from '@/assets/placeholders/screens-tmh-website.svgPlaceholder';
-import screensElectricityTariffPlaceholder from '@/assets/placeholders/screens-electricity-tariff.svgPlaceholder';
-import screensJttPlaceholder from '@/assets/placeholders/screens-jtt.svgPlaceholder';
-import screens_1337CampPlaceholder from '@/assets/placeholders/screens-1337-camp.svgPlaceholder';
-import screensDianaPlaceholder from '@/assets/placeholders/screens-diana.svgPlaceholder';
-import screensProgrezPlaceholder from '@/assets/placeholders/screens-progrez.svgPlaceholder';
-import screensCacPlaceholder from '@/assets/placeholders/screens-cac.svgPlaceholder';
+import {
+  placeholder1337Camp,
+  placeholderCac,
+  placeholderDiana,
+  placeholderElectricityTariff,
+  placeholderJtt,
+  placeholderProgrez,
+  placeholderTmhWebsite,
+} from '@/const/placeholders';
 import svgToMiniDataURI from 'mini-svg-data-uri';
 
 export interface ProjectProps {
@@ -23,7 +25,7 @@ export const projects: ProjectProps[] = [
   {
     headline: 'The Mobility House Website',
     imageSrc: '/assets/screens-tmh-website.png',
-    imagePlaceholder: svgToMiniDataURI(screensTmhWebsitePlaceholder) as `data:image/svg+xml,${string}`,
+    imagePlaceholder: svgToMiniDataURI(placeholderTmhWebsite) as `data:image/svg+xml,${string}`,
     imageAlt: 'Screenshots of the The Mobility House website',
     imageBgColor: '#D7E5F2',
     description: (
@@ -55,7 +57,7 @@ export const projects: ProjectProps[] = [
   {
     headline: 'The Mobility House Electricity Tariff',
     imageSrc: '/assets/screens-electricity-tariff.png',
-    imagePlaceholder: svgToMiniDataURI(screensElectricityTariffPlaceholder) as `data:image/svg+xml,${string}`,
+    imagePlaceholder: svgToMiniDataURI(placeholderElectricityTariff) as `data:image/svg+xml,${string}`,
     imageAlt: 'Screenshots of the The Mobility House Electricity Tariff website',
     imageBgColor: '#BED4CF',
     description: (
@@ -86,7 +88,7 @@ export const projects: ProjectProps[] = [
   {
     headline: 'Jira Time Tracker App',
     imageSrc: '/assets/screens-jtt.png',
-    imagePlaceholder: svgToMiniDataURI(screensJttPlaceholder) as `data:image/svg+xml,${string}`,
+    imagePlaceholder: svgToMiniDataURI(placeholderJtt) as `data:image/svg+xml,${string}`,
     imageAlt: 'Screenshots of the Jira Time Tracker app',
     imageBgColor: '#D7E5F2',
     description: (
@@ -112,14 +114,14 @@ export const projects: ProjectProps[] = [
       { title: 'My role', text: 'Designer and developer' },
       {
         title: 'Link',
-        text: <ExternalLink href='https://testflight.apple.com/join/mB7ZA6s5'>Testflight invite</ExternalLink>,
+        text: <ExternalLink href='https://chronos-for-jira.com'>chronos-for-jira.com</ExternalLink>,
       },
     ],
   },
   {
     headline: '1337 Camp Website',
     imageSrc: '/assets/screens-1337-camp.png',
-    imagePlaceholder: svgToMiniDataURI(screens_1337CampPlaceholder) as `data:image/svg+xml,${string}`,
+    imagePlaceholder: svgToMiniDataURI(placeholder1337Camp) as `data:image/svg+xml,${string}`,
     imageAlt: 'Screenshots of the 1337 Camp website',
     imageBgColor: '#C7BDD5',
     description: (
@@ -146,7 +148,7 @@ export const projects: ProjectProps[] = [
   {
     headline: 'DIANA Leuchten Website',
     imageSrc: '/assets/screens-diana.png',
-    imagePlaceholder: svgToMiniDataURI(screensDianaPlaceholder) as `data:image/svg+xml,${string}`,
+    imagePlaceholder: svgToMiniDataURI(placeholderDiana) as `data:image/svg+xml,${string}`,
     imageAlt: 'Screenshots of the DIANA website',
     imageBgColor: '#D7E5F2',
     description: (
@@ -174,7 +176,7 @@ export const projects: ProjectProps[] = [
   {
     headline: 'Progrez Project Management App',
     imageSrc: '/assets/screens-progrez.png',
-    imagePlaceholder: svgToMiniDataURI(screensProgrezPlaceholder) as `data:image/svg+xml,${string}`,
+    imagePlaceholder: svgToMiniDataURI(placeholderProgrez) as `data:image/svg+xml,${string}`,
     imageAlt: 'Screenshots of the Progrez web app',
     imageBgColor: '#BED4CF',
     description: (
@@ -203,7 +205,7 @@ export const projects: ProjectProps[] = [
   {
     headline: 'Mercedes-Benz CAC Website',
     imageSrc: '/assets/screens-cac.png',
-    imagePlaceholder: svgToMiniDataURI(screensCacPlaceholder) as `data:image/svg+xml,${string}`,
+    imagePlaceholder: svgToMiniDataURI(placeholderCac) as `data:image/svg+xml,${string}`,
     imageAlt: 'Screenshots of the Mercedes-Benz CAC website',
     imageBgColor: '#D7E5F2',
     description: (
