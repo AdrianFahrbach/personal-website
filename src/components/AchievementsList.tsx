@@ -2,7 +2,7 @@
 
 import { AchievementsContext } from '@/providers/AchievementsProvider';
 import { achievementToToastMap, allAchievements } from '@/services/achievements.service';
-import { QuestionMark } from '@phosphor-icons/react';
+import { QuestionMarkIcon } from '@phosphor-icons/react';
 import classNames from 'classnames';
 import React, { useContext } from 'react';
 import styles from './AchievementsList.module.scss';
@@ -28,7 +28,7 @@ export const AchievementsList: React.FC<React.HTMLAttributes<HTMLDivElement>> = 
           return (
             <div key={achievement} className={classNames(styles.achievement, styles.isLocked)}>
               <div className={styles.icon}>
-                <QuestionMark size={28} />
+                <QuestionMarkIcon size={28} />
               </div>
               <div>
                 <p className={styles.headline}>{headline}</p>

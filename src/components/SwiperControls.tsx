@@ -1,4 +1,4 @@
-import { CaretLeft, CaretRight } from '@phosphor-icons/react';
+import { CaretLeftIcon, CaretRightIcon } from '@phosphor-icons/react';
 import styles from './SwiperControls.module.scss';
 import classNames from 'classnames';
 
@@ -24,14 +24,14 @@ export const SwiperControls: React.FC<SwiperControlsProps> = ({
         <button
           className={classNames(styles.controlBtn, { [styles.isDisabled]: index === 0 })}
           onClick={changeSlidePrevious}>
-          <CaretLeft weight='bold' />
+          <CaretLeftIcon weight='bold' />
           <span>Previous</span>
         </button>
         <button
           className={classNames(styles.controlBtn, { [styles.isDisabled]: index === slidesCount - 1 })}
           onClick={changeSlideNext}>
           <span>Next</span>
-          <CaretRight weight='bold' />
+          <CaretRightIcon weight='bold' />
         </button>
       </div>
     </div>

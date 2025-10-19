@@ -3,7 +3,7 @@
 import { AchievementsContext } from '@/providers/AchievementsProvider';
 import { PageTransitionContext } from '@/providers/PageTransitionsProvider';
 import { Achievement } from '@/services/achievements.service';
-import { ArrowLeft } from '@phosphor-icons/react';
+import { ArrowLeftIcon } from '@phosphor-icons/react';
 import classNames from 'classnames';
 import Link from 'next/link';
 import React, { useContext } from 'react';
@@ -50,7 +50,7 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({
 
   const InnerElements = (
     <>
-      {isBackButton && <ArrowLeft className={styles.icon} size={24} />}
+      {isBackButton && <ArrowLeftIcon className={styles.icon} size={24} />}
       <div className={styles.transitionContainer}>
         <span className={classNames([styles.labelTop, !!isBackButton && styles.hasIcon])}>{label}</span>
         <span className={classNames([styles.labelBottom, !!isBackButton && styles.hasIcon])} aria-hidden>
@@ -83,7 +83,7 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({
       rel={isExternal ? 'noopener noreferrer' : undefined}
       className={classNames([styles.container, isSmall && styles.isSmall, className])}
       aria-label={label}>
-      {isBackButton && <ArrowLeft className={styles.icon} size={24} />}
+      {isBackButton && <ArrowLeftIcon className={styles.icon} size={24} />}
       {InnerElements}
     </Link>
   );

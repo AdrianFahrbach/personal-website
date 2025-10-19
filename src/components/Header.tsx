@@ -3,7 +3,7 @@
 import { HeaderLink } from '@/components/HeaderLink';
 import { PageTransitionContext } from '@/providers/PageTransitionsProvider';
 import { useViewport } from '@/services/viewport.service';
-import { List, X } from '@phosphor-icons/react';
+import { ListIcon, XIcon } from '@phosphor-icons/react';
 import classNames from 'classnames';
 import { usePathname } from 'next/navigation';
 import React, { useContext, useEffect, useRef, useState } from 'react';
@@ -51,13 +51,13 @@ export const Header: React.FC = () => {
           <button
             className={classNames([styles.mobileNavButton, styles.mobileNavOpenButton])}
             onClick={() => setMobileNavOpen(true)}>
-            <List size={32} />
+            <ListIcon size={32} />
           </button>
           <div className={classNames([styles.mobileNav, mobileNavOpen && styles.isOpen])}>
             <button
               className={classNames([styles.mobileNavButton, styles.mobileNavCloseButton])}
               onClick={() => setMobileNavOpen(false)}>
-              <X size={32} />
+              <XIcon size={32} />
             </button>
             <HeaderLink
               to='https://github.com/AdrianFahrbach'
