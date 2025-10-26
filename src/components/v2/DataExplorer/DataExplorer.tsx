@@ -50,7 +50,7 @@ type ExplorerProps<T> = {
   title?: string;
 };
 
-export default function DataExplorer<T extends Record<string, any>>({
+export function DataExplorer<T extends Record<string, any>>({
   data,
   properties,
   getLabel,

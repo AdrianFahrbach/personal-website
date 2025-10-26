@@ -1,6 +1,6 @@
 'use client';
 
-import DataExplorer from '@/components/v2/DataExplorer';
+import { DataExplorer } from '@/components/v2/DataExplorer/DataExplorer';
 import animals, { animalProperties, getAnimalLabel } from '@/const/animals';
 import pageStyles from '@/styles/blogPost.module.scss';
 
