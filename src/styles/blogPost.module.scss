@@ -1,0 +1,30 @@
+.section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100svh;
+}
+
+.wrapper {
+  padding: 0 var(--wrapper-padding-x);
+}
+
+.contentContainer {
+  max-width: 640px;
+  padding: 100px 0;
+  margin: 0 auto;
+  overflow: hidden;
+  color: var(--neutral-500);
+  @media (min-width: 768px) {
+    padding: 120px 0;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    color: var(--neutral-800);
+  }
+}

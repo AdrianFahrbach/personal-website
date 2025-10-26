@@ -22,6 +22,38 @@
 // * 0.75 = mostly terrestrial but may swim occasionally
 // * 1.00 = fully terrestrial (rarely or never in water)
 
+type Animal = {
+  name: string;
+  size: number;
+  cuteness: number;
+  habitat: number;
+};
+
+export const animalProperties: { key: keyof Omit<Animal, 'name'>; label: string }[] = [
+  { key: 'size', label: 'Size' },
+  { key: 'cuteness', label: 'Cuteness' },
+  { key: 'habitat', label: 'Habitat' },
+];
+
+export function getAnimalLabel(key: 'size' | 'cuteness' | 'habitat', value: number): string {
+  if (key === 'size') {
+    if (value === 0) return 'Very tiny';
+    if (value === 1) return 'Very large';
+    return '';
+  }
+  if (key === 'cuteness') {
+    if (value === 0) return 'Not cute';
+    if (value === 1) return 'Extremely cute';
+    return '';
+  }
+  if (key === 'habitat') {
+    if (value === 0) return 'Aquatic';
+    if (value === 1) return 'Terrestrial';
+    return '';
+  }
+  return '';
+}
+
 const animals = [
   { name: 'House Mouse', size: 0.02, cuteness: 0.4, habitat: 1.0 },
   { name: 'Hamster', size: 0.03, cuteness: 0.78, habitat: 1.0 },

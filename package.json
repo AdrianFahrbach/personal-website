@@ -6,7 +6,9 @@
     "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint:stylelint": "stylelint '**/*.{css,scss,sass}' --fix",
+    "lint:eslint": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "lint": "npm run lint:eslint && npm run lint:stylelint"
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.10",

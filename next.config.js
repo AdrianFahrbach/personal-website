@@ -7,18 +7,4 @@ module.exports = {
   images: {
     formats: ['image/avif', 'image/webp'],
   },
-  webpack: config => {
-    config.module.rules.push({
-      test: /placeholders\/.+\.svgPlaceholder$/,
-      type: 'asset/source',
-    });
-    return config;
-  },
-  experimental: {
-    turbo: {
-      rules: {
-        '*.svgPlaceholder': ['raw-loader'],
-      },
-    },
-  },
 };

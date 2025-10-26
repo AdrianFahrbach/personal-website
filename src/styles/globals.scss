@@ -143,3 +143,113 @@ p {
 .is-hidden {
   display: none;
 }
+
+.new-layout {
+  --neutral-0: #ffffff;
+  --neutral-25: #fbfbfd;
+  --neutral-50: #f8fafc;
+  --neutral-100: #eef2f6;
+  --neutral-200: #e3e8ef;
+  --neutral-300: #cdd5df;
+  --neutral-400: #9aa4b2;
+  --neutral-500: #697586;
+  --neutral-600: #4b5565;
+  --neutral-700: #364152;
+  --neutral-800: #202939;
+  --neutral-900: #121926;
+  --neutral-950: #0d121c;
+
+  --blue-25: #f5faff;
+  --blue-50: #eff8ff;
+  --blue-100: #d1e9ff;
+  --blue-200: #b2ddff;
+  --blue-300: #84caff;
+  --blue-400: #53b1fd;
+  --blue-500: #2e90fa;
+  --blue-600: #1570ef;
+  --blue-700: #175cd3;
+  --blue-800: #184949;
+  --blue-900: #194185;
+  --blue-950: #102a56;
+
+  --green-25: #f6fef9;
+  --green-50: #edfcf2;
+  --green-100: #d3f8df;
+  --green-200: #aaf0ca;
+  --green-300: #73e2a3;
+  --green-400: #3ccb7f;
+  --green-500: #16b364;
+  --green-600: #099250;
+  --green-700: #087443;
+  --green-800: #095c37;
+  --green-900: #084c2e;
+  --green-950: #052e1c;
+
+  --yellow-25: #fefdf0;
+  --yellow-50: #fefbe8;
+  --yellow-100: #fef7c3;
+  --yellow-200: #feee95;
+  --yellow-300: #fde272;
+  --yellow-400: #fac515;
+  --yellow-500: #eaaa08;
+  --yellow-600: #ca8504;
+  --yellow-700: #a15c07;
+  --yellow-800: #854a0e;
+  --yellow-900: #713b12;
+  --yellow-950: #542c0d;
+
+  --orange-25: #fefaf5;
+  --orange-50: #fef6ee;
+  --orange-100: #fdead7;
+  --orange-200: #f9dbaf;
+  --orange-300: #f7b27a;
+  --orange-400: #f38744;
+  --orange-500: #ef6820;
+  --orange-600: #e04f16;
+  --orange-700: #b93815;
+  --orange-800: #932f19;
+  --orange-900: #772917;
+  --orange-950: #511c10;
+
+  --red-25: #fffbfa;
+  --red-50: #fef3f2;
+  --red-100: #fee4e2;
+  --red-200: #fecdca;
+  --red-300: #fda29b;
+  --red-400: #f97066;
+  --red-500: #f04438;
+  --red-600: #d92d20;
+  --red-700: #b42318;
+  --red-800: #912018;
+  --red-900: #7a271a;
+  --red-950: #55160c;
+
+  --violet-25: #fbfaff;
+  --violet-50: #f5f3ff;
+  --violet-100: #ece9fe;
+  --violet-200: #ddd6fe;
+  --violet-300: #c3b5fd;
+  --violet-400: #a48afb;
+  --violet-500: #875bf7;
+  --violet-600: #7839ee;
+  --violet-700: #6927da;
+  --violet-800: #5720b7;
+  --violet-900: #491096;
+  --violet-950: #2e125e;
+
+  --bounce-transition: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  body {
+    line-height: 1.5;
+    color: var(--neutral-700);
+    background: var(--neutral-25);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-weight: 600;
+    letter-spacing: -0.05em;
+  }
+}

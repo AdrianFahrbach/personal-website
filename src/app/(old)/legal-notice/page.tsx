@@ -1,6 +1,5 @@
 import { ExternalLink } from '@/components/ExternalLink';
 import pageStyles from '@/styles/page.module.scss';
-import Link from 'next/link';
 
 export default function LegalNotice() {
   return (
