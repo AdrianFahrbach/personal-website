@@ -2,7 +2,10 @@
 
 import React, { useState, useMemo } from 'react';
 
+import { Select } from '../Select/Select';
+
 import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Label } from 'recharts';
+import { RangeSlider } from '../RangeSlider/RangeSlider';
 
 type NumericKeys<T> = {
   [K in keyof T]: T[K] extends number ? K : never;
@@ -204,6 +207,21 @@ export function DataExplorer<T extends Record<string, any>>({
             </li>
           ))}
         </ol>
+      </div>
+      <RangeSlider min={0} max={1} step={0.01} />
+
+      {/* Example usage of Select component */}
+      <div style={{ marginTop: 24 }}>
+        <h3>Example Select</h3>
+        <Select
+          label="Choose a fruit"
+          options={[
+            { value: 'apple', label: 'Apple' },
+            { value: 'banana', label: 'Banana' },
+            { value: 'orange', label: 'Orange', disabled: true },
+          ]}
+          placeholder="Select..."
+        />
       </div>
     </div>
   );

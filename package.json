@@ -11,6 +11,7 @@
     "lint": "npm run lint:eslint && npm run lint:stylelint"
   },
   "dependencies": {
+    "@floating-ui/react": "^0.27.16",
     "@phosphor-icons/react": "^2.1.10",
     "@splinetool/react-spline": "^4.1.0",
     "@splinetool/runtime": "^1.0.93",
