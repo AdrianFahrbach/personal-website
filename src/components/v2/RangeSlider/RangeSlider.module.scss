@@ -1,0 +1,117 @@
+.rangeSlider {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.labelContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--neutral-700);
+}
+
+.value {
+  min-width: 32px;
+  padding: 2px 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--blue-600);
+  text-align: center;
+  background-color: var(--blue-50);
+  border-radius: 4px;
+}
+
+.sliderContainer {
+  position: relative;
+  width: 100%;
+}
+
+.slider {
+  width: 100%;
+  height: 6px;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  border-radius: 3px;
+  outline: none;
+  transition: all 0.2s ease;
+
+  &::-moz-range-thumb,
+  &::-webkit-slider-thumb {
+    width: 18px;
+    height: 18px;
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    background-color: var(--neutral-0);
+    border: 2px solid var(--blue-500);
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: var(--neutral-100);
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+      transform: scale(1.1);
+    }
+
+    &:active {
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      transform: scale(1.05);
+    }
+  }
+
+  &::-moz-range-track {
+    width: 100%;
+    height: 6px;
+    background: transparent;
+    border: none;
+    border-radius: 3px;
+  }
+
+  &:focus {
+    outline: none;
+
+    &::-webkit-slider-thumb {
+      box-shadow: 0 0 0 3px var(--blue-100);
+    }
+
+    &::-moz-range-thumb {
+      box-shadow: 0 0 0 3px var(--blue-100);
+    }
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+
+    &::-webkit-slider-thumb {
+      cursor: not-allowed;
+      background-color: var(--neutral-400);
+
+      &:hover {
+        background-color: var(--neutral-400);
+        transform: none;
+      }
+    }
+
+    &::-moz-range-thumb {
+      cursor: not-allowed;
+      background-color: var(--neutral-400);
+
+      &:hover {
+        background-color: var(--neutral-400);
+        transform: none;
+      }
+    }
+  }
+}
