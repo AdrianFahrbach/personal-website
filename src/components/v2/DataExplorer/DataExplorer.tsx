@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useMemo, useState } from 'react';
-import { CartesianGrid, Label, ResponsiveContainer, Scatter, ScatterChart, Tooltip, XAxis, YAxis } from 'recharts';
 import { RangeSlider } from '../RangeSlider/RangeSlider';
 import { Select } from '../Select/Select';
 import styles from './DataExplorer.module.scss';
+import { ScatterPlot } from '../ScatterPlot/ScatterPlot';
 
 type NumericKeys<T> = {
   [K in keyof T]: T[K] extends number ? K : never;
@@ -14,31 +14,6 @@ type PropertyDef<T> = {
   key: NumericKeys<T>;
   label: string;
 };
-
-type DefaultTooltipProps<T> = {
-  active?: boolean;
-  payload?: any[];
-  getName: (item: T) => string;
-  properties: PropertyDef<T>[];
-};
-
-function DefaultTooltip<T>({ active, payload, getName, properties }: DefaultTooltipProps<T>) {
-  if (active && payload && payload.length && payload[0].payload) {
-    const item = payload[0].payload as T;
-    return (
-      <div className={styles.tooltip}>
-        <div className={styles.tooltipTitle}>{getName(item)}</div>
-        {properties.map(p => (
-          <div key={String(p.key)} className={styles.tooltipRow}>
-            <span className={styles.tooltipLabel}>{p.label}:</span>
-            <span className={styles.tooltipValue}>{(item as any)[p.key]}</span>
-          </div>
-        ))}
-      </div>
-    );
-  }
-  return null;
-}
 
 function euclideanDistance<T>(a: T, b: T, keys: NumericKeys<T>[]) {
   return Math.sqrt(keys.reduce((sum, key) => sum + Math.pow((a[key] as number) - (b[key] as number), 2), 0));
@@ -110,7 +85,7 @@ export function DataExplorer<T extends Record<string, any>>({
   return (
     <div className={styles.explorer}>
       {title && <h2 className={styles.title}>{title}</h2>}
-      
+
       <div className={styles.layout}>
         <div className={styles.sidebar}>
           {/* Axis Selection */}
@@ -118,16 +93,16 @@ export function DataExplorer<T extends Record<string, any>>({
             <h3 className={styles.sectionTitle}>Axis Configuration</h3>
             <div className={styles.axisSelects}>
               <Select
-                label="X Axis"
+                label='X Axis'
                 options={xAxisOptions}
                 value={String(xKey)}
-                onChange={(val) => setXKey(val as NumericKeys<T>)}
+                onChange={val => setXKey(val as NumericKeys<T>)}
               />
               <Select
-                label="Y Axis"
+                label='Y Axis'
                 options={yAxisOptions}
                 value={String(yKey)}
-                onChange={(val) => setYKey(val as NumericKeys<T>)}
+                onChange={val => setYKey(val as NumericKeys<T>)}
               />
             </div>
           </div>
@@ -144,7 +119,7 @@ export function DataExplorer<T extends Record<string, any>>({
                   max={1}
                   step={0.01}
                   value={sliderTarget[p.key]}
-                  onChange={(value) => handleSliderChange(p.key, value)}
+                  onChange={value => handleSliderChange(p.key, value)}
                 />
               ))}
             </div>
@@ -171,63 +146,18 @@ export function DataExplorer<T extends Record<string, any>>({
           </div>
         </div>
 
-        <div className={styles.chartContainer}>
-          <div className={styles.chart}>
-            <ResponsiveContainer width='100%' height='100%'>
-              <ScatterChart margin={{ top: 20, right: 20, bottom: 40, left: 40 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="var(--neutral-200)" />
-                <XAxis type='number' dataKey={xKey as string} name={String(xKey)} domain={[0, 1]}>
-                  <Label value={String(xKey)} offset={-10} position='insideBottom' />
-                  <Label
-                    value={`Min (${getLabel(xKey, 0)})`}
-                    position='insideBottomLeft'
-                    offset={0}
-                    style={{ fontSize: 12, fill: 'var(--neutral-500)' }}
-                  />
-                  <Label
-                    value={`Max (${getLabel(xKey, 1)})`}
-                    position='insideBottomRight'
-                    offset={0}
-                    style={{ fontSize: 12, fill: 'var(--neutral-500)' }}
-                  />
-                </XAxis>
-                <YAxis type='number' dataKey={yKey as string} name={String(yKey)} domain={[0, 1]}>
-                  <Label value={String(yKey)} angle={-90} position='insideLeft' />
-                  <Label
-                    value={`Min (${getLabel(yKey, 0)})`}
-                    angle={-90}
-                    position='insideTopLeft'
-                    offset={0}
-                    style={{ fontSize: 12, fill: 'var(--neutral-500)' }}
-                  />
-                  <Label
-                    value={`Max (${getLabel(yKey, 1)})`}
-                    angle={-90}
-                    position='insideBottomLeft'
-                    offset={0}
-                    style={{ fontSize: 12, fill: 'var(--neutral-500)' }}
-                  />
-                </YAxis>
-
-                <Tooltip
-                  cursor={{ strokeDasharray: '3 3' }}
-                  content={
-                    renderTooltip
-                      ? props => renderTooltip({ ...props })
-                      : props => <DefaultTooltip<T> {...props} getName={getName} properties={properties} />
-                  }
-                />
-                <Scatter
-                  name='Items'
-                  data={data}
-                  fill='var(--blue-500)'
-                  onClick={(_point: any, idx: number) => handleDotClick(data[idx])}
-                />
-                <Scatter name='Target' data={[target || sliderTarget]} fill='var(--orange-500)' shape='star' />
-              </ScatterChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
+        <ScatterPlot
+          data={data}
+          xKey={xKey}
+          yKey={yKey}
+          target={target}
+          sliderTarget={sliderTarget}
+          getLabel={getLabel}
+          onDotClick={handleDotClick}
+          renderTooltip={renderTooltip}
+          getName={getName}
+          properties={properties}
+        />
       </div>
     </div>
   );

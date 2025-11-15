@@ -1,0 +1,41 @@
+.chartContainer {
+  flex: 1;
+  width: 100%;
+  min-height: 500px;
+  background: var(--neutral-0);
+  @media (min-width: 768px) {
+    min-height: 0;
+  }
+}
+
+.tooltip {
+  padding: 12px;
+  background: var(--neutral-0);
+  border: 1px solid var(--neutral-200);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.tooltipTitle {
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--neutral-900);
+}
+
+.tooltipRow {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.tooltipLabel {
+  color: var(--neutral-500);
+}
+
+.tooltipValue {
+  font-weight: 600;
+  color: var(--neutral-700);
+}
