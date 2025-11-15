@@ -1,11 +1,10 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
-
-import { Select } from '../Select/Select';
-
-import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Label } from 'recharts';
+import React, { useMemo, useState } from 'react';
+import { CartesianGrid, Label, ResponsiveContainer, Scatter, ScatterChart, Tooltip, XAxis, YAxis } from 'recharts';
 import { RangeSlider } from '../RangeSlider/RangeSlider';
+import { Select } from '../Select/Select';
+import styles from './DataExplorer.module.scss';
 
 type NumericKeys<T> = {
   [K in keyof T]: T[K] extends number ? K : never;
@@ -27,11 +26,12 @@ function DefaultTooltip<T>({ active, payload, getName, properties }: DefaultTool
   if (active && payload && payload.length && payload[0].payload) {
     const item = payload[0].payload as T;
     return (
-      <div style={{ background: '#fff', border: '1px solid #ccc', padding: 8, borderRadius: 4 }}>
-        <strong>{getName(item)}</strong>
+      <div className={styles.tooltip}>
+        <div className={styles.tooltipTitle}>{getName(item)}</div>
         {properties.map(p => (
-          <div key={String(p.key)}>
-            {p.label}: {(item as any)[p.key]}
+          <div key={String(p.key)} className={styles.tooltipRow}>
+            <span className={styles.tooltipLabel}>{p.label}:</span>
+            <span className={styles.tooltipValue}>{(item as any)[p.key]}</span>
           </div>
         ))}
       </div>
@@ -97,131 +97,137 @@ export function DataExplorer<T extends Record<string, any>>({
       .slice(0, 5);
   }, [target, sliderTarget, data, numericKeys, properties]);
 
+  const xAxisOptions = properties.map(p => ({
+    value: String(p.key),
+    label: p.label,
+  }));
+
+  const yAxisOptions = properties.map(p => ({
+    value: String(p.key),
+    label: p.label,
+  }));
+
   return (
-    <div style={{ maxWidth: 800, margin: '0 auto' }}>
-      <h2>{title}</h2>
-      <div style={{ display: 'flex', gap: 16, marginBottom: 16 }}>
-        <label>
-          X Axis:
-          <select value={String(xKey)} onChange={e => setXKey(e.target.value as NumericKeys<T>)}>
-            {properties.map(p => (
-              <option key={String(p.key)} value={String(p.key)}>
-                {p.label}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label>
-          Y Axis:
-          <select value={String(yKey)} onChange={e => setYKey(e.target.value as NumericKeys<T>)}>
-            {properties.map(p => (
-              <option key={String(p.key)} value={String(p.key)}>
-                {p.label}
-              </option>
-            ))}
-          </select>
-        </label>
-      </div>
-      <ResponsiveContainer width='100%' height={400}>
-        <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
-          <CartesianGrid />
-          <XAxis type='number' dataKey={xKey as string} name={String(xKey)} domain={[0, 1]}>
-            <Label value={String(xKey)} offset={-10} position='insideBottom' />
-            <Label
-              value={`Min (${getLabel(xKey, 0)})`}
-              position='insideBottomLeft'
-              offset={0}
-              style={{ fontSize: 12 }}
-            />
-            <Label
-              value={`Max (${getLabel(xKey, 1)})`}
-              position='insideBottomRight'
-              offset={0}
-              style={{ fontSize: 12 }}
-            />
-          </XAxis>
-          <YAxis type='number' dataKey={yKey as string} name={String(yKey)} domain={[0, 1]}>
-            <Label value={String(yKey)} angle={-90} position='insideLeft' />
-            <Label
-              value={`Min (${getLabel(yKey, 0)})`}
-              angle={-90}
-              position='insideTopLeft'
-              offset={0}
-              style={{ fontSize: 12 }}
-            />
-            <Label
-              value={`Max (${getLabel(yKey, 1)})`}
-              angle={-90}
-              position='insideBottomLeft'
-              offset={0}
-              style={{ fontSize: 12 }}
-            />
-          </YAxis>
-
-          <Tooltip
-            cursor={{ strokeDasharray: '3 3' }}
-            content={
-              renderTooltip
-                ? props => renderTooltip({ ...props })
-                : props => <DefaultTooltip<T> {...props} getName={getName} properties={properties} />
-            }
-          />
-          <Scatter
-            name='Items'
-            data={data}
-            fill='#8884d8'
-            onClick={(_point: any, idx: number) => handleDotClick(data[idx])}
-          />
-          <Scatter name='Target' data={[target || sliderTarget]} fill='#ff7300' shape='star' />
-        </ScatterChart>
-      </ResponsiveContainer>
-      <div style={{ margin: '24px 0' }}>
-        <h3>Select Target (Sliders)</h3>
-        {properties.map(p => (
-          <div key={String(p.key)} style={{ marginBottom: 8 }}>
-            <label>{p.label}: </label>
-            <input
-              type='range'
-              min={0}
-              max={1}
-              step={0.01}
-              value={sliderTarget[p.key]}
-              onChange={e => handleSliderChange(p.key, Number(e.target.value))}
-              style={{ width: 200 }}
-            />
-            <span style={{ marginLeft: 8 }}>{sliderTarget[p.key]}</span>
+    <div className={styles.explorer}>
+      {title && <h2 className={styles.title}>{title}</h2>}
+      
+      <div className={styles.layout}>
+        <div className={styles.sidebar}>
+          {/* Axis Selection */}
+          <div className={styles.section}>
+            <h3 className={styles.sectionTitle}>Axis Configuration</h3>
+            <div className={styles.axisSelects}>
+              <Select
+                label="X Axis"
+                options={xAxisOptions}
+                value={String(xKey)}
+                onChange={(val) => setXKey(val as NumericKeys<T>)}
+              />
+              <Select
+                label="Y Axis"
+                options={yAxisOptions}
+                value={String(yKey)}
+                onChange={(val) => setYKey(val as NumericKeys<T>)}
+              />
+            </div>
           </div>
-        ))}
-      </div>
-      <div>
-        <h3>Closest Items</h3>
-        <ol>
-          {closest.map((item: any) => (
-            <li key={getName(item)}>
-              {getName(item)}{' '}
-              {properties.map(p => (
-                <span key={String(p.key)}>
-                  {p.label}: {item[p.key]}{' '}
-                </span>
-              ))}
-            </li>
-          ))}
-        </ol>
-      </div>
-      <RangeSlider min={0} max={1} step={0.01} />
 
-      {/* Example usage of Select component */}
-      <div style={{ marginTop: 24 }}>
-        <h3>Example Select</h3>
-        <Select
-          label="Choose a fruit"
-          options={[
-            { value: 'apple', label: 'Apple' },
-            { value: 'banana', label: 'Banana' },
-            { value: 'orange', label: 'Orange', disabled: true },
-          ]}
-          placeholder="Select..."
-        />
+          {/* Sliders */}
+          <div className={styles.section}>
+            <h3 className={styles.sectionTitle}>Target Selection</h3>
+            <div className={styles.sliders}>
+              {properties.map(p => (
+                <RangeSlider
+                  key={String(p.key)}
+                  label={p.label}
+                  min={0}
+                  max={1}
+                  step={0.01}
+                  value={sliderTarget[p.key]}
+                  onChange={(value) => handleSliderChange(p.key, value)}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Closest Items */}
+          <div className={styles.section}>
+            <h3 className={styles.sectionTitle}>Closest Items</h3>
+            <ol className={styles.resultsList}>
+              {closest.map((item: any, index: number) => (
+                <li key={getName(item)} className={styles.resultItem}>
+                  <div className={styles.resultName}>{getName(item)}</div>
+                  <div className={styles.resultProps}>
+                    {properties.map(p => (
+                      <span key={String(p.key)} className={styles.resultProp}>
+                        <span className={styles.resultPropLabel}>{p.label}:</span>
+                        <span className={styles.resultPropValue}>{item[p.key].toFixed(2)}</span>
+                      </span>
+                    ))}
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
+
+        <div className={styles.chartContainer}>
+          <div className={styles.chart}>
+            <ResponsiveContainer width='100%' height='100%'>
+              <ScatterChart margin={{ top: 20, right: 20, bottom: 40, left: 40 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--neutral-200)" />
+                <XAxis type='number' dataKey={xKey as string} name={String(xKey)} domain={[0, 1]}>
+                  <Label value={String(xKey)} offset={-10} position='insideBottom' />
+                  <Label
+                    value={`Min (${getLabel(xKey, 0)})`}
+                    position='insideBottomLeft'
+                    offset={0}
+                    style={{ fontSize: 12, fill: 'var(--neutral-500)' }}
+                  />
+                  <Label
+                    value={`Max (${getLabel(xKey, 1)})`}
+                    position='insideBottomRight'
+                    offset={0}
+                    style={{ fontSize: 12, fill: 'var(--neutral-500)' }}
+                  />
+                </XAxis>
+                <YAxis type='number' dataKey={yKey as string} name={String(yKey)} domain={[0, 1]}>
+                  <Label value={String(yKey)} angle={-90} position='insideLeft' />
+                  <Label
+                    value={`Min (${getLabel(yKey, 0)})`}
+                    angle={-90}
+                    position='insideTopLeft'
+                    offset={0}
+                    style={{ fontSize: 12, fill: 'var(--neutral-500)' }}
+                  />
+                  <Label
+                    value={`Max (${getLabel(yKey, 1)})`}
+                    angle={-90}
+                    position='insideBottomLeft'
+                    offset={0}
+                    style={{ fontSize: 12, fill: 'var(--neutral-500)' }}
+                  />
+                </YAxis>
+
+                <Tooltip
+                  cursor={{ strokeDasharray: '3 3' }}
+                  content={
+                    renderTooltip
+                      ? props => renderTooltip({ ...props })
+                      : props => <DefaultTooltip<T> {...props} getName={getName} properties={properties} />
+                  }
+                />
+                <Scatter
+                  name='Items'
+                  data={data}
+                  fill='var(--blue-500)'
+                  onClick={(_point: any, idx: number) => handleDotClick(data[idx])}
+                />
+                <Scatter name='Target' data={[target || sliderTarget]} fill='var(--orange-500)' shape='star' />
+              </ScatterChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
       </div>
     </div>
   );
