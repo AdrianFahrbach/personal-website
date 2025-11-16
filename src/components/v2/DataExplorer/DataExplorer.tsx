@@ -128,6 +128,7 @@ export function DataExplorer<T extends Record<string, any>>({
                     max={1}
                     step={0.01}
                     value={sliderTarget[p.key]}
+                    debounceMs={500}
                     onChange={value => handleSliderChange(p.key, value)}
                   />
                 ))}

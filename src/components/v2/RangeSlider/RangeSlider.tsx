@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import styles from './RangeSlider.module.scss';
 import classNames from 'classnames';
 import { geistMono } from '@/styles/fonts';
@@ -11,6 +11,7 @@ interface RangeSliderProps {
   value?: number;
   label?: string;
   onChange?: (value: number) => void;
+  debounceMs?: number;
   className?: string;
 }
 
@@ -22,33 +23,69 @@ export const RangeSlider: React.FC<RangeSliderProps> = ({
   value,
   label,
   onChange,
+  debounceMs,
   className,
 }) => {
   const [internalValue, setInternalValue] = useState(defaultValue || min);
+  const [displayValue, setDisplayValue] = useState(value ?? defaultValue ?? min);
+  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const currentValue = value !== undefined ? value : internalValue;
+
+  // Update display value when controlled value changes externally
+  useEffect(() => {
+    if (value !== undefined) {
+      setDisplayValue(value);
+    }
+  }, [value]);
+
+  // Cleanup debounce timer on unmount
+  useEffect(() => {
+    return () => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+    };
+  }, []);
 
   const handleChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const newValue = Number(event.target.value);
 
+      // Always update display value immediately for visual feedback
+      setDisplayValue(newValue);
+
+      // Update internal value immediately for uncontrolled mode
       if (value === undefined) {
         setInternalValue(newValue);
       }
 
-      onChange?.(newValue);
+      // Clear existing timer
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+
+      // If debounce is enabled, delay the onChange call
+      if (debounceMs && debounceMs > 0) {
+        debounceTimerRef.current = setTimeout(() => {
+          onChange?.(newValue);
+        }, debounceMs);
+      } else {
+        // Call onChange immediately if no debounce
+        onChange?.(newValue);
+      }
     },
-    [value, onChange]
+    [value, onChange, debounceMs]
   );
 
-  const percentage = ((currentValue - min) / (max - min)) * 100;
+  const percentage = ((displayValue - min) / (max - min)) * 100;
 
   return (
     <div className={classNames(styles.rangeSlider, className)}>
       {label && (
         <div className={styles.labelContainer}>
           <label className={styles.label}>{label}</label>
-          <span className={classNames([styles.value, geistMono.className])}>{currentValue.toFixed(2)}</span>
+          <span className={classNames([styles.value, geistMono.className])}>{displayValue.toFixed(2)}</span>
         </div>
       )}
       <div className={styles.sliderContainer}>
@@ -57,7 +94,7 @@ export const RangeSlider: React.FC<RangeSliderProps> = ({
           min={min}
           max={max}
           step={step}
-          value={currentValue}
+          value={displayValue}
           onChange={handleChange}
           className={styles.slider}
           style={{
