@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { act, useMemo, useState } from 'react';
 import { RangeSlider } from '../RangeSlider/RangeSlider';
 import { Select } from '../Select/Select';
 import styles from './DataExplorer.module.scss';
 import { ScatterPlot } from '../ScatterPlot/ScatterPlot';
+import { Tabs } from '../Tabs/Tabs';
 
 type NumericKeys<T> = {
   [K in keyof T]: T[K] extends number ? K : never;
@@ -40,6 +41,7 @@ export function DataExplorer<T extends Record<string, any>>({
   const [xKey, setXKey] = useState<NumericKeys<T>>(properties[0].key);
   const [yKey, setYKey] = useState<NumericKeys<T>>(properties[1]?.key || properties[0].key);
   const [target, setTarget] = useState<T | null>(null);
+  const [activeTab, setActiveTab] = useState<'axis' | 'target'>('axis');
 
   // For slider selection
   const [sliderTarget, setSliderTarget] = useState(() => {
@@ -90,39 +92,47 @@ export function DataExplorer<T extends Record<string, any>>({
         <div className={styles.sidebar}>
           {/* Axis Selection */}
           <div className={styles.section}>
-            <h3 className={styles.sectionTitle}>Axis Configuration</h3>
-            <div className={styles.axisSelects}>
-              <Select
-                label='X Axis'
-                options={xAxisOptions}
-                value={String(xKey)}
-                onChange={val => setXKey(val as NumericKeys<T>)}
-              />
-              <Select
-                label='Y Axis'
-                options={yAxisOptions}
-                value={String(yKey)}
-                onChange={val => setYKey(val as NumericKeys<T>)}
-              />
-            </div>
-          </div>
-
-          {/* Sliders */}
-          <div className={styles.section}>
-            <h3 className={styles.sectionTitle}>Target Selection</h3>
-            <div className={styles.sliders}>
-              {properties.map(p => (
-                <RangeSlider
-                  key={String(p.key)}
-                  label={p.label}
-                  min={0}
-                  max={1}
-                  step={0.01}
-                  value={sliderTarget[p.key]}
-                  onChange={value => handleSliderChange(p.key, value)}
+            <Tabs
+              options={[
+                { value: 'axis', label: 'Axis Configuration' },
+                { value: 'target', label: 'Target Selection' },
+              ]}
+              defaultValue='axis'
+              value={activeTab}
+              onChange={setActiveTab}
+              className={styles.tabs}
+            />
+            {activeTab === 'axis' && (
+              <div className={styles.axisSelects}>
+                <Select
+                  label='X Axis'
+                  options={xAxisOptions}
+                  value={String(xKey)}
+                  onChange={val => setXKey(val as NumericKeys<T>)}
                 />
-              ))}
-            </div>
+                <Select
+                  label='Y Axis'
+                  options={yAxisOptions}
+                  value={String(yKey)}
+                  onChange={val => setYKey(val as NumericKeys<T>)}
+                />
+              </div>
+            )}
+            {activeTab === 'target' && (
+              <div className={styles.sliders}>
+                {properties.map(p => (
+                  <RangeSlider
+                    key={String(p.key)}
+                    label={p.label}
+                    min={0}
+                    max={1}
+                    step={0.01}
+                    value={sliderTarget[p.key]}
+                    onChange={value => handleSliderChange(p.key, value)}
+                  />
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Closest Items */}
