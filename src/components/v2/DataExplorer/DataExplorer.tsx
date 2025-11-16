@@ -1,11 +1,11 @@
 'use client';
 
-import React, { act, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { RangeSlider } from '../RangeSlider/RangeSlider';
-import { Select } from '../Select/Select';
-import styles from './DataExplorer.module.scss';
 import { ScatterPlot } from '../ScatterPlot/ScatterPlot';
+import { Select } from '../Select/Select';
 import { Tabs } from '../Tabs/Tabs';
+import styles from './DataExplorer.module.scss';
 
 type NumericKeys<T> = {
   [K in keyof T]: T[K] extends number ? K : never;
@@ -25,8 +25,7 @@ type ExplorerProps<T> = {
   properties: PropertyDef<T>[];
   getLabel: (key: NumericKeys<T>, value: number) => string;
   getName: (item: T) => string;
-  renderTooltip?: (props: { active?: boolean; payload?: any[] }) => React.ReactNode;
-  title?: string;
+  renderTooltip?: (props: { active?: boolean; payload?: Array<Record<string, unknown>> }) => React.ReactNode;
 };
 
 export function DataExplorer<T extends Record<string, any>>({
@@ -35,7 +34,6 @@ export function DataExplorer<T extends Record<string, any>>({
   getLabel,
   getName,
   renderTooltip,
-  title = 'Explorer',
 }: ExplorerProps<T>) {
   const numericKeys = properties.map(p => p.key);
   const [xKey, setXKey] = useState<NumericKeys<T>>(properties[0].key);
@@ -44,33 +42,33 @@ export function DataExplorer<T extends Record<string, any>>({
   const [activeTab, setActiveTab] = useState<'axis' | 'target'>('axis');
 
   // For slider selection
-  const [sliderTarget, setSliderTarget] = useState(() => {
-    const obj: any = {};
+  const [sliderTarget, setSliderTarget] = useState<Record<NumericKeys<T>, number>>(() => {
+    const obj = {} as Record<NumericKeys<T>, number>;
     for (const p of properties) obj[p.key] = 1;
     return obj;
   });
 
   function handleDotClick(item: T) {
     setTarget(item);
-    const newSlider: any = {};
+    const newSlider = {} as Record<NumericKeys<T>, number>;
     for (const p of properties) newSlider[p.key] = item[p.key];
     setSliderTarget(newSlider);
   }
 
   function handleSliderChange(key: NumericKeys<T>, value: number) {
-    setSliderTarget((prev: any) => ({ ...prev, [key]: value }));
+    setSliderTarget((prev: Record<NumericKeys<T>, number>) => ({ ...prev, [key]: value }));
     setTarget(null);
   }
 
   // Compute closest items
   const closest = useMemo(() => {
-    const ref: T = target || { ...sliderTarget, [properties[0].key]: sliderTarget[properties[0].key], name: 'Target' };
+  const ref: T = target || ({ ...sliderTarget, [properties[0].key]: sliderTarget[properties[0].key], name: 'Target' } as unknown as T);
     return data
       .map((item: T) => ({
         ...item,
         distance: euclideanDistance(item, ref, numericKeys),
       }))
-      .sort((a: any, b: any) => a.distance - b.distance)
+      .sort((a, b) => a.distance - b.distance)
       .slice(0, 5);
   }, [target, sliderTarget, data, numericKeys, properties]);
 
@@ -86,8 +84,6 @@ export function DataExplorer<T extends Record<string, any>>({
 
   return (
     <div className={styles.explorer}>
-      {title && <h2 className={styles.title}>{title}</h2>}
-
       <div className={styles.layout}>
         <div className={styles.sidebar}>
           {/* Axis Selection */}
@@ -139,7 +135,7 @@ export function DataExplorer<T extends Record<string, any>>({
           <div className={styles.section}>
             <h3 className={styles.sectionTitle}>Closest Items</h3>
             <ol className={styles.resultsList}>
-              {closest.map((item: any, index: number) => (
+              {closest.map(item => (
                 <li key={getName(item)} className={styles.resultItem}>
                   <div className={styles.resultName}>{getName(item)}</div>
                   <div className={styles.resultProps}>
