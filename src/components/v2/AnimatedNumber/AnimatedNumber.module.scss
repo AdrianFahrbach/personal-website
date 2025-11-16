@@ -1,42 +1,4 @@
 .animatedNumber {
   display: inline-flex;
-  align-items: center;
   font-variant-numeric: tabular-nums;
-  gap: 1px;
-}
-
-.digitContainer {
-  position: relative;
-  display: inline-block;
-  height: 1.2em;
-  min-width: 0.6em;
-  overflow: hidden;
-  text-align: center;
-
-  &.isDecimalPoint,
-  &.isMinus {
-    min-width: 0.3em;
-  }
-}
-
-.digitColumn {
-  display: flex;
-  transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
-  flex-direction: column;
-  will-change: transform;
-}
-
-.digit {
-  display: flex;
-  height: 1.2em;
-  align-items: center;
-  flex-shrink: 0;
-  justify-content: center;
-}
-
-.staticChar {
-  display: flex;
-  height: 1.2em;
-  align-items: center;
-  justify-content: center;
 }

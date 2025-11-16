@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@floating-ui/react": "^0.27.16",
+    "@number-flow/react": "^0.5.10",
     "@phosphor-icons/react": "^2.1.10",
     "@splinetool/react-spline": "^4.1.0",
     "@splinetool/runtime": "^1.0.93",
