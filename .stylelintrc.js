@@ -58,6 +58,8 @@ module.exports = {
     ],
     'selector-max-id': 2,
     'selector-pseudo-element-colon-notation': 'double',
+    // Disabled property sorting for regular development. Only enabled in precommit config.
+    'order/properties-order': null,
   },
   plugins: ['stylelint-order'],
   defaultSeverity: 'warning',

@@ -8,7 +8,8 @@
     "start": "next start",
     "lint:stylelint": "stylelint '**/*.{css,scss,sass}' --fix",
     "lint:eslint": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
-    "lint": "npm run lint:eslint && npm run lint:stylelint"
+    "lint": "npm run lint:eslint && npm run lint:stylelint",
+    "prepare": "husky"
   },
   "dependencies": {
     "@floating-ui/react": "^0.27.16",
@@ -34,6 +35,7 @@
     "@types/react-dom": "^19",
     "eslint": "^8",
     "eslint-config-next": "14.2.33",
+    "husky": "^9.1.7",
     "prettier": "^3.2.5",
     "raw-loader": "^4.0.2",
     "sass": "^1.72.0",
