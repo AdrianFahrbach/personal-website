@@ -6,8 +6,7 @@ import { ScatterPlot } from '../ScatterPlot/ScatterPlot';
 import { Select } from '../Select/Select';
 import { Tabs } from '../Tabs/Tabs';
 import styles from './DataExplorer.module.scss';
-import classNames from 'classnames';
-import { geistMono } from '@/styles/fonts';
+import { AnimatedResultsList } from './AnimatedResultsList';
 
 type DataItem = {
   name: string;
@@ -144,26 +143,7 @@ export function DataExplorer({ data, properties, getLabel, getValueLabels, getNa
           {/* Closest Items */}
           <div className={styles.section}>
             <h3 className={styles.sectionTitle}>Closest entries</h3>
-            <ol className={styles.resultsList}>
-              {closest.map(item => {
-                const dataItem = item as any;
-                return (
-                  <li key={getName(dataItem as DataItem)} className={styles.resultItem}>
-                    <div className={styles.resultName}>{getName(dataItem as DataItem)}</div>
-                    <div className={styles.resultProps}>
-                      {properties.map(p => (
-                        <span key={String(p.key)} className={styles.resultProp}>
-                          <span className={styles.resultPropLabel}>{p.label}:</span>
-                          <span className={classNames([styles.resultPropValue, geistMono.className])}>
-                            {typeof dataItem[p.key] === 'number' ? dataItem[p.key].toFixed(2) : dataItem[p.key]}
-                          </span>
-                        </span>
-                      ))}
-                    </div>
-                  </li>
-                );
-              })}
-            </ol>
+            <AnimatedResultsList items={closest} properties={properties} getName={getName} />
           </div>
         </div>
 
