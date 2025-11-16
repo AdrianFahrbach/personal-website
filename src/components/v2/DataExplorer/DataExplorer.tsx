@@ -9,66 +9,71 @@ import styles from './DataExplorer.module.scss';
 import classNames from 'classnames';
 import { geistMono } from '@/styles/fonts';
 
-type NumericKeys<T> = {
-  [K in keyof T]: T[K] extends number ? K : never;
-}[keyof T];
+type DataItem = {
+  name: string;
+  [key: string]: number | string;
+};
 
-type PropertyDef<T> = {
-  key: NumericKeys<T>;
+type PropertyKey = string;
+
+type PropertyDef = {
+  key: PropertyKey;
   label: string;
 };
 
-function euclideanDistance<T>(a: T, b: T, keys: NumericKeys<T>[]) {
+type ValueLabel = {
+  threshold: number;
+  label: string;
+};
+
+function euclideanDistance(a: DataItem, b: DataItem, keys: PropertyKey[]) {
   return Math.sqrt(keys.reduce((sum, key) => sum + Math.pow((a[key] as number) - (b[key] as number), 2), 0));
 }
 
-type ExplorerProps<T> = {
-  data: T[];
-  properties: PropertyDef<T>[];
-  getLabel: (key: NumericKeys<T>, value: number) => string;
-  getName: (item: T) => string;
+type ExplorerProps = {
+  data: DataItem[];
+  properties: PropertyDef[];
+  getLabel: (key: PropertyKey, value: number) => string;
+  getValueLabels?: (key: PropertyKey) => ValueLabel[];
+  getName: (item: DataItem) => string;
   renderTooltip?: (props: { active?: boolean; payload?: Array<Record<string, unknown>> }) => React.ReactNode;
 };
 
-export function DataExplorer<T extends Record<string, any>>({
-  data,
-  properties,
-  getLabel,
-  getName,
-  renderTooltip,
-}: ExplorerProps<T>) {
+export function DataExplorer({ data, properties, getLabel, getValueLabels, getName, renderTooltip }: ExplorerProps) {
   const numericKeys = properties.map(p => p.key);
-  const [xKey, setXKey] = useState<NumericKeys<T>>(properties[0].key);
-  const [yKey, setYKey] = useState<NumericKeys<T>>(properties[1]?.key || properties[0].key);
-  const [target, setTarget] = useState<T | null>(null);
-  const [activeTab, setActiveTab] = useState<'axis' | 'target'>('axis');
+  const [xKey, setXKey] = useState<PropertyKey>(properties[0].key);
+  const [yKey, setYKey] = useState<PropertyKey>(properties[1]?.key || properties[0].key);
+  const [target, setTarget] = useState<DataItem | null>(null);
+  const [activeTab, setActiveTab] = useState<'axis' | 'target'>('target');
 
   // For slider selection
-  const [sliderTarget, setSliderTarget] = useState<Record<NumericKeys<T>, number>>(() => {
-    const obj = {} as Record<NumericKeys<T>, number>;
+  const [sliderTarget, setSliderTarget] = useState<Record<PropertyKey, number>>(() => {
+    const obj = {} as Record<PropertyKey, number>;
     for (const p of properties) obj[p.key] = 1;
     return obj;
   });
 
-  function handleDotClick(item: T) {
+  function handleDotClick(item: DataItem) {
     setTarget(item);
-    const newSlider = {} as Record<NumericKeys<T>, number>;
-    for (const p of properties) newSlider[p.key] = item[p.key];
+    const newSlider = {} as Record<PropertyKey, number>;
+    for (const p of properties) {
+      const val = item[p.key];
+      newSlider[p.key] = typeof val === 'number' ? val : 0;
+    }
     setSliderTarget(newSlider);
   }
 
-  function handleSliderChange(key: NumericKeys<T>, value: number) {
-    setSliderTarget((prev: Record<NumericKeys<T>, number>) => ({ ...prev, [key]: value }));
+  function handleSliderChange(key: PropertyKey, value: number) {
+    setSliderTarget((prev: Record<PropertyKey, number>) => ({ ...prev, [key]: value }));
     setTarget(null);
   }
 
   // Compute closest items
   const closest = useMemo(() => {
-    const ref: T =
-      target ||
-      ({ ...sliderTarget, [properties[0].key]: sliderTarget[properties[0].key], name: 'Target' } as unknown as T);
+    const ref: DataItem =
+      target || ({ ...sliderTarget, [properties[0].key]: sliderTarget[properties[0].key], name: 'Target' } as DataItem);
     return data
-      .map((item: T) => ({
+      .map((item: DataItem) => ({
         ...item,
         distance: euclideanDistance(item, ref, numericKeys),
       }))
@@ -97,7 +102,6 @@ export function DataExplorer<T extends Record<string, any>>({
                 { value: 'target', label: 'Target Selection' },
                 { value: 'axis', label: 'Axis Configuration' },
               ]}
-              defaultValue='target'
               value={activeTab}
               onChange={setActiveTab}
               className={styles.tabs}
@@ -114,6 +118,7 @@ export function DataExplorer<T extends Record<string, any>>({
                     value={sliderTarget[p.key]}
                     debounceMs={500}
                     onChange={value => handleSliderChange(p.key, value)}
+                    valueLabels={getValueLabels?.(p.key)}
                   />
                 ))}
               </div>
@@ -124,13 +129,13 @@ export function DataExplorer<T extends Record<string, any>>({
                   label='X Axis'
                   options={xAxisOptions}
                   value={String(xKey)}
-                  onChange={val => setXKey(val as NumericKeys<T>)}
+                  onChange={val => setXKey(val as PropertyKey)}
                 />
                 <Select
                   label='Y Axis'
                   options={yAxisOptions}
                   value={String(yKey)}
-                  onChange={val => setYKey(val as NumericKeys<T>)}
+                  onChange={val => setYKey(val as PropertyKey)}
                 />
               </div>
             )}
@@ -140,21 +145,24 @@ export function DataExplorer<T extends Record<string, any>>({
           <div className={styles.section}>
             <h3 className={styles.sectionTitle}>Closest entries</h3>
             <ol className={styles.resultsList}>
-              {closest.map(item => (
-                <li key={getName(item)} className={styles.resultItem}>
-                  <div className={styles.resultName}>{getName(item)}</div>
-                  <div className={styles.resultProps}>
-                    {properties.map(p => (
-                      <span key={String(p.key)} className={styles.resultProp}>
-                        <span className={styles.resultPropLabel}>{p.label}:</span>
-                        <span className={classNames([styles.resultPropValue, geistMono.className])}>
-                          {item[p.key].toFixed(2)}
+              {closest.map(item => {
+                const dataItem = item as any;
+                return (
+                  <li key={getName(dataItem as DataItem)} className={styles.resultItem}>
+                    <div className={styles.resultName}>{getName(dataItem as DataItem)}</div>
+                    <div className={styles.resultProps}>
+                      {properties.map(p => (
+                        <span key={String(p.key)} className={styles.resultProp}>
+                          <span className={styles.resultPropLabel}>{p.label}:</span>
+                          <span className={classNames([styles.resultPropValue, geistMono.className])}>
+                            {typeof dataItem[p.key] === 'number' ? dataItem[p.key].toFixed(2) : dataItem[p.key]}
+                          </span>
                         </span>
-                      </span>
-                    ))}
-                  </div>
-                </li>
-              ))}
+                      ))}
+                    </div>
+                  </li>
+                );
+              })}
             </ol>
           </div>
         </div>

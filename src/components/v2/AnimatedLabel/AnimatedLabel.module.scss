@@ -1,0 +1,45 @@
+.animatedLabel {
+  position: relative;
+  display: inline-block;
+  min-height: 1.2em;
+  overflow: hidden;
+}
+
+.label {
+  display: inline-block;
+  animation-duration: 0.3s;
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
+
+  &.isAnimating {
+    animation-name: fadeOutUp;
+  }
+
+  &:not(.isAnimating) {
+    animation-name: fadeInDown;
+  }
+}
+
+@keyframes fadeOutUp {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(-0.5em);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(0.5em);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

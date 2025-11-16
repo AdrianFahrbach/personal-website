@@ -54,6 +54,37 @@ export function getAnimalLabel(key: 'size' | 'cuteness' | 'habitat', value: numb
   return '';
 }
 
+export function getValueLabels(key: 'size' | 'cuteness' | 'habitat') {
+  if (key === 'size') {
+    return [
+      { threshold: 0, label: 'Very small' },
+      { threshold: 0.2, label: 'Small' },
+      { threshold: 0.4, label: 'Medium' },
+      { threshold: 0.6, label: 'Large' },
+      { threshold: 0.8, label: 'Very large' },
+    ];
+  }
+  if (key === 'cuteness') {
+    return [
+      { threshold: 0, label: 'Not cute' },
+      { threshold: 0.2, label: 'Low cuteness' },
+      { threshold: 0.4, label: 'Neutral' },
+      { threshold: 0.6, label: 'Quite cute' },
+      { threshold: 0.8, label: 'Extremely cute' },
+    ];
+  }
+  if (key === 'habitat') {
+    return [
+      { threshold: 0, label: 'Water only' },
+      { threshold: 0.1, label: 'Mostly water' },
+      { threshold: 0.4, label: 'Half water / half land' },
+      { threshold: 0.6, label: 'Mostly land' },
+      { threshold: 0.9, label: 'Land only' },
+    ];
+  }
+  return [];
+}
+
 const animals = [
   { name: 'House Mouse', size: 0.02, cuteness: 0.4, habitat: 1.0 },
   { name: 'Hamster', size: 0.03, cuteness: 0.78, habitat: 1.0 },

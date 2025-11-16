@@ -3,29 +3,32 @@ import { CartesianGrid, Label, ResponsiveContainer, Scatter, ScatterChart, Toolt
 import styles from './ScatterPlot.module.scss';
 import classNames from 'classnames';
 
-type NumericKeys<T> = {
-  [K in keyof T]: T[K] extends number ? K : never;
-}[keyof T];
+type DataItem = {
+  name: string;
+  [key: string]: number | string;
+};
 
-type PropertyDef<T> = {
-  key: NumericKeys<T>;
+type PropertyKey = string;
+
+type PropertyDef = {
+  key: PropertyKey;
   label: string;
 };
 
-type DefaultTooltipProps<T> = {
+type DefaultTooltipProps = {
   active?: boolean;
   payload?: any[];
-  getName: (item: T) => string;
-  properties: PropertyDef<T>[];
+  getName: (item: DataItem) => string;
+  properties: PropertyDef[];
 };
 
-function DefaultTooltip<T>({ active, payload, getName, properties }: DefaultTooltipProps<T>) {
+function DefaultTooltip({ active, payload, getName, properties }: DefaultTooltipProps) {
   if (active && payload && payload.length && payload[0].payload) {
-    const item = payload[0].payload as T;
+    const item = payload[0].payload as DataItem;
     return (
       <div className={styles.tooltip}>
         <div className={styles.tooltipTitle}>{getName(item)}</div>
-        {properties.map(p => (
+        {properties.map((p) => (
           <div key={String(p.key)} className={styles.tooltipRow}>
             <span className={styles.tooltipLabel}>{p.label}:</span>
             <span className={styles.tooltipValue}>{(item as any)[p.key]}</span>
@@ -37,17 +40,17 @@ function DefaultTooltip<T>({ active, payload, getName, properties }: DefaultTool
   return null;
 }
 
-interface ScatterPlotProps<T> {
-  data: T[];
-  xKey: NumericKeys<T>;
-  yKey: NumericKeys<T>;
-  target: T | null;
+interface ScatterPlotProps {
+  data: DataItem[];
+  xKey: PropertyKey;
+  yKey: PropertyKey;
+  target: DataItem | null;
   sliderTarget: any;
-  getLabel: (key: NumericKeys<T>, value: number) => string;
-  onDotClick: (item: T) => void;
+  getLabel: (key: PropertyKey, value: number) => string;
+  onDotClick: (item: DataItem) => void;
   renderTooltip?: (props: { active?: boolean; payload?: any[] }) => React.ReactNode;
-  getName?: (item: T) => string;
-  properties?: PropertyDef<T>[];
+  getName?: (item: DataItem) => string;
+  properties?: PropertyDef[];
   className?: string;
 }
 
@@ -56,7 +59,7 @@ function capitalizeFirstLetter(input: string | number | symbol): string {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-export function ScatterPlot<T extends Record<string, any>>({
+export function ScatterPlot({
   data,
   xKey,
   yKey,
@@ -68,11 +71,11 @@ export function ScatterPlot<T extends Record<string, any>>({
   getName,
   properties,
   className,
-}: ScatterPlotProps<T>) {
+}: ScatterPlotProps) {
   const tooltipContent = renderTooltip
     ? (props: any) => renderTooltip({ ...props })
     : getName && properties
-      ? (props: any) => <DefaultTooltip<T> {...props} getName={getName} properties={properties} />
+      ? (props: any) => <DefaultTooltip {...props} getName={getName} properties={properties} />
       : undefined;
 
   return (

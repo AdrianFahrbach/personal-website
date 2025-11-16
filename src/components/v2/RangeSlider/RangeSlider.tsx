@@ -1,8 +1,14 @@
-import React, { useState, useCallback, useRef, useEffect } from 'react';
+import React, { useState, useCallback, useRef, useEffect, useMemo } from 'react';
 import styles from './RangeSlider.module.scss';
 import classNames from 'classnames';
 import { geistMono } from '@/styles/fonts';
 import { AnimatedNumber } from '../AnimatedNumber/AnimatedNumber';
+import { AnimatedLabel } from '../AnimatedLabel/AnimatedLabel';
+
+interface ValueLabel {
+  threshold: number;
+  label: string;
+}
 
 interface RangeSliderProps {
   min: number;
@@ -14,6 +20,7 @@ interface RangeSliderProps {
   onChange?: (value: number) => void;
   debounceMs?: number;
   className?: string;
+  valueLabels?: ValueLabel[];
 }
 
 export const RangeSlider: React.FC<RangeSliderProps> = ({
@@ -26,10 +33,20 @@ export const RangeSlider: React.FC<RangeSliderProps> = ({
   onChange,
   debounceMs,
   className,
+  valueLabels,
 }) => {
-  const [internalValue, setInternalValue] = useState(defaultValue || min);
   const [displayValue, setDisplayValue] = useState(value ?? defaultValue ?? min);
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Calculate the current value label based on thresholds
+  const currentValueLabel = useMemo(() => {
+    if (!valueLabels || valueLabels.length === 0) return null;
+
+    // Sort by threshold descending to find the highest matching threshold
+    const sorted = [...valueLabels].sort((a, b) => b.threshold - a.threshold);
+    const match = sorted.find(item => displayValue >= item.threshold);
+    return match?.label || null;
+  }, [displayValue, valueLabels]);
 
   // Update display value when controlled value changes externally
   useEffect(() => {
@@ -53,11 +70,6 @@ export const RangeSlider: React.FC<RangeSliderProps> = ({
 
       // Always update display value immediately for visual feedback
       setDisplayValue(newValue);
-
-      // Update internal value immediately for uncontrolled mode
-      if (value === undefined) {
-        setInternalValue(newValue);
-      }
 
       // Clear existing timer
       if (debounceTimerRef.current) {
@@ -84,7 +96,14 @@ export const RangeSlider: React.FC<RangeSliderProps> = ({
       {label && (
         <div className={styles.labelContainer}>
           <label className={styles.label}>{label}</label>
-          <AnimatedNumber value={displayValue} decimals={2} className={classNames(styles.value, geistMono.className)} />
+          <div className={styles.valueContainer}>
+            {currentValueLabel && <AnimatedLabel label={currentValueLabel} className={styles.valueLabel} />}
+            <AnimatedNumber
+              value={displayValue}
+              decimals={2}
+              className={classNames(styles.value, geistMono.className)}
+            />
+          </div>
         </div>
       )}
       <div className={styles.sliderContainer}>

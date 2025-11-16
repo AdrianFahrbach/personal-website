@@ -1,7 +1,7 @@
 'use client';
 
 import { DataExplorer } from '@/components/v2/DataExplorer/DataExplorer';
-import animals, { animalProperties, getAnimalLabel } from '@/const/animals';
+import animals, { animalProperties, getAnimalLabel, getValueLabels } from '@/const/animals';
 import pageStyles from '@/styles/blogPost.module.scss';
 
 export default function StoryblokStrataExplained() {
@@ -20,9 +20,9 @@ export default function StoryblokStrataExplained() {
               <DataExplorer
                 data={animals}
                 properties={animalProperties}
-                getLabel={getAnimalLabel}
+                getLabel={(key, value) => getAnimalLabel(key as 'size' | 'cuteness' | 'habitat', value)}
+                getValueLabels={key => getValueLabels(key as 'size' | 'cuteness' | 'habitat')}
                 getName={item => item.name}
-                title='Animal Explorer'
               />
             </div>
           </div>

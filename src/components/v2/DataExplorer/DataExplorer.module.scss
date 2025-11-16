@@ -42,7 +42,7 @@
 }
 
 .sectionTitle {
-  margin: 0 0 16px;
+  margin: 0 0 8px;
   font-size: 16px;
   color: var(--neutral-900);
   font-weight: 600;
@@ -71,7 +71,6 @@
   margin: 0;
   counter-reset: result-counter;
   flex-direction: column;
-  gap: 4px;
   list-style: none;
   padding-left: 0;
 }
@@ -79,7 +78,7 @@
 .resultItem {
   position: relative;
   margin: 0 -12px;
-  padding: 12px 12px 12px 36px;
+  padding: 12px 12px 12px 40px;
   transition: background 0.2s ease;
   border-radius: 8px;
   counter-increment: result-counter;
