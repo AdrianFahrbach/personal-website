@@ -48,6 +48,7 @@ interface ScatterPlotProps<T> {
   renderTooltip?: (props: { active?: boolean; payload?: any[] }) => React.ReactNode;
   getName?: (item: T) => string;
   properties?: PropertyDef<T>[];
+  className?: string;
 }
 
 function capitalizeFirstLetter(input: string | number | symbol): string {
@@ -66,6 +67,7 @@ export function ScatterPlot<T extends Record<string, any>>({
   renderTooltip,
   getName,
   properties,
+  className,
 }: ScatterPlotProps<T>) {
   const tooltipContent = renderTooltip
     ? (props: any) => renderTooltip({ ...props })
@@ -74,7 +76,7 @@ export function ScatterPlot<T extends Record<string, any>>({
       : undefined;
 
   return (
-    <div className={styles.chartContainer}>
+    <div className={classNames([styles.chartContainer, className])}>
       <div className={classNames([styles.labelsContainer, styles.isXAxis])}>
         <span>{getLabel(xKey, 0)}</span>
         <span className={styles.mainLabel}>{capitalizeFirstLetter(xKey)}</span>

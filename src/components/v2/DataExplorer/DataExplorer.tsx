@@ -6,6 +6,8 @@ import { ScatterPlot } from '../ScatterPlot/ScatterPlot';
 import { Select } from '../Select/Select';
 import { Tabs } from '../Tabs/Tabs';
 import styles from './DataExplorer.module.scss';
+import classNames from 'classnames';
+import { geistMono } from '@/styles/fonts';
 
 type NumericKeys<T> = {
   [K in keyof T]: T[K] extends number ? K : never;
@@ -62,7 +64,9 @@ export function DataExplorer<T extends Record<string, any>>({
 
   // Compute closest items
   const closest = useMemo(() => {
-  const ref: T = target || ({ ...sliderTarget, [properties[0].key]: sliderTarget[properties[0].key], name: 'Target' } as unknown as T);
+    const ref: T =
+      target ||
+      ({ ...sliderTarget, [properties[0].key]: sliderTarget[properties[0].key], name: 'Target' } as unknown as T);
     return data
       .map((item: T) => ({
         ...item,
@@ -133,7 +137,7 @@ export function DataExplorer<T extends Record<string, any>>({
 
           {/* Closest Items */}
           <div className={styles.section}>
-            <h3 className={styles.sectionTitle}>Closest Items</h3>
+            <h3 className={styles.sectionTitle}>Closest entries</h3>
             <ol className={styles.resultsList}>
               {closest.map(item => (
                 <li key={getName(item)} className={styles.resultItem}>
@@ -142,7 +146,9 @@ export function DataExplorer<T extends Record<string, any>>({
                     {properties.map(p => (
                       <span key={String(p.key)} className={styles.resultProp}>
                         <span className={styles.resultPropLabel}>{p.label}:</span>
-                        <span className={styles.resultPropValue}>{item[p.key].toFixed(2)}</span>
+                        <span className={classNames([styles.resultPropValue, geistMono.className])}>
+                          {item[p.key].toFixed(2)}
+                        </span>
                       </span>
                     ))}
                   </div>

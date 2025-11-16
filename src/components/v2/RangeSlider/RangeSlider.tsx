@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import styles from './RangeSlider.module.scss';
 import classNames from 'classnames';
+import { geistMono } from '@/styles/fonts';
 
 interface RangeSliderProps {
   min: number;
@@ -24,18 +25,21 @@ export const RangeSlider: React.FC<RangeSliderProps> = ({
   className,
 }) => {
   const [internalValue, setInternalValue] = useState(defaultValue || min);
-  
+
   const currentValue = value !== undefined ? value : internalValue;
-  
-  const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = Number(event.target.value);
-    
-    if (value === undefined) {
-      setInternalValue(newValue);
-    }
-    
-    onChange?.(newValue);
-  }, [value, onChange]);
+
+  const handleChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const newValue = Number(event.target.value);
+
+      if (value === undefined) {
+        setInternalValue(newValue);
+      }
+
+      onChange?.(newValue);
+    },
+    [value, onChange]
+  );
 
   const percentage = ((currentValue - min) / (max - min)) * 100;
 
@@ -44,12 +48,12 @@ export const RangeSlider: React.FC<RangeSliderProps> = ({
       {label && (
         <div className={styles.labelContainer}>
           <label className={styles.label}>{label}</label>
-          <span className={styles.value}>{currentValue}</span>
+          <span className={classNames([styles.value, geistMono.className])}>{currentValue.toFixed(2)}</span>
         </div>
       )}
       <div className={styles.sliderContainer}>
         <input
-          type="range"
+          type='range'
           min={min}
           max={max}
           step={step}
@@ -57,7 +61,7 @@ export const RangeSlider: React.FC<RangeSliderProps> = ({
           onChange={handleChange}
           className={styles.slider}
           style={{
-            background: `linear-gradient(to right, var(--blue-500) 0%, var(--blue-500) ${percentage}%, var(--neutral-200) ${percentage}%, var(--neutral-200) 100%)`
+            background: `linear-gradient(to right, var(--blue-500) 0%, var(--blue-500) ${percentage}%, var(--neutral-200) ${percentage}%, var(--neutral-200) 100%)`,
           }}
         />
       </div>
