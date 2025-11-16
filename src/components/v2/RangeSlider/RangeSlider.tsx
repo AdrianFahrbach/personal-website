@@ -2,6 +2,7 @@ import React, { useState, useCallback, useRef, useEffect } from 'react';
 import styles from './RangeSlider.module.scss';
 import classNames from 'classnames';
 import { geistMono } from '@/styles/fonts';
+import { AnimatedNumber } from '../AnimatedNumber/AnimatedNumber';
 
 interface RangeSliderProps {
   min: number;
@@ -29,8 +30,6 @@ export const RangeSlider: React.FC<RangeSliderProps> = ({
   const [internalValue, setInternalValue] = useState(defaultValue || min);
   const [displayValue, setDisplayValue] = useState(value ?? defaultValue ?? min);
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
-
-  const currentValue = value !== undefined ? value : internalValue;
 
   // Update display value when controlled value changes externally
   useEffect(() => {
@@ -85,7 +84,7 @@ export const RangeSlider: React.FC<RangeSliderProps> = ({
       {label && (
         <div className={styles.labelContainer}>
           <label className={styles.label}>{label}</label>
-          <span className={classNames([styles.value, geistMono.className])}>{displayValue.toFixed(2)}</span>
+          <AnimatedNumber value={displayValue} decimals={2} className={classNames(styles.value, geistMono.className)} />
         </div>
       )}
       <div className={styles.sliderContainer}>

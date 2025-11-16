@@ -94,30 +94,14 @@ export function DataExplorer<T extends Record<string, any>>({
           <div className={styles.section}>
             <Tabs
               options={[
-                { value: 'axis', label: 'Axis Configuration' },
                 { value: 'target', label: 'Target Selection' },
+                { value: 'axis', label: 'Axis Configuration' },
               ]}
-              defaultValue='axis'
+              defaultValue='target'
               value={activeTab}
               onChange={setActiveTab}
               className={styles.tabs}
             />
-            {activeTab === 'axis' && (
-              <div className={styles.axisSelects}>
-                <Select
-                  label='X Axis'
-                  options={xAxisOptions}
-                  value={String(xKey)}
-                  onChange={val => setXKey(val as NumericKeys<T>)}
-                />
-                <Select
-                  label='Y Axis'
-                  options={yAxisOptions}
-                  value={String(yKey)}
-                  onChange={val => setYKey(val as NumericKeys<T>)}
-                />
-              </div>
-            )}
             {activeTab === 'target' && (
               <div className={styles.sliders}>
                 {properties.map(p => (
@@ -132,6 +116,22 @@ export function DataExplorer<T extends Record<string, any>>({
                     onChange={value => handleSliderChange(p.key, value)}
                   />
                 ))}
+              </div>
+            )}
+            {activeTab === 'axis' && (
+              <div className={styles.axisSelects}>
+                <Select
+                  label='X Axis'
+                  options={xAxisOptions}
+                  value={String(xKey)}
+                  onChange={val => setXKey(val as NumericKeys<T>)}
+                />
+                <Select
+                  label='Y Axis'
+                  options={yAxisOptions}
+                  value={String(yKey)}
+                  onChange={val => setYKey(val as NumericKeys<T>)}
+                />
               </div>
             )}
           </div>
